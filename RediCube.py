@@ -7,7 +7,7 @@ import random
 #positions du cube concernees pour chaque mouvements possibles
 angles={'up':{1:[[14,16,17],[21,24,25],[45,46,48]],2:[[23,25,26],[30,33,34],[46,47,50]],3:[[3,6,7],[18,19,21],[10,11,14]], 4:[[5,7,8],[27,28,30],[19,20,23]]},
 'down':{1:[[12,15,16],[41,43,44],[48,51,52]],2:[[32,34,35],[39,42,43],[50,52,53]],3:[[0,1,3],[9,10,12],[37,38,41]], 4:[[1,2,5],[28,29,32],[36,37,39]]}}
-#Pas encore range dans l'ordre por les down, dans le sens horaire de rotation de gauche à droite
+#Pas encore range dans l'ordre pour les down, dans le sens horaire de rotation de gauche à droite
 
 
 class RediCube():
@@ -125,7 +125,7 @@ class RediCube():
 
             self.cube[matrice_coordonnes[keys[0]]['face']][matrice_coordonnes[keys[0]]['ligne']][matrice_coordonnes[keys[0]]['colonne']],self.cube[matrice_coordonnes[keys[1]]['face']][matrice_coordonnes[keys[1]]['ligne']][matrice_coordonnes[keys[1]]['colonne']],self.cube[matrice_coordonnes[keys[2]]['face']][matrice_coordonnes[keys[2]]['ligne']][matrice_coordonnes[keys[2]]['colonne']],self.cube[matrice_coordonnes[keys[3]]['face']][matrice_coordonnes[keys[3]]['ligne']][matrice_coordonnes[keys[3]]['colonne']],self.cube[matrice_coordonnes[keys[4]]['face']][matrice_coordonnes[keys[4]]['ligne']][matrice_coordonnes[keys[4]]['colonne']],self.cube[matrice_coordonnes[keys[5]]['face']][matrice_coordonnes[keys[5]]['ligne']][matrice_coordonnes[keys[5]]['colonne']],self.cube[matrice_coordonnes[keys[6]]['face']][matrice_coordonnes[keys[6]]['ligne']][matrice_coordonnes[keys[6]]['colonne']],self.cube[matrice_coordonnes[keys[7]]['face']][matrice_coordonnes[keys[7]]['ligne']][matrice_coordonnes[keys[7]]['colonne']],self.cube[matrice_coordonnes[keys[8]]['face']][matrice_coordonnes[keys[8]]['ligne']][matrice_coordonnes[keys[8]]['colonne']]=self.cube[matrice_coordonnes[keys[6]]['face']][matrice_coordonnes[keys[6]]['ligne']][matrice_coordonnes[keys[6]]['colonne']],self.cube[matrice_coordonnes[keys[7]]['face']][matrice_coordonnes[keys[7]]['ligne']][matrice_coordonnes[keys[7]]['colonne']],self.cube[matrice_coordonnes[keys[8]]['face']][matrice_coordonnes[keys[8]]['ligne']][matrice_coordonnes[keys[8]]['colonne']],self.cube[matrice_coordonnes[keys[0]]['face']][matrice_coordonnes[keys[0]]['ligne']][matrice_coordonnes[keys[0]]['colonne']],self.cube[matrice_coordonnes[keys[1]]['face']][matrice_coordonnes[keys[1]]['ligne']][matrice_coordonnes[keys[1]]['colonne']],self.cube[matrice_coordonnes[keys[2]]['face']][matrice_coordonnes[keys[2]]['ligne']][matrice_coordonnes[keys[2]]['colonne']],self.cube[matrice_coordonnes[keys[3]]['face']][matrice_coordonnes[keys[3]]['ligne']][matrice_coordonnes[keys[3]]['colonne']],self.cube[matrice_coordonnes[keys[4]]['face']][matrice_coordonnes[keys[4]]['ligne']][matrice_coordonnes[keys[4]]['colonne']],self.cube[matrice_coordonnes[keys[5]]['face']][matrice_coordonnes[keys[5]]['ligne']][matrice_coordonnes[keys[5]]['colonne']]
 
-        elif sens == -1:#sens antihoraire : rotation de doite à gauche
+        #elif sens == -1:#sens antihoraire : rotation de doite à gauche
 
 
 
