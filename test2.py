@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+import random as rd
+import time
 
 
 
@@ -155,6 +157,14 @@ class RediCube():
             #h1,v1, h2,v2, h3,v3, = v3,h3, v1,h1, v2,h2
             self.cube[numFace1].tab[arreteHori1[0]][arreteHori1[1]],self.cube[numFace1].tab[arreteVert1[0]][arreteVert1[1]],self.cube[numFace2].tab[arreteHori2[0]][arreteHori2[1]],self.cube[numFace2].tab[arreteVert2[0]][arreteVert2[1]],self.cube[numFace3].tab[arreteHori3[0]][arreteHori3[1]],self.cube[numFace3].tab[arreteVert3[0]][arreteVert3[1]] = self.cube[numFace3].tab[arreteVert3[0]][arreteVert3[1]],self.cube[numFace3].tab[arreteHori3[0]][arreteHori3[1]],self.cube[numFace1].tab[arreteVert1[0]][arreteVert1[1]],self.cube[numFace1].tab[arreteHori1[0]][arreteHori1[1]],self.cube[numFace2].tab[arreteVert2[0]][arreteVert2[1]],self.cube[numFace2].tab[arreteHori2[0]][arreteHori2[1]]
 
+        elif sens == -1:#rotation anti-horaire
+            #translation des 3 sommets, s1,s2,s3 = s2,s3,s1
+            self.cube[numFace1].tab[sommet1[0]][sommet1[1]],self.cube[numFace2].tab[sommet2[0]][sommet2[1]],self.cube[numFace3].tab[sommet3[0]][sommet3[1]] = self.cube[numFace2].tab[sommet2[0]][sommet2[1]],self.cube[numFace3].tab[sommet3[0]][sommet3[1]],self.cube[numFace1].tab[sommet1[0]][sommet1[1]]
+
+            #translation et inversion arrete Horizontales/ arretes verticales
+            #h1,v1, h2,v2, h3,v3, = v2,h2, v3,h3, v1,h1
+            self.cube[numFace1].tab[arreteHori1[0]][arreteHori1[1]],self.cube[numFace1].tab[arreteVert1[0]][arreteVert1[1]],self.cube[numFace2].tab[arreteHori2[0]][arreteHori2[1]],self.cube[numFace2].tab[arreteVert2[0]][arreteVert2[1]],self.cube[numFace3].tab[arreteHori3[0]][arreteHori3[1]],self.cube[numFace3].tab[arreteVert3[0]][arreteVert3[1]] = self.cube[numFace2].tab[arreteVert2[0]][arreteVert2[1]],self.cube[numFace2].tab[arreteHori2[0]][arreteHori2[1]],self.cube[numFace3].tab[arreteVert3[0]][arreteVert3[1]],self.cube[numFace3].tab[arreteHori3[0]][arreteHori3[1]],self.cube[numFace1].tab[arreteVert1[0]][arreteVert1[1]],self.cube[numFace1].tab[arreteHori1[0]][arreteHori1[1]]
+
 
 
 
@@ -164,10 +174,29 @@ class RediCube():
 
         self.RotationCorners(numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,sens)
 
-        print([numFace1,numFace2,numFace3])
-        print([numCorner1,numCorner2,numCorner3])
+        #print([numFace1,numFace2,numFace3])
+        #print([numCorner1,numCorner2,numCorner3])
+
+        print('\n')
+        print(self)
+
+    def Melange(self,nb):
+        for i in range(nb):
+            NumMouv=rd.randint(0,7)
+            sens=rd.randint(0,1)
+            if sens == 0:
+                sens =-1
+            Mouv=Moves.drop_duplicates(subset=['hauteur','numero']).iloc[NumMouv]
+            if sens == 1:
+                print('\nhauteur :',Mouv['hauteur'],', numéro de rotation: ',Mouv['numero'],', rotation sens horaire')
+            else:
+                print('\nhauteur :',Mouv['hauteur'],', numéro de rotation :',Mouv['numero'],', rotation sens anti-horaire')
+
+            time.sleep(1)
+            self.Move(Mouv['hauteur'],Mouv['numero'],sens)
+
 
 
 r=RediCube()
-r.Move('up',1,1)
+#r.Move('up',1,1)
 print(r)
