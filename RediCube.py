@@ -2,31 +2,9 @@ import numpy as np
 import pandas as pd
 import random as rd
 import time
+import Face
 
-
-
-#Moves=pd.DataFrame(columns=['hauteur','numero','numero de face','numero de corner'])
-#Moves.to_csv('Moves.csv',';',index=False,mode='w')
 Moves=pd.read_csv('Moves.csv',sep=';')
-
-
-class Face():
-    def __init__(self,couleur=''):
-        tab=[]
-        if couleur != '':
-            tab=[[couleur,couleur,couleur],[couleur,'X',couleur],[couleur,couleur,couleur]]
-
-        self.tab = tab
-
-    def __str__(self):
-        res=''
-        for i in range(3):
-            if i == 1 or i == 2:
-                res+='\n'
-            for j in range(3):
-                res+=self.tab[i][j]
-
-        return res
 
 class RediCube():
     def __init__(self,L=[]):
