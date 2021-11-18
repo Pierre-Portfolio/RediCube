@@ -1,70 +1,92 @@
-##PAS FINI
-
-
 import numpy as np
-import random
-
-#positions du cube concernees pour chaque mouvements possibles
-angles={'up':{1:[[14,16,17],[21,24,25],[45,46,48]],2:[[23,25,26],[30,33,34],[46,47,50]],3:[[3,6,7],[18,19,21],[10,11,14]], 4:[[5,7,8],[27,28,30],[19,20,23]]},
-'down':{1:[[12,15,16],[41,43,44],[48,51,52]],2:[[32,34,35],[39,42,43],[50,52,53]],3:[[0,1,3],[9,10,12],[37,38,41]], 4:[[1,2,5],[28,29,32],[36,37,39]]}}
-#Pas encore range dans l'ordre pour les down, dans le sens horaire de rotation de gauche à droite
+import pandas as pd
+import random as rd
+import time
 
 
-class RediCube():
-    def __init__(self,cube=0):
-        #if matrice is not define, we return a fully 'finished' cube.
-        # color code : R for red, W for white, O for orange, Y for yellow, G for green, B for blue
-        if cube == 0 :
-            cube = []
-            for i in ('G','Y','R','W','O','B'):
-                cube.append([[i,i,i],[i,'X',i],[i,i,i]])
-        self.cube = cube
+
+#Moves=pd.DataFrame(columns=['hauteur','numero','numero de face','numero de corner'])
+#Moves.to_csv('Moves.csv',';',index=False,mode='w')
+Moves=pd.read_csv('Moves.csv',sep=';')
+
+
+class Face():
+    def __init__(self,couleur=''):
+        tab=[]
+        if couleur != '':
+            tab=[[couleur,couleur,couleur],[couleur,'X',couleur],[couleur,couleur,couleur]]
+
+        self.tab = tab
 
     def __str__(self):
         res=''
-        res+='     '+self.cube[0][0][0]+self.cube[0][0][1]+self.cube[0][0][2]
-        res+='\n'
-        res+='     '+self.cube[0][1][0]+self.cube[0][1][1]+self.cube[0][1][2]
-        res+='\n'
-        res+='     '+self.cube[0][2][0]+self.cube[0][2][1]+self.cube[0][2][2]
-        res+='\n'
-
-        res+='\n'
-        res+=self.cube[1][0][0]+self.cube[1][0][1]+self.cube[1][0][2] + '  '
-        res+=self.cube[2][0][0]+self.cube[2][0][1]+self.cube[2][0][2] + '  '
-        res+=self.cube[3][0][0]+self.cube[3][0][1]+self.cube[3][0][2] + '  '
-        res+=self.cube[4][0][0]+self.cube[4][0][1]+self.cube[4][0][2] + '  '
-
-        res+='\n'
-        res+=self.cube[1][1][0]+self.cube[1][1][1]+self.cube[1][1][2] + '  '
-        res+=self.cube[2][1][0]+self.cube[2][1][1]+self.cube[2][1][2] + '  '
-        res+=self.cube[3][1][0]+self.cube[3][1][1]+self.cube[3][1][2] + '  '
-        res+=self.cube[4][1][0]+self.cube[4][1][1]+self.cube[4][1][2] + '  '
-
-        res+='\n'
-        res+=self.cube[1][2][0]+self.cube[1][2][1]+self.cube[1][2][2] + '  '
-        res+=self.cube[2][2][0]+self.cube[2][2][1]+self.cube[2][2][2] + '  '
-        res+=self.cube[3][2][0]+self.cube[3][2][1]+self.cube[3][2][2] + '  '
-        res+=self.cube[4][2][0]+self.cube[4][2][1]+self.cube[4][2][2] + '  '
-
-        res+='\n\n'
-        res+='     '+self.cube[5][0][0]+self.cube[5][0][1]+self.cube[5][0][2]
-        res+='\n'
-        res+='     '+self.cube[5][1][0]+self.cube[5][1][1]+self.cube[5][1][2]
-        res+='\n'
-        res+='     '+self.cube[5][2][0]+self.cube[5][2][1]+self.cube[5][2][2]
-        res+='\n'
+        for i in range(3):
+            if i == 1 or i == 2:
+                res+='\n'
+            for j in range(3):
+                res+=self.tab[i][j]
 
         return res
+
+class RediCube():
+    def __init__(self,L=[]):
+        #if matrice is not define, we return a fully 'finished' cube.
+        # color code : R for red, W for white, O for orange, Y for yellow, G for green, B for blue
+        cube = []
+        if L == [] :
+            for c in ('G','Y','R','W','O','B'):
+                cube.append(Face(couleur=c))
+            self.cube = cube
+
+        else:
+            self.cube = L
 
     def Copy(self):
         r=RediCube()
         for i in range(6):
             for j in range(3):
                 for k in range(3):
-                    r.cube[i][j][k] = self.cube[i][j][k]
+                    r.cube[i].tab[j][k] = self.cube[i].tab[j][k]
 
         return r
+
+
+    def __str__(self):
+        res='     '
+        l0=self.cube[0].__str__()
+        res+=l0[0:3] + '\n     ' + l0[4:7] + '\n     ' + l0[8:11]
+
+
+        r1=self.Copy()
+        r1.cube[1].tab=np.array(r1.cube[1].tab)#matrice
+        r1.cube[1].tab=r1.cube[1].tab.T#transposee matrice
+        r1.cube[1].tab=np.fliplr(r1.cube[1].tab)#inversion 1ere et derniere ligne
+
+
+        r3=self.Copy()
+        r3.cube[3].tab=np.array(r3.cube[3].tab)
+        r3.cube[3].tab=r3.cube[3].tab.T
+        r3.cube[3].tab=np.flipud(r3.cube[3].tab)#inversion 1ere et derniere colonne
+
+
+
+        l1 = r1.cube[1].__str__()[0:3] + '  ' + self.cube[2].__str__()[0:3] + '  ' + r3.cube[3].__str__()[0:3] + '  ' + self.cube[4].__str__()[0:3] + '  '
+
+        l2 = r1.cube[1].__str__()[4:7] + '  ' + self.cube[2].__str__()[4:7] + '  ' + r3.cube[3].__str__()[4:7] + '  ' + self.cube[4].__str__()[4:7] + '  '
+
+        l3 = r1.cube[1].__str__()[8:11] + '  ' + self.cube[2].__str__()[8:11] + '  ' + r3.cube[3].__str__()[8:11] + '  ' + self.cube[4].__str__()[8:11] + '  '
+
+
+
+        res += '\n\n' + l1 + '\n' + l2 + '\n' + l3
+
+        l4 = self.cube[5].__str__()
+        res+= '\n\n     ' + l4[0:3] + '\n     ' + l4[4:7] + '\n     ' + l4[8:11]
+
+
+
+        return res
+
 
     def Affichage_chiffres(self):
         x=0
@@ -72,64 +94,109 @@ class RediCube():
         for i in range(6):
             for j in range(3):
                 for k in range(3):
-                    r.cube[i][j][k] = ' ' +str(x) +' '
+                    r.cube[i].tab[j][k] = str(x)
                     x+=1
-        print(r)
+        return r
 
-    def Index_chiffres(self,index):
-        x=0
-        r=RediCube()
-        for i in range(6):
-            for j in range(3):
-                for k in range(3):
-                    r.cube[i][j][k] = x
+    def Corner(self,numFace,numCorner):
+        if numCorner == 1:
+            sommet = self.cube[numFace].tab[0][0]
+            arreteHori = self.cube[numFace].tab[0][1]
+            arreteVert = self.cube[numFace].tab[1][0]
 
-                    if x==index:
-                        return {'face':i,'ligne':j,'colonne':k}
+        elif numCorner == 2:
+            sommet = self.cube[numFace].tab[0][2]
+            arreteHori = self.cube[numFace].tab[0][1]
+            arreteVert = self.cube[numFace].tab[1][2]
 
-                    x+=1
+        elif numCorner == 3:
+            sommet = self.cube[numFace].tab[2][0]
+            arreteHori = self.cube[numFace].tab[2][1]
+            arreteVert = self.cube[numFace].tab[1][0]
+
+        elif numCorner == 4:
+            sommet = self.cube[numFace].tab[2][2]
+            arreteHori = self.cube[numFace].tab[2][1]
+            arreteVert = self.cube[numFace].tab[1][2]
+
+        return sommet,arreteHori,arreteVert
+
+    def CornerCoordonnees(self,numFace,numCorner):
+        if numCorner == 1:
+            sommet = (0,0)#ligne, colonne
+            arreteHori = (0,1)
+            arreteVert = (1,0)
+
+        elif numCorner == 2:
+            sommet = (0,2)
+            arreteHori = (0,1)
+            arreteVert = (1,2)
+
+        elif numCorner == 3:
+            sommet = (2,0)
+            arreteHori = (2,1)
+            arreteVert = (1,0)
+
+        elif numCorner == 4:
+            sommet = (2,2)
+            arreteHori = (2,1)
+            arreteVert = (1,2)
+
+        return sommet,arreteHori,arreteVert
+
+    def RotationCorners(self,numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,sens):
+        sommet1,arreteHori1,arreteVert1 = self.CornerCoordonnees(numFace1,numCorner1)
+        sommet2,arreteHori2,arreteVert2 = self.CornerCoordonnees(numFace2,numCorner2)
+        sommet3,arreteHori3,arreteVert3 = self.CornerCoordonnees(numFace3,numCorner3)
+
+        if sens == 1:#rotation sens horaire
+            #translation des 3 sommets, s1,s2,s3 = s3,s1,s2
+            self.cube[numFace1].tab[sommet1[0]][sommet1[1]],self.cube[numFace2].tab[sommet2[0]][sommet2[1]],self.cube[numFace3].tab[sommet3[0]][sommet3[1]] = self.cube[numFace3].tab[sommet3[0]][sommet3[1]],self.cube[numFace1].tab[sommet1[0]][sommet1[1]],self.cube[numFace2].tab[sommet2[0]][sommet2[1]]
+
+            #translation et inversion arrete Horizontales/ arretes verticales
+            #h1,v1, h2,v2, h3,v3, = v3,h3, v1,h1, v2,h2
+            self.cube[numFace1].tab[arreteHori1[0]][arreteHori1[1]],self.cube[numFace1].tab[arreteVert1[0]][arreteVert1[1]],self.cube[numFace2].tab[arreteHori2[0]][arreteHori2[1]],self.cube[numFace2].tab[arreteVert2[0]][arreteVert2[1]],self.cube[numFace3].tab[arreteHori3[0]][arreteHori3[1]],self.cube[numFace3].tab[arreteVert3[0]][arreteVert3[1]] = self.cube[numFace3].tab[arreteVert3[0]][arreteVert3[1]],self.cube[numFace3].tab[arreteHori3[0]][arreteHori3[1]],self.cube[numFace1].tab[arreteVert1[0]][arreteVert1[1]],self.cube[numFace1].tab[arreteHori1[0]][arreteHori1[1]],self.cube[numFace2].tab[arreteVert2[0]][arreteVert2[1]],self.cube[numFace2].tab[arreteHori2[0]][arreteHori2[1]]
+
+        elif sens == -1:#rotation anti-horaire
+            #translation des 3 sommets, s1,s2,s3 = s2,s3,s1
+            self.cube[numFace1].tab[sommet1[0]][sommet1[1]],self.cube[numFace2].tab[sommet2[0]][sommet2[1]],self.cube[numFace3].tab[sommet3[0]][sommet3[1]] = self.cube[numFace2].tab[sommet2[0]][sommet2[1]],self.cube[numFace3].tab[sommet3[0]][sommet3[1]],self.cube[numFace1].tab[sommet1[0]][sommet1[1]]
+
+            #translation et inversion arrete Horizontales/ arretes verticales
+            #h1,v1, h2,v2, h3,v3, = v2,h2, v3,h3, v1,h1
+            self.cube[numFace1].tab[arreteHori1[0]][arreteHori1[1]],self.cube[numFace1].tab[arreteVert1[0]][arreteVert1[1]],self.cube[numFace2].tab[arreteHori2[0]][arreteHori2[1]],self.cube[numFace2].tab[arreteVert2[0]][arreteVert2[1]],self.cube[numFace3].tab[arreteHori3[0]][arreteHori3[1]],self.cube[numFace3].tab[arreteVert3[0]][arreteVert3[1]] = self.cube[numFace2].tab[arreteVert2[0]][arreteVert2[1]],self.cube[numFace2].tab[arreteHori2[0]][arreteHori2[1]],self.cube[numFace3].tab[arreteVert3[0]][arreteVert3[1]],self.cube[numFace3].tab[arreteHori3[0]][arreteHori3[1]],self.cube[numFace1].tab[arreteVert1[0]][arreteVert1[1]],self.cube[numFace1].tab[arreteHori1[0]][arreteHori1[1]]
 
 
 
-    '''
-    hauteur : up,down
-    num : angle 1,2,3 ou 4
-    sens : 1-sens horaire ou -1 sens antihoraire
-    '''
 
     def Move(self,hauteur,num,sens):
+        [numFace1,numFace2,numFace3] = Moves[(Moves['hauteur']==hauteur) & (Moves['numero']==num)]['numero de face'].to_list()
+        [numCorner1,numCorner2,numCorner3] = Moves[(Moves['hauteur']==hauteur) & (Moves['numero']==num)]['numero de corner'].to_list()
 
+        self.RotationCorners(numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,sens)
 
-        if hauteur == 'up':
-            if num == 1:
-                if sens == 1:
+        #print([numFace1,numFace2,numFace3])
+        #print([numCorner1,numCorner2,numCorner3])
 
-                    angle=angles['up'][1]#angle concerne
-                    matrice_coordonnes=dict()#matrice qui contiendra les coordonnees de toutes les orientations de l'angle
+        print('\n')
+        print(self)
 
-                    for i in range(len(angle)):
-                        for j in range(len(angle[0])):
-                            matrice_coordonnes[angle[i][j]] = r.Index_chiffres(angle[i][j])#passage de la position a un chiffre au [face][ligne][colonne]
+    def Melange(self,nb):
+        for i in range(nb):
+            NumMouv=rd.randint(0,7)
+            sens=rd.randint(0,1)
+            if sens == 0:
+                sens =-1
+            Mouv=Moves.drop_duplicates(subset=['hauteur','numero']).iloc[NumMouv]
+            if sens == 1:
+                print('\nhauteur :',Mouv['hauteur'],', numéro de rotation: ',Mouv['numero'],', rotation sens horaire')
+            else:
+                print('\nhauteur :',Mouv['hauteur'],', numéro de rotation :',Mouv['numero'],', rotation sens anti-horaire')
 
-                    #print(d)
-                    self.Echanges(matrice_coordonnes,sens)
-
-
-
-
-                    #r.cube[d[3][face],d[3][ligne],d[3][colonne]],r.cube[d[3][face],d[3][ligne],d[3][colonne]],r.cube[d[3][face],d[3][ligne],d[3][colonne]]
-
-    def Echanges(self,matrice_coordonnes,sens):
-        if sens == 1:#sens horaire : rotation de gauche à droite
-            keys = [i for i in matrice_coordonnes]
-
-            self.cube[matrice_coordonnes[keys[0]]['face']][matrice_coordonnes[keys[0]]['ligne']][matrice_coordonnes[keys[0]]['colonne']],self.cube[matrice_coordonnes[keys[1]]['face']][matrice_coordonnes[keys[1]]['ligne']][matrice_coordonnes[keys[1]]['colonne']],self.cube[matrice_coordonnes[keys[2]]['face']][matrice_coordonnes[keys[2]]['ligne']][matrice_coordonnes[keys[2]]['colonne']],self.cube[matrice_coordonnes[keys[3]]['face']][matrice_coordonnes[keys[3]]['ligne']][matrice_coordonnes[keys[3]]['colonne']],self.cube[matrice_coordonnes[keys[4]]['face']][matrice_coordonnes[keys[4]]['ligne']][matrice_coordonnes[keys[4]]['colonne']],self.cube[matrice_coordonnes[keys[5]]['face']][matrice_coordonnes[keys[5]]['ligne']][matrice_coordonnes[keys[5]]['colonne']],self.cube[matrice_coordonnes[keys[6]]['face']][matrice_coordonnes[keys[6]]['ligne']][matrice_coordonnes[keys[6]]['colonne']],self.cube[matrice_coordonnes[keys[7]]['face']][matrice_coordonnes[keys[7]]['ligne']][matrice_coordonnes[keys[7]]['colonne']],self.cube[matrice_coordonnes[keys[8]]['face']][matrice_coordonnes[keys[8]]['ligne']][matrice_coordonnes[keys[8]]['colonne']]=self.cube[matrice_coordonnes[keys[6]]['face']][matrice_coordonnes[keys[6]]['ligne']][matrice_coordonnes[keys[6]]['colonne']],self.cube[matrice_coordonnes[keys[7]]['face']][matrice_coordonnes[keys[7]]['ligne']][matrice_coordonnes[keys[7]]['colonne']],self.cube[matrice_coordonnes[keys[8]]['face']][matrice_coordonnes[keys[8]]['ligne']][matrice_coordonnes[keys[8]]['colonne']],self.cube[matrice_coordonnes[keys[0]]['face']][matrice_coordonnes[keys[0]]['ligne']][matrice_coordonnes[keys[0]]['colonne']],self.cube[matrice_coordonnes[keys[1]]['face']][matrice_coordonnes[keys[1]]['ligne']][matrice_coordonnes[keys[1]]['colonne']],self.cube[matrice_coordonnes[keys[2]]['face']][matrice_coordonnes[keys[2]]['ligne']][matrice_coordonnes[keys[2]]['colonne']],self.cube[matrice_coordonnes[keys[3]]['face']][matrice_coordonnes[keys[3]]['ligne']][matrice_coordonnes[keys[3]]['colonne']],self.cube[matrice_coordonnes[keys[4]]['face']][matrice_coordonnes[keys[4]]['ligne']][matrice_coordonnes[keys[4]]['colonne']],self.cube[matrice_coordonnes[keys[5]]['face']][matrice_coordonnes[keys[5]]['ligne']][matrice_coordonnes[keys[5]]['colonne']]
-
-        #elif sens == -1:#sens antihoraire : rotation de doite à gauche
+            time.sleep(1)
+            self.Move(Mouv['hauteur'],Mouv['numero'],sens)
 
 
 
 r=RediCube()
-#print(r)
-r.Move('up',1,1)
-#print(r)
+#r.Move('up',1,1)
+print(r)
