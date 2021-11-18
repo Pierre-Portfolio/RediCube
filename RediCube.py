@@ -4,7 +4,7 @@ import random as rd
 import time
 from Face import Face 
 
-Moves=pd.read_csv('Moves.csv',sep=';')
+Moves=pd.read_csv('csv/Moves.csv',sep=';')
 
 class RediCube():
     def __init__(self,L=[]):
