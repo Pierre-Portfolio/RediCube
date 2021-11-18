@@ -177,4 +177,4 @@ class RediCube():
 
 r=RediCube()
 #r.Move('up',1,1)
-print(r)
+#print(r)
