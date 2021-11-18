@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import random as rd
 import time
-import Face
+from Face import Face 
 
 Moves=pd.read_csv('Moves.csv',sep=';')
 
