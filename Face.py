@@ -1,3 +1,9 @@
+'''
+Face : liste de 3 listes de 3 str, correspondant aux initiales des couleurs
+face => .tab
+indiquer en paramètre l'initiale de la couleur, sinon str vide
+'''
+
 class Face():
     def __init__(self,couleur=''):
         tab=[]

@@ -8,6 +8,7 @@ Moves=pd.read_csv('csv/Moves.csv',sep=';')
 
 '''
 Redicube : liste de Face, redicube => .cube, face=> .tab
+indiquer en paramètre la liste de Face, sinon par défaut le RediCube et créé résolu
 '''
 
 class RediCube():
@@ -185,6 +186,11 @@ class RediCube():
 
         #print('\n')
         #print(self)
+
+    '''
+    Fonction qui mélange le RediCube en prenant en paramètre le nombre de coup effectués pour le mélange
+    Fonction qui ne renvoie rien, les mouvements sont effectués sur le RediCube, self.cube est modifié
+    '''
 
     def Melange(self,nb):
         for i in range(nb):
