@@ -2,9 +2,13 @@ import numpy as np
 import pandas as pd
 import random as rd
 import time
-from Face import Face 
+from Face import Face
 
 Moves=pd.read_csv('csv/Moves.csv',sep=';')
+
+'''
+Redicube : liste de Face, redicube => .cube, face=> .tab
+'''
 
 class RediCube():
     def __init__(self,L=[]):
@@ -19,6 +23,9 @@ class RediCube():
         else:
             self.cube = L
 
+    '''
+    fonction renvoyant une copie d'un RediCube
+    '''
     def Copy(self):
         r=RediCube()
         for i in range(6):
@@ -65,7 +72,9 @@ class RediCube():
 
         return res
 
-
+    '''
+    Fonction obsolete, renvoie un RediCube avec des chiffres à la place des couleurs
+    '''
     def Affichage_chiffres(self):
         x=0
         r=RediCube()
@@ -75,6 +84,11 @@ class RediCube():
                     r.cube[i].tab[j][k] = str(x)
                     x+=1
         return r
+
+    '''
+    Fonction pas utilisée
+    Fonction qui pour un angle(0:4) et une face(0:5) donnée renvoie les arretes et le sommet composant l'angle
+    '''
 
     def Corner(self,numFace,numCorner):
         if numCorner == 1:
@@ -99,6 +113,11 @@ class RediCube():
 
         return sommet,arreteHori,arreteVert
 
+    '''
+    Fonction qui pour un angle(0:4) et une face(0:5) donnée renvoie les coordonnées des arretes et du sommet composant      l'angle
+    Renvoie 3 tuples, (ligne,colonne)
+    '''
+
     def CornerCoordonnees(self,numFace,numCorner):
         if numCorner == 1:
             sommet = (0,0)#ligne, colonne
@@ -122,6 +141,12 @@ class RediCube():
 
         return sommet,arreteHori,arreteVert
 
+    '''
+    Fonction qui effectue une rotation du RediCube
+    parametres: numéro de chaque face(3), et numéro de chaque angle(3) concerné, sens de rotation
+    Fonction qui ne renvoie rien, effectue le mouvement du RediCube, self.cube est modifié
+    '''
+
     def RotationCorners(self,numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,sens):
         sommet1,arreteHori1,arreteVert1 = self.CornerCoordonnees(numFace1,numCorner1)
         sommet2,arreteHori2,arreteVert2 = self.CornerCoordonnees(numFace2,numCorner2)
@@ -144,7 +169,13 @@ class RediCube():
             self.cube[numFace1].tab[arreteHori1[0]][arreteHori1[1]],self.cube[numFace1].tab[arreteVert1[0]][arreteVert1[1]],self.cube[numFace2].tab[arreteHori2[0]][arreteHori2[1]],self.cube[numFace2].tab[arreteVert2[0]][arreteVert2[1]],self.cube[numFace3].tab[arreteHori3[0]][arreteHori3[1]],self.cube[numFace3].tab[arreteVert3[0]][arreteVert3[1]] = self.cube[numFace2].tab[arreteVert2[0]][arreteVert2[1]],self.cube[numFace2].tab[arreteHori2[0]][arreteHori2[1]],self.cube[numFace3].tab[arreteVert3[0]][arreteVert3[1]],self.cube[numFace3].tab[arreteHori3[0]][arreteHori3[1]],self.cube[numFace1].tab[arreteVert1[0]][arreteVert1[1]],self.cube[numFace1].tab[arreteHori1[0]][arreteHori1[1]]
 
 
-
+    '''
+    Fonction qui effectue une rotation du RediCube
+    parametres: hauteur du mouvement(up,down), numéro du mouvement(1:4), sens(1:horaire, -1:anti-horaire)
+    Fonction qui ne renvoie rien, effectue le mouvement du RediCube, self.cube est modifié
+    Fonction qui fais appelle à RotationCorners, convertie hauteur, num et sens en coordonnées pour la fonction RotationCorners
+    Utilise le csv Moves pour la conversion
+    '''
 
     def Move(self,hauteur,num,sens):
         [numFace1,numFace2,numFace3] = Moves[(Moves['hauteur']==hauteur) & (Moves['numero']==num)]['numero de face'].to_list()
@@ -152,11 +183,8 @@ class RediCube():
 
         self.RotationCorners(numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,sens)
 
-        #print([numFace1,numFace2,numFace3])
-        #print([numCorner1,numCorner2,numCorner3])
-
-        print('\n')
-        print(self)
+        #print('\n')
+        #print(self)
 
     def Melange(self,nb):
         for i in range(nb):
@@ -175,6 +203,6 @@ class RediCube():
 
 
 
-r=RediCube()
+#r=RediCube()
 #r.Move('up',1,1)
 #print(r)
