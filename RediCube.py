@@ -23,7 +23,7 @@ class RediCube():
 
         else:
             self.cube = L
-
+            
     '''
     fonction renvoyant une copie d'un RediCube
     '''
@@ -33,15 +33,16 @@ class RediCube():
             for j in range(3):
                 for k in range(3):
                     r.cube[i].tab[j][k] = self.cube[i].tab[j][k]
-
         return r
+    
 
-
+    '''
+    Override of ToString
+    '''
     def __str__(self):
         res='     '
         l0=self.cube[0].__str__()
         res+=l0[0:3] + '\n     ' + l0[4:7] + '\n     ' + l0[8:11]
-
 
         r1=self.Copy()
         r1.cube[1].tab=np.array(r1.cube[1].tab)#matrice
@@ -54,43 +55,22 @@ class RediCube():
         r3.cube[3].tab=r3.cube[3].tab.T
         r3.cube[3].tab=np.flipud(r3.cube[3].tab)#inversion 1ere et derniere colonne
 
-
-
         l1 = r1.cube[1].__str__()[0:3] + '  ' + self.cube[2].__str__()[0:3] + '  ' + r3.cube[3].__str__()[0:3] + '  ' + self.cube[4].__str__()[0:3] + '  '
-
         l2 = r1.cube[1].__str__()[4:7] + '  ' + self.cube[2].__str__()[4:7] + '  ' + r3.cube[3].__str__()[4:7] + '  ' + self.cube[4].__str__()[4:7] + '  '
-
         l3 = r1.cube[1].__str__()[8:11] + '  ' + self.cube[2].__str__()[8:11] + '  ' + r3.cube[3].__str__()[8:11] + '  ' + self.cube[4].__str__()[8:11] + '  '
-
-
 
         res += '\n\n' + l1 + '\n' + l2 + '\n' + l3
 
         l4 = self.cube[5].__str__()
         res+= '\n\n     ' + l4[0:3] + '\n     ' + l4[4:7] + '\n     ' + l4[8:11]
 
-
-
         return res
-
-    '''
-    Fonction obsolete, renvoie un RediCube avec des chiffres à la place des couleurs
-    '''
-    def Affichage_chiffres(self):
-        x=0
-        r=RediCube()
-        for i in range(6):
-            for j in range(3):
-                for k in range(3):
-                    r.cube[i].tab[j][k] = str(x)
-                    x+=1
-        return r
+    
 
     '''
     Fonction pas utilisée
     Fonction qui pour un angle(0:4) et une face(0:5) donnée renvoie les arretes et le sommet composant l'angle
     '''
-
     def Corner(self,numFace,numCorner):
         if numCorner == 1:
             sommet = self.cube[numFace].tab[0][0]
@@ -114,11 +94,11 @@ class RediCube():
 
         return sommet,arreteHori,arreteVert
 
+
     '''
     Fonction qui pour un angle(0:4) et une face(0:5) donnée renvoie les coordonnées des arretes et du sommet composant      l'angle
     Renvoie 3 tuples, (ligne,colonne)
     '''
-
     def CornerCoordonnees(self,numFace,numCorner):
         if numCorner == 1:
             sommet = (0,0)#ligne, colonne
@@ -147,7 +127,6 @@ class RediCube():
     parametres: numéro de chaque face(3), et numéro de chaque angle(3) concerné, sens de rotation
     Fonction qui ne renvoie rien, effectue le mouvement du RediCube, self.cube est modifié
     '''
-
     def RotationCorners(self,numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,sens):
         sommet1,arreteHori1,arreteVert1 = self.CornerCoordonnees(numFace1,numCorner1)
         sommet2,arreteHori2,arreteVert2 = self.CornerCoordonnees(numFace2,numCorner2)
@@ -177,21 +156,17 @@ class RediCube():
     Fonction qui fais appelle à RotationCorners, convertie hauteur, num et sens en coordonnées pour la fonction RotationCorners
     Utilise le csv Moves pour la conversion
     '''
-
     def Move(self,hauteur,num,sens):
         [numFace1,numFace2,numFace3] = Moves[(Moves['hauteur']==hauteur) & (Moves['numero']==num)]['numero de face'].to_list()
         [numCorner1,numCorner2,numCorner3] = Moves[(Moves['hauteur']==hauteur) & (Moves['numero']==num)]['numero de corner'].to_list()
 
         self.RotationCorners(numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,sens)
 
-        #print('\n')
-        #print(self)
 
     '''
     Fonction qui mélange le RediCube en prenant en paramètre le nombre de coup effectués pour le mélange
     Fonction qui ne renvoie rien, les mouvements sont effectués sur le RediCube, self.cube est modifié
     '''
-
     def Melange(self,nb):
         for i in range(nb):
             NumMouv=rd.randint(0,7)
@@ -206,7 +181,6 @@ class RediCube():
 
             time.sleep(1)
             self.Move(Mouv['hauteur'],Mouv['numero'],sens)
-
 
 
 #r=RediCube()

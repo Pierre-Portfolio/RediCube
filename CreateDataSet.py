@@ -13,9 +13,12 @@ def GenerateDataSet(nbfois):
     return df
 
 r=RediCube()
+print(r.Affichage_chiffres())
+"""
 for i in r.cube:
     print(i)
     print('\n')
+    """
     
 """
 import csv
