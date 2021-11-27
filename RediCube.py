@@ -11,7 +11,6 @@ Moves=pd.read_csv('csv/Moves.csv',sep=';')
 Redicube : liste de Face, redicube => .cube, face=> .tab
 indiquer en paramètre la liste de Face, sinon par défaut le RediCube et créé résolu
 '''
-
 class RediCube():
     def __init__(self,L=[]):
         #if matrice is not define, we return a fully 'finished' cube.
@@ -182,8 +181,3 @@ class RediCube():
 
             time.sleep(1)
             self.Move(Mouv['hauteur'],Mouv['numero'],sens)
-
-
-#r=RediCube()
-#r.Move('up',1,1)
-#print(r)

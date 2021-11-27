@@ -10,17 +10,19 @@ def ImportCsv():
     return df;
 
 def ExportCsv(df):
-    df.to_csv(index=False, sep=',')
+    df.to_csv('csv/DataSet.csv', index=False, sep=',')
     
 def StartGenerateDataSet(nbfois):
+    nbfind = 0
     df = pd.DataFrame(columns=['Pos'])
     r= rd.RediCube()
-    for i in range(nbfois):
+    while nbfind != nbfois:
         r=GenerateDataSetRow(r)
         text = ''
         for j in range(rd.face):
             text += "".join(r.cube[j].__str__().replace('\n',''))
-        if text in df.Pos:
-            df = df.append(text);
-            print("Une new valeur ajouté")
+        if text not in df.Pos:
+            df = df.append({"Pos":text},ignore_index=True)
+            nbfind += 1
+            print("Une new valeur ajouté : " , nbfind)
     ExportCsv(df)
