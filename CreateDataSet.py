@@ -1,31 +1,26 @@
-from RediCube import RediCube
+import RediCube as rd
 import pandas as pd
-import csv
 
 def GenerateDataSetRow(r):
     r.Melange(1)
-    return r.cube
+    return r
 
 def ImportCsv():
-    df = pd.DataFrame()
+    df = pd.read_csv('csv/DataSet.csv')
     return df;
 
 def ExportCsv(df):
-    with open('csv/DataSet.csv', 'w', newline='') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter=' ',
-                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        for i in range(df.count()):
-            spamwriter.writerow(df[i])
+    df.to_csv(index=False, sep=',')
     
-
 def StartGenerateDataSet(nbfois):
-    df = ImportCsv()
-    r=RediCube()
+    df = pd.DataFrame(columns=['Pos'])
+    r= rd.RediCube()
     for i in range(nbfois):
         r=GenerateDataSetRow(r)
-        if(False):
-            print("deja dedans")
-        else:
-            print("pas dedans")
-            df.append(r);
+        text = ''
+        for j in range(rd.face):
+            text += "".join(r.cube[j].__str__().replace('\n',''))
+        if text in df.Pos:
+            df = df.append(text);
+            print("Une new valeur ajouté")
     ExportCsv(df)

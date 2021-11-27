@@ -3,6 +3,7 @@ import pandas as pd
 import random as rd
 import time
 from Face import Face
+face = 6
 
 Moves=pd.read_csv('csv/Moves.csv',sep=';')
 
@@ -29,7 +30,7 @@ class RediCube():
     '''
     def Copy(self):
         r=RediCube()
-        for i in range(6):
+        for i in range(face):
             for j in range(3):
                 for k in range(3):
                     r.cube[i].tab[j][k] = self.cube[i].tab[j][k]
