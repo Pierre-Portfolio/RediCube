@@ -1,4 +1,5 @@
 import RediCube as rd
+import Face as f
 import pandas as pd
 import time
 
@@ -12,13 +13,10 @@ def ExportCsv(df):
 def FindRedicubeToResolve(n):
     df = ImportCsv()
     text = df.loc[0].Pos
+    listLigne = [text[i:i+3] for i in range(0, len(text), 3)]    
     listFace = []
-    for i in range(rd.face):
-        listLigne = []
-        for j in range(3):
-            listLigne.append(text[j])
-        text = text[3:]
-        listFace.append(listLigne[0])
+    for i in range(0,len(listLigne),3):
+        listFace.append(f.Face(rd.listFaceCouleur[i],listLigne[i,i+3]))
     r = rd.RediCube(listFace)
     return r
 
