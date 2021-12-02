@@ -5,9 +5,9 @@ indiquer en paramètre l'initiale de la couleur, sinon str vide
 '''
 
 class Face():
-    def __init__(self,couleur=''):
-        tab=[]
-        if couleur != '':
+    def __init__(self,couleur,tab=[]):
+        self.couleur = couleur
+        if tab == []:
             tab=[[couleur,couleur,couleur],[couleur,'X',couleur],[couleur,couleur,couleur]]
         self.tab = tab
 

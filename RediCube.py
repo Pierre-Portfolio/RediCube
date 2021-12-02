@@ -1,9 +1,13 @@
+#import
 import numpy as np
 import pandas as pd
-import random as rd
+import random
 import time
 from Face import Face
+
+#Constante
 face = 6
+listFaceCouleur = ['G','Y','R','W','O','B']
 
 Moves=pd.read_csv('csv/Moves.csv',sep=';')
 
@@ -17,7 +21,7 @@ class RediCube():
         # color code : R for red, W for white, O for orange, Y for yellow, G for green, B for blue
         cube = []
         if L == [] :
-            for c in ('G','Y','R','W','O','B'):
+            for c in listFaceCouleur:
                 cube.append(Face(couleur=c))
             self.cube = cube
 
@@ -169,8 +173,8 @@ class RediCube():
     '''
     def Melange(self,nb):
         for i in range(nb):
-            NumMouv=rd.randint(0,7)
-            sens=rd.randint(0,1)
+            NumMouv=random.randint(0,7)
+            sens=random.randint(0,1)
             if sens == 0:
                 sens =-1
             Mouv=Moves.drop_duplicates(subset=['hauteur','numero']).iloc[NumMouv]
