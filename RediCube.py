@@ -27,7 +27,7 @@ class RediCube():
 
         else:
             self.cube = L
-            
+
     '''
     fonction renvoyant une copie d'un RediCube
     '''
@@ -38,7 +38,7 @@ class RediCube():
                 for k in range(3):
                     r.cube[i].tab[j][k] = self.cube[i].tab[j][k]
         return r
-    
+
 
     '''
     Override of ToString
@@ -48,6 +48,7 @@ class RediCube():
         l0=self.cube[0].__str__()
         res+=l0[0:3] + '\n     ' + l0[4:7] + '\n     ' + l0[8:11]
 
+        '''
         r1=self.Copy()
         r1.cube[1].tab=np.array(r1.cube[1].tab)#matrice
         r1.cube[1].tab=r1.cube[1].tab.T#transposee matrice
@@ -58,10 +59,11 @@ class RediCube():
         r3.cube[3].tab=np.array(r3.cube[3].tab)
         r3.cube[3].tab=r3.cube[3].tab.T
         r3.cube[3].tab=np.flipud(r3.cube[3].tab)#inversion 1ere et derniere colonne
+        '''
 
-        l1 = r1.cube[1].__str__()[0:3] + '  ' + self.cube[2].__str__()[0:3] + '  ' + r3.cube[3].__str__()[0:3] + '  ' + self.cube[4].__str__()[0:3] + '  '
-        l2 = r1.cube[1].__str__()[4:7] + '  ' + self.cube[2].__str__()[4:7] + '  ' + r3.cube[3].__str__()[4:7] + '  ' + self.cube[4].__str__()[4:7] + '  '
-        l3 = r1.cube[1].__str__()[8:11] + '  ' + self.cube[2].__str__()[8:11] + '  ' + r3.cube[3].__str__()[8:11] + '  ' + self.cube[4].__str__()[8:11] + '  '
+        l1 = self.cube[1].__str__()[0:3] + '  ' + self.cube[2].__str__()[0:3] + '  ' + self.cube[3].__str__()[0:3] + '  ' + self.cube[4].__str__()[0:3] + '  '
+        l2 = self.cube[1].__str__()[4:7] + '  ' + self.cube[2].__str__()[4:7] + '  ' + self.cube[3].__str__()[4:7] + '  ' + self.cube[4].__str__()[4:7] + '  '
+        l3 = self.cube[1].__str__()[8:11] + '  ' + self.cube[2].__str__()[8:11] + '  ' + self.cube[3].__str__()[8:11] + '  ' + self.cube[4].__str__()[8:11] + '  '
 
         res += '\n\n' + l1 + '\n' + l2 + '\n' + l3
 
@@ -69,7 +71,7 @@ class RediCube():
         res+= '\n\n     ' + l4[0:3] + '\n     ' + l4[4:7] + '\n     ' + l4[8:11]
 
         return res
-    
+
 
     '''
     Fonction pas utilisée
