@@ -28,6 +28,3 @@ def FindRedicubeToResolve(n):
       couleur+=1
 
     return rd.RediCube(listFace)
-
-#def ResolveRediCube(r,):
-#def FindFirstFace(r):
