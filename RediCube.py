@@ -75,7 +75,7 @@ class RediCube():
 
     '''
     Fonction pas utilisée
-    Fonction qui pour un angle(0:4) et une face(0:5) donnée renvoie les arretes et le sommet composant l'angle
+    Fonction qui pour un angle(1:4) et une face(0:5) donnée renvoie les arretes et le sommet composant l'angle
     '''
     def Corner(self,numFace,numCorner):
         if numCorner == 1:
@@ -102,7 +102,7 @@ class RediCube():
 
 
     '''
-    Fonction qui pour un angle(0:4) et une face(0:5) donnée renvoie les coordonnées des arretes et du sommet composant      l'angle
+    Fonction qui pour un angle(1:4) et une face(0:5) donnée renvoie les coordonnées des arretes et du sommet composant      l'angle
     Renvoie 3 tuples, (ligne,colonne)
     '''
     def CornerCoordonnees(self,numFace,numCorner):
@@ -187,3 +187,8 @@ class RediCube():
 
             time.sleep(1)
             self.Move(Mouv['hauteur'],Mouv['numero'],sens)
+
+    def Type(self,ligne,colonne):
+        if [ligne,colonne] in ([0,0],[0,2],[2,0],[2,2]):
+            return 'sommet'
+        return 'arrete'
