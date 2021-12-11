@@ -28,9 +28,30 @@ def CreateRedicubeToResolve(n):
     for i in range(0,len(listLigne2),3):
       listFace.append(f.Face(rd.listFaceCouleur[couleur],listLigne2[i:i+3]))
       couleur+=1
+    return rd.RediCube(listFace)
 
-    #return rd.RediCube(listFace)
-    return listFace
-
+'''
+Find the best face for starting the resolve of redicube
+'''
+def FindFirstFace(r):
+    bestface = 0
+    bestscoreface = 0
+    
+    for i in range(rd.face):
+        newface=0
+        newscoreface = 0;
+        for j in range(3):
+            #on ne cherche que les coins pour le moment
+            if(r.cube[i].tab[j][1] != 'X'):
+                if(r.cube[i].tab[j][0] == r.cube[i].couleur):
+                    newscoreface = newscoreface + 1
+                if(r.cube[i].tab[j][2] == r.cube[i].couleur):
+                    newscoreface = newscoreface + 1
+        if(newscoreface > bestscoreface):
+            bestface = i
+            bestscoreface = newscoreface
+    return bestface;
+    
+    
 #def ResolveRediCube(r,):
-#def FindFirstFace(r):
+
