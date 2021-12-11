@@ -52,6 +52,13 @@ def FindFirstFace(r):
             bestscoreface = newscoreface
     return bestface;
     
-    
-#def ResolveRediCube(r,):
+
+'''
+To place the coin of an face of the redicube
+'''
+def PlaceCoins(r,numFace):
+    nbCoup = 0
+    return r,nbCoup;
+
+#def ResolveRediCube(n):
 
