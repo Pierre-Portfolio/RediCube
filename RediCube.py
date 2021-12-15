@@ -200,7 +200,7 @@ class RediCube():
     '''
     Fonction qui return la hauteur et le numero du mouvement d'une face et d'un coin donné
     '''
-    def InverseMove(numFace,numCorner):
+    def InverseMove(self,numFace,numCorner):
         hauteur = Moves[(Moves['numero de face']==numFace) & (Moves['numero de corner']==numCorner)]['hauteur'].tolist()[0]
         numMove = Moves[(Moves['numero de face']==numFace) & (Moves['numero de corner']==numCorner)]['numero'].tolist()[0]
 
