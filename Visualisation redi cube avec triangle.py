@@ -12,12 +12,12 @@ import math as m
 #orientation: {'gauche','haut','bas','droite'}
 #face: {'avant','arriere','milieud','milieug','haut','bas'}
 
-distant_light(direction=vector(2,0,0), color=color.white)
-distant_light(direction=vector(-2,0,0), color=color.white)
-distant_light(direction=vector(0,2,0), color=color.white)
-distant_light(direction=vector(0,-2,0), color=color.white)
-distant_light(direction=vector(0,0,-2), color=color.white)
-distant_light(direction=vector(0,0,2), color=color.white)
+distant_light(direction=vector(2.5,0,0), color=color.white)
+distant_light(direction=vector(-2.5,0,0), color=color.white)
+distant_light(direction=vector(0,2.5,0), color=color.white)
+distant_light(direction=vector(0,-2.5,0), color=color.white)
+distant_light(direction=vector(0,0,-2.5), color=color.white)
+distant_light(direction=vector(0,0,2.5), color=color.white)
 
 #facelignecolonne
 #Constituants de la première cube à gauche en haut
