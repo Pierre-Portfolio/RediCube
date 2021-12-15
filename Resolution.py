@@ -11,7 +11,7 @@ def ExportCsv(df):
     df.to_csv('csv/DataSet.csv', index=False, sep=',')
 
 '''
-Function which generates a redicube since a dataset
+Function which generates a redicube from a dataset
 '''
 def CreateRedicubeToResolve(n):
     df = ImportCsv()
