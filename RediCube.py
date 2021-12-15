@@ -190,13 +190,13 @@ class RediCube():
             self.Move(Mouv['hauteur'],Mouv['numero'],sens)
 
     '''
-    Fonction 
+    Fonction
     '''
     def Type(self,ligne,colonne):
         if [ligne,colonne] in ([0,0],[0,2],[2,0],[2,2]):
             return 'sommet'
         return 'arrete'
-    
+
     '''
     Fonction qui return la hauteur et le numero du mouvement d'une face et d'un coin donné
     '''

@@ -5,6 +5,14 @@ from vpython import *
 import math as m
 import RediCube as rd
 
+#Lumières
+distant_light(direction=vector(2,0,0), color=color.white)
+distant_light(direction=vector(-2,0,0), color=color.white)
+distant_light(direction=vector(0,2,0), color=color.white)
+distant_light(direction=vector(0,-2,0), color=color.white)
+distant_light(direction=vector(0,0,-2), color=color.white)
+distant_light(direction=vector(0,0,2), color=color.white)
+
 def Couleur(variable):
     col={'G':vector(0,1,0),'Y':vector(1,1,0),'R':vector(1, 0, 0),'W':vector(1, 1, 1),'O':vector(1,0.6,0),'B':vector(0,0,1)}
     return col[r.cube[int(variable[1:2])].tab[int(variable[3:4])][int(variable[5:6])]]
@@ -106,10 +114,7 @@ def Visualisation(r):
     f0l1c2.rotate(angle=3*m.pi/2,axis=vector(0,0,1))
     f0l1c2.rotate(angle=m.pi/2,axis=vector(0,1,0))
 
-    a1=vertex(pos=vector(-0.45,.55,0.5))
-    a2=vertex(pos=vector(0.45,.55,0.5))
-    a3=vertex(pos=vector(0,0.1,0.5))
-    tf3l0c2=triangle(v0=a1,v1=a2,v2=a3)
+
 
 
     #Constituants de l'arête gauche
@@ -117,10 +122,6 @@ def Visualisation(r):
     f3l1c0=pyramid(pos = vector(-1,0,0.5),size=vector(0.25,.9,.9),color = Couleur('f3l1c0'))          #BLANC (face centrale)
     f3l1c0.rotate(angle=m.pi/2,axis=vector(0,1,0))
 
-    b1=vertex(pos=vector(-0.55,.45,0.5))
-    b2=vertex(pos=vector(-0.55,-.45,0.5))
-    b3=vertex(pos=vector(-0.1,0,0.5))
-    tf3l1c0=triangle(v0=b1,v1=b2,v2=b3)
 
 
     #Constituants de l'arête droite
@@ -129,10 +130,7 @@ def Visualisation(r):
     f3l1c2=pyramid(pos = vector(1,0,0.5),size=vector(0.25,.9,.9),color = Couleur('f3l1c2'))          #BLANC (face centrale)
     f3l1c2.rotate(angle=m.pi/2,axis=vector(0,1,0))
 
-    c1=vertex(pos=vector(0.55,.45,0.5))
-    c2=vertex(pos=vector(0.55,-.45,0.5))
-    c3=vertex(pos=vector(0.1,0,0.5))
-    tf3l1c2=triangle(v0=c1,v1=c2,v2=c3)
+
 
 
     #Constituants de l'arête basse
@@ -142,10 +140,7 @@ def Visualisation(r):
     f5l1c2.rotate(angle=m.pi/2,axis=vector(0,0,1))
     f5l1c2.rotate(angle=m.pi/2,axis=vector(0,1,0))
 
-    d1=vertex(pos=vector(-0.45,-.55,0.5))
-    d2=vertex(pos=vector(0.45,-.55,0.5))
-    d3=vertex(pos=vector(0,-0.1,0.5))
-    tf3l2c1=triangle(v0=d1,v1=d2,v2=d3)
+
 
 
     #######################################################################################################################################
@@ -159,10 +154,7 @@ def Visualisation(r):
     f0l1c0.rotate(angle=3*m.pi/2,axis=vector(0,0,1))
     f0l1c0.rotate(angle=m.pi/2,axis=vector(0,1,0))
 
-    e1=vertex(pos=vector(-0.45,.55,-2.5),color=vector(1,1,0))
-    e2=vertex(pos=vector(0.45,.55,-2.5),color=vector(1,1,0))
-    e3=vertex(pos=vector(0,0.1,-2.5),color=vector(1,1,0))
-    tf1l0c1=triangle(v0=e1,v1=e2,v2=e3)
+
 
 
 
@@ -171,10 +163,6 @@ def Visualisation(r):
     f1l1c2=pyramid(pos = vector(-1,0,-2.5),size=vector(0.25,.9,.9),color = Couleur('f1l1c2'))          #JAUNE (face centrale)
     f1l1c2.rotate(angle=-m.pi/2,axis=vector(0,1,0))
 
-    f1=vertex(pos=vector(-0.55,.45,-2.5),color=vector(1,1,0))
-    f2=vertex(pos=vector(-0.55,-.45,-2.5),color=vector(1,1,0))
-    f3=vertex(pos=vector(-0.1,0,-2.5),color=vector(1,1,0))
-    tf1l1c2=triangle(v0=f1,v1=f2,v2=f3)
 
 
     #Constituants de l'arête droite
@@ -183,10 +171,7 @@ def Visualisation(r):
     f1l1c0=pyramid(pos = vector(1,0,-2.5),size=vector(0.25,.9,.9),color = Couleur('f1l1c0'))          #JAUNE (face centrale)
     f1l1c0.rotate(angle=-m.pi/2,axis=vector(0,1,0))
 
-    g1=vertex(pos=vector(0.55,.45,-2.5),color=vector(1,1,0))
-    g2=vertex(pos=vector(0.55,-.45,-2.5),color=vector(1,1,0))
-    g3=vertex(pos=vector(0.1,0,-2.5),color=vector(1,1,0))
-    tf1l1c0=triangle(v0=g1,v1=g2,v2=g3)
+
 
 
     #Constituants de l'arête basse
@@ -196,10 +181,6 @@ def Visualisation(r):
     f5l1c0.rotate(angle=m.pi/2,axis=vector(0,0,1))
     f5l1c0.rotate(angle=m.pi/2,axis=vector(0,1,0))
 
-    h1=vertex(pos=vector(-0.45,-.55,-2.5),color=vector(1,1,0))
-    h2=vertex(pos=vector(0.45,-.55,-2.5),color=vector(1,1,0))
-    h3=vertex(pos=vector(0,-0.1,-2.5),color=vector(1,1,0))
-    tf1l2c1=triangle(v0=h1,v1=h2,v2=h3)
 
 
     #######################################################################################################################################
@@ -233,6 +214,48 @@ def Visualisation(r):
 
     #Triangles
 
+    a1=vertex(pos=vector(-0.45,.55,0.5),color=Couleur('f3l0c1'))
+    a2=vertex(pos=vector(0.45,.55,0.5),color=Couleur('f3l0c1'))
+    a3=vertex(pos=vector(0,0.1,0.5),color=Couleur('f3l0c1'))
+    tf3l0c1=triangle(v0=a1,v1=a2,v2=a3)
+
+    b1=vertex(pos=vector(-0.55,.45,0.5),color=Couleur('f3l1c0'))
+    b2=vertex(pos=vector(-0.55,-.45,0.5),color=Couleur('f3l1c0'))
+    b3=vertex(pos=vector(-0.1,0,0.5),color=Couleur('f3l1c0'))
+    tf3l1c0=triangle(v0=b1,v1=b2,v2=b3)
+
+
+    c1=vertex(pos=vector(0.55,.45,0.5),color=Couleur('f3l1c2'))
+    c2=vertex(pos=vector(0.55,-.45,0.5),color=Couleur('f3l1c2'))
+    c3=vertex(pos=vector(0.1,0,0.5),color=Couleur('f3l1c2'))
+    tf3l1c2=triangle(v0=c1,v1=c2,v2=c3)
+
+    d1=vertex(pos=vector(-0.45,-.55,0.5),color=Couleur('f3l2c1'))
+    d2=vertex(pos=vector(0.45,-.55,0.5),color=Couleur('f3l2c1'))
+    d3=vertex(pos=vector(0,-0.1,0.5),color=Couleur('f3l2c1'))
+    tf3l2c1=triangle(v0=d1,v1=d2,v2=d3)
+
+    e1=vertex(pos=vector(-0.45,.55,-2.5),color=Couleur('f1l0c1'))
+    e2=vertex(pos=vector(0.45,.55,-2.5),color=Couleur('f1l0c1'))
+    e3=vertex(pos=vector(0,0.1,-2.5),color=Couleur('f1l0c1'))
+    tf1l0c1=triangle(v0=e1,v1=e2,v2=e3)
+
+    f1=vertex(pos=vector(-0.55,.45,-2.5),color=Couleur('f1l1c2'))
+    f2=vertex(pos=vector(-0.55,-.45,-2.5),color=Couleur('f1l1c2'))
+    f3=vertex(pos=vector(-0.1,0,-2.5),color=Couleur('f1l1c2'))
+    tf1l1c2=triangle(v0=f1,v1=f2,v2=f3)
+
+
+    g1=vertex(pos=vector(0.55,.45,-2.5),color=Couleur('f1l1c0'))
+    g2=vertex(pos=vector(0.55,-.45,-2.5),color=Couleur('f1l1c0'))
+    g3=vertex(pos=vector(0.1,0,-2.5),color=Couleur('f1l1c0'))
+    tf1l1c0=triangle(v0=g1,v1=g2,v2=g3)
+
+    h1=vertex(pos=vector(-0.45,-.55,-2.5),color=Couleur('f1l2c1'))
+    h2=vertex(pos=vector(0.45,-.55,-2.5),color=Couleur('f1l2c1'))
+    h3=vertex(pos=vector(0,-0.1,-2.5),color=Couleur('f1l2c1'))
+    tf1l2c1=triangle(v0=h1,v1=h2,v2=h3)
+
 
     #Gauche
     ga1=vertex(pos=vector(-1.5,.55,-1.45),color=Couleur('f2l0c1'))
@@ -247,7 +270,7 @@ def Visualisation(r):
 
     gg1=vertex(pos=vector(-1.5,.45,-1.6),color=Couleur('f2l1c0'))
     gg2=vertex(pos=vector(-1.5,-.45,-1.6),color=Couleur('f2l1c0'))
-    gg3=vertex(pos=vector(-1.5,0,-1.1),color=Couleur('f2l1c0')))
+    gg3=vertex(pos=vector(-1.5,0,-1.1),color=Couleur('f2l1c0'))
     tf2l1c0=triangle(v0=gg1,v1=gg2,v2=gg3)
 
     gd1=vertex(pos=vector(-1.5,.45,-0.4),color=Couleur('f2l1c2'))
