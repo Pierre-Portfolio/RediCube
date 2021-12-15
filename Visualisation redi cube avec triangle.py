@@ -12,6 +12,13 @@ import math as m
 #orientation: {'gauche','haut','bas','droite'}
 #face: {'avant','arriere','milieud','milieug','haut','bas'}
 
+distant_light(direction=vector(2,0,0), color=color.white)
+distant_light(direction=vector(-2,0,0), color=color.white)
+distant_light(direction=vector(0,2,0), color=color.white)
+distant_light(direction=vector(0,-2,0), color=color.white)
+distant_light(direction=vector(0,0,-2), color=color.white)
+distant_light(direction=vector(0,0,2), color=color.white)
+
 #facelignecolonne
 #Constituants de la première cube à gauche en haut
 f2l0c2=pyramid(pos = vector(-1.5, 1, 0),size=vector(0.25,.9,.9),color = vector(1,0,0))     #ROUGE (face gauche)
