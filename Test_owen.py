@@ -79,11 +79,3 @@ def BestCoup2(r):
     return List_Coups
 
 ##ERREUR, fini par bloquer, cycle sans fin, répétition de coups
-
-
-
-def FonctionPierre(numFace,numCorner):
-        hauteur = rd.Moves[(rd.Moves['numero de face']==numFace) & (rd.Moves['numero de corner']==numCorner)]['hauteur'].tolist()[0]
-        numMove = rd.Moves[(rd.Moves['numero de face']==numFace) & (rd.Moves['numero de corner']==numCorner)]['numero'].tolist()[0]
-
-        return hauteur,numMove
