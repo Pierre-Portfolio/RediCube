@@ -42,19 +42,25 @@ def FindFirstFace(r):
         newface=0
         newscoreface = 0
         newcoinDone = []
-        for j in range(3):
-            #on ne cherche que les coins pour le moment
-            if(j != 1):
-                if(r.cube[i].tab[j][0] == r.cube[i].couleur):
-                    newscoreface = newscoreface + 1
-                if(r.cube[i].tab[j][2] == r.cube[i].couleur):
-                    newscoreface = newscoreface + 1
+        for j in [0,2]:
+            if(r.cube[i].tab[j][0] == r.cube[i].couleur):
+                newscoreface = newscoreface + 1
+                if(j==0):
+                    newcoinDone.append(1)
+                else:
+                    newcoinDone.append(3)
+            if(r.cube[i].tab[j][2] == r.cube[i].couleur):
+                newscoreface = newscoreface + 1
+                if(j==0):
+                    newcoinDone.append(2)
+                else:
+                    newcoinDone.append(4)
         if(newscoreface > bestscoreface):
             bestface = i
             bestscoreface = newscoreface
-    print(bestface)
+            coinDone = newcoinDone
     r.faceprincipal = bestface
-    
+    return bestface,list(set([1,2,3,4]) - set(coinDone))
 
 '''
 To place the coin of an face of the redicube
