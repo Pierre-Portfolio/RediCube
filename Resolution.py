@@ -36,13 +36,15 @@ Find the best face for starting the resolve of redicube
 def FindFirstFace(r):
     bestface = 0
     bestscoreface = 0
+    coinDone = []
     
     for i in range(rd.face):
         newface=0
-        newscoreface = 0;
+        newscoreface = 0
+        newcoinDone = []
         for j in range(3):
             #on ne cherche que les coins pour le moment
-            if(r.cube[i].tab[j][1] != 'X'):
+            if(j != 1):
                 if(r.cube[i].tab[j][0] == r.cube[i].couleur):
                     newscoreface = newscoreface + 1
                 if(r.cube[i].tab[j][2] == r.cube[i].couleur):
@@ -50,14 +52,19 @@ def FindFirstFace(r):
         if(newscoreface > bestscoreface):
             bestface = i
             bestscoreface = newscoreface
-    return bestface;
+    print(bestface)
+    r.faceprincipal = bestface
     
 
 '''
 To place the coin of an face of the redicube
 '''
-def PlaceCoins(r,numFace):
+def PlaceCoins(r,numFace,coinDone):
     nbCoup = 0
+    
+    for i in range(len(coinDone)):
+        print(i)
+    
     return r,nbCoup;
 
 #def ResolveRediCube(n):

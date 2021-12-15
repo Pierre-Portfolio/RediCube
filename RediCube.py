@@ -20,6 +20,7 @@ class RediCube():
         #if matrice is not define, we return a fully 'finished' cube.
         # color code : R for red, W for white, O for orange, Y for yellow, G for green, B for blue
         cube = []
+        self.faceprincipal = 0
         if L == [] :
             for c in listFaceCouleur:
                 cube.append(Face(couleur=c))
