@@ -20,6 +20,7 @@ class RediCube():
         #if matrice is not define, we return a fully 'finished' cube.
         # color code : R for red, W for white, O for orange, Y for yellow, G for green, B for blue
         cube = []
+        self.faceprincipal = 0
         if L == [] :
             for c in listFaceCouleur:
                 cube.append(Face(couleur=c))
@@ -188,7 +189,19 @@ class RediCube():
             time.sleep(1)
             self.Move(Mouv['hauteur'],Mouv['numero'],sens)
 
+    '''
+    Fonction 
+    '''
     def Type(self,ligne,colonne):
         if [ligne,colonne] in ([0,0],[0,2],[2,0],[2,2]):
             return 'sommet'
         return 'arrete'
+    
+    '''
+    Fonction qui return la hauteur et le numero du mouvement d'une face et d'un coin donné
+    '''
+    def InverseMove(numFace,numCorner):
+        hauteur = Moves[(Moves['numero de face']==numFace) & (Moves['numero de corner']==numCorner)]['hauteur'].tolist()[0]
+        numMove = Moves[(Moves['numero de face']==numFace) & (Moves['numero de corner']==numCorner)]['numero'].tolist()[0]
+
+        return hauteur,numMove
