@@ -79,3 +79,35 @@ def BestCoup2(r):
     return List_Coups
 
 ##ERREUR, fini par bloquer, cycle sans fin, répétition de coups
+
+
+def FindFirstFace(r):
+    bestface = 0
+    bestscoreface = 0
+    coinDone = []
+
+    for f in range(rd.face):
+        newface=0
+        newscoreface = 0
+        newcoinDone = []
+        for l in [0,2]:
+            for c in [0,2]:
+                if r.cube[f].tab[l][c] == r.cube[f].couleur:
+                    newscoreface = newscoreface + 1
+
+                    if l==0 and c==0:
+                        newcoinDone.append(0)
+                    elif l==0 and c==1:
+                        newcoinDone.append(1)
+                    elif l==1 and c==0:
+                        newcoinDone.append(3)
+                    else:
+                        newcoinDone.append(4)
+
+
+        if(newscoreface > bestscoreface):
+            bestface = f
+            bestscoreface = newscoreface
+            coinDone = newcoinDone
+    r.faceprincipal = bestface
+    return list(set([1,2,3,4]) - set(coinDone))
