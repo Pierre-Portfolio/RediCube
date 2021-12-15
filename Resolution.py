@@ -37,7 +37,7 @@ def FindFirstFace(r):
     bestface = 0
     bestscoreface = 0
     coinDone = []
-    
+
     for i in range(rd.face):
         newface=0
         newscoreface = 0
@@ -68,16 +68,25 @@ To place the coin of an face of the redicube
 def PlaceAllCoins(r,numFace,coinToComplete):
     tabL = [0,0,0,2,2]
     tabC = [0,0,2,0,2]
-    
     for i in coinToComplete:
         hauteur,numMove = r.InverseMove(numFace,i)
         newR = r.Copy()
         newR.Move(hauteur,numMove,1)
+        print(newR)
+        print(newR.cube[numFace].tab[tabL[i]][tabC[i]])
+        print(newR.cube[numFace].couleur)
         if(newR.cube[numFace].tab[tabL[i]][tabC[i]] == newR.cube[numFace].couleur):
-            r = newR.Copy()
-        else:
+            print("here")
             r.Move(hauteur,numMove,1)
+        else:
+            print("not here")
+            r.Move(hauteur,numMove,-1)
     #redi,nbCoup
     return r;
 
-#def ResolveRediCube(n):
+def ResolveRediCube(n):
+    r = CreateRedicubeToResolve(n)
+    listface = FindFirstFace(r)
+    r.nbCoup = len(listface)
+    r = PlaceAllCoins(r,r.faceprincipal,listface)
+    return r
