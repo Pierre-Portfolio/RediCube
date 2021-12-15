@@ -37,7 +37,7 @@ def FindFirstFace(r):
     bestface = 0
     bestscoreface = 0
     coinDone = []
-    
+
     for i in range(rd.face):
         newface=0
         newscoreface = 0
@@ -87,5 +87,6 @@ def PlaceAllCoins(r,numFace,coinToComplete):
 def ResolveRediCube(n):
     r = CreateRedicubeToResolve(n)
     listface = FindFirstFace(r)
+    r.nbCoup = len(listface)
     r = PlaceAllCoins(r,r.faceprincipal,listface)
     return r

@@ -21,6 +21,7 @@ class RediCube():
         # color code : R for red, W for white, O for orange, Y for yellow, G for green, B for blue
         cube = []
         self.faceprincipal = 0
+        self.nbCoups = 0
         if L == [] :
             for c in listFaceCouleur:
                 cube.append(Face(couleur=c))
@@ -186,8 +187,11 @@ class RediCube():
             else:
                 print('\nhauteur :',Mouv['hauteur'],', numéro de rotation :',Mouv['numero'],', rotation sens anti-horaire')
 
-            time.sleep(1)
+
+
+            #time.sleep(1)
             self.Move(Mouv['hauteur'],Mouv['numero'],sens)
+            print(self)
 
     '''
     Fonction
