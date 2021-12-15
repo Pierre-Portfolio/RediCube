@@ -4,6 +4,7 @@ import pandas as pd
 import random
 import time
 from Face import Face
+import Visualisation as vi
 
 #Constante
 face = 6
@@ -209,3 +210,21 @@ class RediCube():
         numMove = Moves[(Moves['numero de face']==numFace) & (Moves['numero de corner']==numCorner)]['numero'].tolist()[0]
 
         return hauteur,numMove
+
+    def MelangeVisuel(self,nb):
+        for i in range(nb):
+            NumMouv=random.randint(0,7)
+            sens=random.randint(0,1)
+            if sens == 0:
+                sens =-1
+            Mouv=Moves.drop_duplicates(subset=['hauteur','numero']).iloc[NumMouv]
+            if sens == 1:
+                print('\nhauteur :',Mouv['hauteur'],', numéro de rotation: ',Mouv['numero'],', rotation sens horaire')
+            else:
+                print('\nhauteur :',Mouv['hauteur'],', numéro de rotation :',Mouv['numero'],', rotation sens anti-horaire')
+
+
+
+            time.sleep(1)
+            self.Move(Mouv['hauteur'],Mouv['numero'],sens)
+            vi.Visualisation(self)
