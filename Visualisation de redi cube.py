@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #Imports de librairies
-from vpython import * 
+from vpython import *
 import math as m
 import RediCube as rd
 
@@ -105,35 +105,25 @@ def Visualisation(r):
     f0l1c2=pyramid(pos = vector(0,1.5,0),size=vector(0.25,.9,.9),color = Couleur('f0l1c2'))          #VERT  (face haute)
     f0l1c2.rotate(angle=3*m.pi/2,axis=vector(0,0,1))
     f0l1c2.rotate(angle=m.pi/2,axis=vector(0,1,0))
-    
-    a1=vertex(pos=vector(-0.45,.55,0.5))
-    a2=vertex(pos=vector(0.45,.55,0.5))
-    a3=vertex(pos=vector(0,0.1,0.5))
-    tf3l0c2=triangle(v0=a1,v1=a2,v2=a3)
-    
+
+
+
 
     #Constituants de l'arête gauche
     f2l1c2=pyramid(pos = vector(-1.5, 0, 0),size=vector(0.25,.9,.9),color = Couleur('f2l1c2'))     #ROUGE (face gauche)
     f3l1c0=pyramid(pos = vector(-1,0,0.5),size=vector(0.25,.9,.9),color = Couleur('f3l1c0'))          #BLANC (face centrale)
     f3l1c0.rotate(angle=m.pi/2,axis=vector(0,1,0))
-    
-    b1=vertex(pos=vector(-0.55,.45,0.5))
-    b2=vertex(pos=vector(-0.55,-.45,0.5))
-    b3=vertex(pos=vector(-0.1,0,0.5))
-    tf3l1c0=triangle(v0=b1,v1=b2,v2=b3)
-    
+
+
 
     #Constituants de l'arête droite
     f4l1c0=pyramid(pos = vector(1.5, 0, 0),size=vector(0.25,.9,.9),color = Couleur('f4l1c0'))     #ORANGE(face droite)
     f4l1c0.rotate(angle=m.pi,axis=vector(0,1,0))
     f3l1c2=pyramid(pos = vector(1,0,0.5),size=vector(0.25,.9,.9),color = Couleur('f3l1c2'))          #BLANC (face centrale)
     f3l1c2.rotate(angle=m.pi/2,axis=vector(0,1,0))
-    
-    c1=vertex(pos=vector(0.55,.45,0.5))
-    c2=vertex(pos=vector(0.55,-.45,0.5))
-    c3=vertex(pos=vector(0.1,0,0.5))
-    tf3l1c2=triangle(v0=c1,v1=c2,v2=c3)
-    
+
+
+
 
     #Constituants de l'arête basse
     f3l2c1=pyramid(pos = vector(0,-1,0.5),size=vector(0.25,.9,.9),color = Couleur('f3l2c1'))          #BLANC (face centrale)
@@ -141,12 +131,9 @@ def Visualisation(r):
     f5l1c2=pyramid(pos = vector(0,-1.5,0),size=vector(0.25,.9,.9),color = Couleur('f5l1c2'))          #BLEU  (face basse)
     f5l1c2.rotate(angle=m.pi/2,axis=vector(0,0,1))
     f5l1c2.rotate(angle=m.pi/2,axis=vector(0,1,0))
-    
-    d1=vertex(pos=vector(-0.45,-.55,0.5))
-    d2=vertex(pos=vector(0.45,-.55,0.5))
-    d3=vertex(pos=vector(0,-0.1,0.5))
-    tf3l2c1=triangle(v0=d1,v1=d2,v2=d3)
-    
+
+
+
 
     #######################################################################################################################################
     #############################################    FACE ARRIÈRE    ################################################
@@ -158,36 +145,26 @@ def Visualisation(r):
     f0l1c0=pyramid(pos = vector(0,1.5,-2),size=vector(0.25,.9,.9),color = Couleur('f0l1c0'))          #VERT  (face haute)
     f0l1c0.rotate(angle=3*m.pi/2,axis=vector(0,0,1))
     f0l1c0.rotate(angle=m.pi/2,axis=vector(0,1,0))
-    
-    e1=vertex(pos=vector(-0.45,.55,-2.5),color=vector(1,1,0))
-    e2=vertex(pos=vector(0.45,.55,-2.5),color=vector(1,1,0))
-    e3=vertex(pos=vector(0,0.1,-2.5),color=vector(1,1,0))
-    tf1l0c1=triangle(v0=e1,v1=e2,v2=e3)
-    
+
+
+
 
 
     #Constituants de l'arête gauche
     f2l1c0=pyramid(pos = vector(-1.5, 0, -2),size=vector(0.25,.9,.9),color = Couleur('f2l1c0'))     #ROUGE (face gauche)
     f1l1c2=pyramid(pos = vector(-1,0,-2.5),size=vector(0.25,.9,.9),color = Couleur('f1l1c2'))          #JAUNE (face centrale)
     f1l1c2.rotate(angle=-m.pi/2,axis=vector(0,1,0))
-    
-    f1=vertex(pos=vector(-0.55,.45,-2.5),color=vector(1,1,0))
-    f2=vertex(pos=vector(-0.55,-.45,-2.5),color=vector(1,1,0))
-    f3=vertex(pos=vector(-0.1,0,-2.5),color=vector(1,1,0))
-    tf1l1c2=triangle(v0=f1,v1=f2,v2=f3)
-    
+
+
 
     #Constituants de l'arête droite
     f4l1c2=pyramid(pos = vector(1.5, 0, -2),size=vector(0.25,.9,.9),color = Couleur('f4l1c2'))     #ORANGE(face droite)
     f4l1c2.rotate(angle=m.pi,axis=vector(0,1,0))
     f1l1c0=pyramid(pos = vector(1,0,-2.5),size=vector(0.25,.9,.9),color = Couleur('f1l1c0'))          #JAUNE (face centrale)
     f1l1c0.rotate(angle=-m.pi/2,axis=vector(0,1,0))
-    
-    g1=vertex(pos=vector(0.55,.45,-2.5),color=vector(1,1,0))
-    g2=vertex(pos=vector(0.55,-.45,-2.5),color=vector(1,1,0))
-    g3=vertex(pos=vector(0.1,0,-2.5),color=vector(1,1,0))
-    tf1l1c0=triangle(v0=g1,v1=g2,v2=g3)
-    
+
+
+
 
     #Constituants de l'arête basse
     f1l2c1=pyramid(pos = vector(0,-1,-2.5),size=vector(0.25,.9,.9),color = Couleur('f1l2c1'))          #JAUNE (face centrale)
@@ -195,12 +172,8 @@ def Visualisation(r):
     f5l1c0=pyramid(pos = vector(0,-1.5,-2),size=vector(0.25,.9,.9),color = Couleur('f5l1c0'))          #BLEU  (face basse)
     f5l1c0.rotate(angle=m.pi/2,axis=vector(0,0,1))
     f5l1c0.rotate(angle=m.pi/2,axis=vector(0,1,0))
-    
-    h1=vertex(pos=vector(-0.45,-.55,-2.5),color=vector(1,1,0))
-    h2=vertex(pos=vector(0.45,-.55,-2.5),color=vector(1,1,0))
-    h3=vertex(pos=vector(0,-0.1,-2.5),color=vector(1,1,0))
-    tf1l2c1=triangle(v0=h1,v1=h2,v2=h3)
-    
+
+
 
     #######################################################################################################################################
     #############################################       MILIEU      ##################################################
@@ -232,89 +205,130 @@ def Visualisation(r):
 
 
     #Triangles
-    
-    
+
+    a1=vertex(pos=vector(-0.45,.55,0.5),color=Couleur('f3l0c1'))
+    a2=vertex(pos=vector(0.45,.55,0.5),color=Couleur('f3l0c1'))
+    a3=vertex(pos=vector(0,0.1,0.5),color=Couleur('f3l0c1'))
+    tf3l0c1=triangle(v0=a1,v1=a2,v2=a3)
+
+    b1=vertex(pos=vector(-0.55,.45,0.5),color=Couleur('f3l1c0'))
+    b2=vertex(pos=vector(-0.55,-.45,0.5),color=Couleur('f3l1c0'))
+    b3=vertex(pos=vector(-0.1,0,0.5),color=Couleur('f3l1c0'))
+    tf3l1c0=triangle(v0=b1,v1=b2,v2=b3)
+
+
+    c1=vertex(pos=vector(0.55,.45,0.5),color=Couleur('f3l1c2'))
+    c2=vertex(pos=vector(0.55,-.45,0.5),color=Couleur('f3l1c2'))
+    c3=vertex(pos=vector(0.1,0,0.5),color=Couleur('f3l1c2'))
+    tf3l1c2=triangle(v0=c1,v1=c2,v2=c3)
+
+    d1=vertex(pos=vector(-0.45,-.55,0.5),color=Couleur('f3l2c1'))
+    d2=vertex(pos=vector(0.45,-.55,0.5),color=Couleur('f3l2c1'))
+    d3=vertex(pos=vector(0,-0.1,0.5),color=Couleur('f3l2c1'))
+    tf3l2c1=triangle(v0=d1,v1=d2,v2=d3)
+
+    e1=vertex(pos=vector(-0.45,.55,-2.5),color=Couleur('f1l0c1'))
+    e2=vertex(pos=vector(0.45,.55,-2.5),color=Couleur('f1l0c1'))
+    e3=vertex(pos=vector(0,0.1,-2.5),color=Couleur('f1l0c1'))
+    tf1l0c1=triangle(v0=e1,v1=e2,v2=e3)
+
+    f1=vertex(pos=vector(-0.55,.45,-2.5),color=Couleur('f1l1c2'))
+    f2=vertex(pos=vector(-0.55,-.45,-2.5),color=Couleur('f1l1c2'))
+    f3=vertex(pos=vector(-0.1,0,-2.5),color=Couleur('f1l1c2'))
+    tf1l1c2=triangle(v0=f1,v1=f2,v2=f3)
+
+
+    g1=vertex(pos=vector(0.55,.45,-2.5),color=Couleur('f1l1c0'))
+    g2=vertex(pos=vector(0.55,-.45,-2.5),color=Couleur('f1l1c0'))
+    g3=vertex(pos=vector(0.1,0,-2.5),color=Couleur('f1l1c0'))
+    tf1l1c0=triangle(v0=g1,v1=g2,v2=g3)
+
+    h1=vertex(pos=vector(-0.45,-.55,-2.5),color=Couleur('f1l2c1'))
+    h2=vertex(pos=vector(0.45,-.55,-2.5),color=Couleur('f1l2c1'))
+    h3=vertex(pos=vector(0,-0.1,-2.5),color=Couleur('f1l2c1'))
+    tf1l2c1=triangle(v0=h1,v1=h2,v2=h3)
+
+
     #Gauche
-    ga1=vertex(pos=vector(-1.5,.55,-1.45),color=vector(1,0,0))
-    ga2=vertex(pos=vector(-1.5,.55,-0.55),color=vector(1,0,0))
-    ga3=vertex(pos=vector(-1.5,0.1,-1),color=vector(1,0,0))
+    ga1=vertex(pos=vector(-1.5,.55,-1.45),color=Couleur('f2l0c1'))
+    ga2=vertex(pos=vector(-1.5,.55,-0.55),color=Couleur('f2l0c1'))
+    ga3=vertex(pos=vector(-1.5,0.1,-1),color=Couleur('f2l0c1'))
     tf2l0c1=triangle(v0=ga1,v1=ga2,v2=ga3)
-    
-    gba1=vertex(pos=vector(-1.5,-.55,-1.45),color=vector(1,0,0))
-    gba2=vertex(pos=vector(-1.5,-.55,-0.55),color=vector(1,0,0))
-    gba3=vertex(pos=vector(-1.5,-0.1,-1),color=vector(1,0,0))
+
+    gba1=vertex(pos=vector(-1.5,-.55,-1.45),color=Couleur('f2c2c1'))
+    gba2=vertex(pos=vector(-1.5,-.55,-0.55),color=Couleur('f2c2c1'))
+    gba3=vertex(pos=vector(-1.5,-0.1,-1),color=Couleur('f2c2c1'))
     tf2c2c1=triangle(v0=gba1,v1=gba2,v2=gba3)
-    
-    gg1=vertex(pos=vector(-1.5,.45,-1.6),color=vector(1,0,0))
-    gg2=vertex(pos=vector(-1.5,-.45,-1.6),color=vector(1,0,0))
-    gg3=vertex(pos=vector(-1.5,0,-1.1),color=vector(1,0,0))
+
+    gg1=vertex(pos=vector(-1.5,.45,-1.6),color=Couleur('f2l1c0'))
+    gg2=vertex(pos=vector(-1.5,-.45,-1.6),color=Couleur('f2l1c0'))
+    gg3=vertex(pos=vector(-1.5,0,-1.1),color=Couleur('f2l1c0'))
     tf2l1c0=triangle(v0=gg1,v1=gg2,v2=gg3)
-    
-    gd1=vertex(pos=vector(-1.5,.45,-0.4),color=vector(1,0,0))
-    gd2=vertex(pos=vector(-1.5,-.45,-0.4),color=vector(1,0,0))
-    gd3=vertex(pos=vector(-1.5,0,-.9),color=vector(1,0,0))
+
+    gd1=vertex(pos=vector(-1.5,.45,-0.4),color=Couleur('f2l1c2'))
+    gd2=vertex(pos=vector(-1.5,-.45,-0.4),color=Couleur('f2l1c2'))
+    gd3=vertex(pos=vector(-1.5,0,-.9),color=Couleur('f2l1c2'))
     tf2l1c2=triangle(v0=gd1,v1=gd2,v2=gd3)
-    
+
     #Droite
-    da1=vertex(pos=vector(1.5,.55,-1.45),color = vector(1,0.6,0))
-    da2=vertex(pos=vector(1.5,.55,-0.55),color = vector(1,0.6,0))
-    da3=vertex(pos=vector(1.5,0.1,-1),color = vector(1,0.6,0))
+    da1=vertex(pos=vector(1.5,.55,-1.45),color = Couleur('f4l0c1'))
+    da2=vertex(pos=vector(1.5,.55,-0.55),color = Couleur('f4l0c1'))
+    da3=vertex(pos=vector(1.5,0.1,-1),color = Couleur('f4l0c1'))
     tf4l0c1=triangle(v0=da1,v1=da2,v2=da3)
-    
-    dba1=vertex(pos=vector(1.5,-.55,-1.45),color = vector(1,0.6,0))
-    dba2=vertex(pos=vector(1.5,-.55,-0.55),color = vector(1,0.6,0))
-    dba3=vertex(pos=vector(1.5,-0.1,-1),color = vector(1,0.6,0))
+
+    dba1=vertex(pos=vector(1.5,-.55,-1.45),color = Couleur('f4l2c1'))
+    dba2=vertex(pos=vector(1.5,-.55,-0.55),color = Couleur('f4l2c1'))
+    dba3=vertex(pos=vector(1.5,-0.1,-1),color = Couleur('f4l2c1'))
     tf4l2c1=triangle(v0=dba1,v1=dba2,v2=dba3)
-    
-    dg1=vertex(pos=vector(1.5,.45,-1.6),color = vector(1,0.6,0))
-    dg2=vertex(pos=vector(1.5,-.45,-1.6),color = vector(1,0.6,0))
-    dg3=vertex(pos=vector(1.5,0,-1.1),color = vector(1,0.6,0))
+
+    dg1=vertex(pos=vector(1.5,.45,-1.6),color = Couleur('f4l1c2'))
+    dg2=vertex(pos=vector(1.5,-.45,-1.6),color = Couleur('f4l1c2'))
+    dg3=vertex(pos=vector(1.5,0,-1.1),color = Couleur('f4l1c2'))
     tf4l1c2=triangle(v0=dg1,v1=dg2,v2=dg3)
-    
-    dd1=vertex(pos=vector(1.5,.45,-0.4),color = vector(1,0.6,0))
-    dd2=vertex(pos=vector(1.5,-.45,-0.4),color = vector(1,0.6,0))
-    dd3=vertex(pos=vector(1.5,0,-.9),color = vector(1,0.6,0))
+
+    dd1=vertex(pos=vector(1.5,.45,-0.4),color = Couleur('f4l1c0'))
+    dd2=vertex(pos=vector(1.5,-.45,-0.4),color = Couleur('f4l1c0'))
+    dd3=vertex(pos=vector(1.5,0,-.9),color = Couleur('f4l1c0'))
     tf4l1c0=triangle(v0=dd1,v1=dd2,v2=dd3)
-    
+
     #Haut
-    hha1=vertex(pos=vector(-.45,1.5,-1.6),color = vector(0,1,0))
-    hha2=vertex(pos=vector(0.45,1.5,-1.6),color = vector(0,1,0))
-    hha3=vertex(pos=vector(0,1.5,-1.1),color = vector(0,1,0))
+    hha1=vertex(pos=vector(-.45,1.5,-1.6),color = Couleur('f0l1c0'))
+    hha2=vertex(pos=vector(0.45,1.5,-1.6),color = Couleur('f0l1c0'))
+    hha3=vertex(pos=vector(0,1.5,-1.1),color = Couleur('f0l1c0'))
     tf0l1c0=triangle(v0=hha1,v1=hha2,v2=hha3)
-    
-    hba1=vertex(pos=vector(-.45,1.5,-.4),color = vector(0,1,0))
-    hba2=vertex(pos=vector(0.45,1.5,-.4),color = vector(0,1,0))
-    hba3=vertex(pos=vector(0,1.5,-.9),color = vector(0,1,0))
+
+    hba1=vertex(pos=vector(-.45,1.5,-.4),color = Couleur('f0l1c2'))
+    hba2=vertex(pos=vector(0.45,1.5,-.4),color = Couleur('f0l1c2'))
+    hba3=vertex(pos=vector(0,1.5,-.9),color = Couleur('f0l1c2'))
     tf0l1c2=triangle(v0=hba1,v1=hba2,v2=hba3)
-    
-    hga1=vertex(pos=vector(-.55,1.5,-.55),color = vector(0,1,0))
-    hga2=vertex(pos=vector(-.55,1.5,-1.45),color = vector(0,1,0))
-    hga3=vertex(pos=vector(-.1,1.5,-1),color = vector(0,1,0))
+
+    hga1=vertex(pos=vector(-.55,1.5,-.55),color = Couleur('f0l2c1'))
+    hga2=vertex(pos=vector(-.55,1.5,-1.45),color = Couleur('f0l2c1'))
+    hga3=vertex(pos=vector(-.1,1.5,-1),color = Couleur('f0l2c1'))
     tf0l2c1=triangle(v0=hga1,v1=hga2,v2=hga3)
-    
-    hda1=vertex(pos=vector(.55,1.5,-.55),color = vector(0,1,0))
-    hda2=vertex(pos=vector(.55,1.5,-1.45),color = vector(0,1,0))
-    hda3=vertex(pos=vector(.1,1.5,-1),color = vector(0,1,0))
+
+    hda1=vertex(pos=vector(.55,1.5,-.55),color = Couleur('f0l0c1'))
+    hda2=vertex(pos=vector(.55,1.5,-1.45),color = Couleur('f0l0c1'))
+    hda3=vertex(pos=vector(.1,1.5,-1),color = Couleur('f0l0c1'))
     tf0l0c1=triangle(v0=hda1,v1=hda2,v2=hda3)
-    
+
     #Bas
-    bha1=vertex(pos=vector(-.45,-1.5,-1.6),color = vector(0,0,1))
-    bha2=vertex(pos=vector(0.45,-1.5,-1.6),color = vector(0,0,1))
-    bha3=vertex(pos=vector(0,-1.5,-1.1),color = vector(0,0,1))
+    bha1=vertex(pos=vector(-.45,-1.5,-1.6),color = Couleur('f5l1c0'))
+    bha2=vertex(pos=vector(0.45,-1.5,-1.6),color = Couleur('f5l1c0'))
+    bha3=vertex(pos=vector(0,-1.5,-1.1),color = Couleur('f5l1c0'))
     tf5l1c0=triangle(v0=bha1,v1=bha2,v2=bha3)
-    
-    bba1=vertex(pos=vector(-.45,-1.5,-.4),color = vector(0,0,1))
-    bba2=vertex(pos=vector(0.45,-1.5,-.4),color = vector(0,0,1))
-    bba3=vertex(pos=vector(0,-1.5,-.9),color = vector(0,0,1))
+
+    bba1=vertex(pos=vector(-.45,-1.5,-.4),color = Couleur('f5l1c2'))
+    bba2=vertex(pos=vector(0.45,-1.5,-.4),color = Couleur('f5l1c2'))
+    bba3=vertex(pos=vector(0,-1.5,-.9),color = Couleur('f5l1c2'))
     tf5l1c2=triangle(v0=bba1,v1=bba2,v2=bba3)
-    
-    bga1=vertex(pos=vector(-.55,-1.5,-.55),color = vector(0,0,1))
-    bga2=vertex(pos=vector(-.55,-1.5,-1.45),color = vector(0,0,1))
-    bga3=vertex(pos=vector(-.1,-1.5,-1),color = vector(0,0,1))
+
+    bga1=vertex(pos=vector(-.55,-1.5,-.55),color = Couleur('f5l0c1'))
+    bga2=vertex(pos=vector(-.55,-1.5,-1.45),color = Couleur('f5l0c1'))
+    bga3=vertex(pos=vector(-.1,-1.5,-1),color = Couleur('f5l0c1'))
     tf5l0c1=triangle(v0=bga1,v1=bga2,v2=bga3)
-    
-    bda1=vertex(pos=vector(.55,-1.5,-.55),color = vector(0,0,1))
-    bda2=vertex(pos=vector(.55,-1.5,-1.45),color = vector(0,0,1))
-    bda3=vertex(pos=vector(.1,-1.5,-1),color = vector(0,0,1))
+
+    bda1=vertex(pos=vector(.55,-1.5,-.55),color = Couleur('f5l2c1'))
+    bda2=vertex(pos=vector(.55,-1.5,-1.45),color = Couleur('f5l2c1'))
+    bda3=vertex(pos=vector(.1,-1.5,-1),color = Couleur('f5l2c1'))
     tf5l2c1=triangle(v0=bda1,v1=bda2,v2=bda3)
-    
