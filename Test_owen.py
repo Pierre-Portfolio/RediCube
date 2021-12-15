@@ -88,26 +88,28 @@ def FindFirstFace(r):
 
     for f in range(rd.face):
         newface=0
-        newscoreface = 0
-        newcoinDone = []
+
         for l in [0,2]:
             for c in [0,2]:
+                newscoreface = 0
+                newcoinDone = []
                 if r.cube[f].tab[l][c] == r.cube[f].couleur:
                     newscoreface = newscoreface + 1
 
                     if l==0 and c==0:
-                        newcoinDone.append(0)
-                    elif l==0 and c==1:
                         newcoinDone.append(1)
-                    elif l==1 and c==0:
+                    elif l==0 and c==2:
+                        newcoinDone.append(2)
+                    elif l==2 and c==0:
                         newcoinDone.append(3)
                     else:
                         newcoinDone.append(4)
 
 
-        if(newscoreface > bestscoreface):
-            bestface = f
-            bestscoreface = newscoreface
-            coinDone = newcoinDone
+                if(newscoreface > bestscoreface):
+                    bestface = f
+                    bestscoreface = newscoreface
+                    coinDone = [coin for coin in newcoinDone]
     r.faceprincipal = bestface
+    print(coinDone)
     return list(set([1,2,3,4]) - set(coinDone))
