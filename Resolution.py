@@ -85,19 +85,16 @@ List the edges of on face who are note placed
 '''
 def ListNotGoodEdgeOnFace(r,numFace):
     listFailedEdge = []
-    listEdge = [[0,1],[1,0],[1,2],[2,1]]
+    listEdge = [0,[0,1],[1,0],[1,2],[2,1]]
     
     #for each edge
-    for i in range(0,4):
-        
-        if(r.cube[numFace].tab[listEdge[i][0]][listEdge[i][1]] != r.cube[i].couleur):
-            neighbor = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['neighbor']
-        '''    
-            edge = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['edge']
-            print(neighbor)
-            print(edge)
-        '''
-        
+    for i in range(1,5):
+        if(r.cube[numFace].tab[listEdge[i][0]][listEdge[i][1]] != r.cube[numFace].couleur):
+            numFaceNeighbor = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['neighbor'].to_list()
+            numEdge = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['edge'].to_list()
+            #check the edge dependence
+            if(r.cube[numFaceNeighbor].tab[listEdge[numEdge][0]][listEdge[numEdge][1]] != r.cube[numFaceNeighbor].couleur):
+                print("pas bien placé")
     return listFailedEdge
     
 
