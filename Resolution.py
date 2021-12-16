@@ -9,6 +9,8 @@ def ImportCsv(csv):
 
 def ExportCsv(df):
     df.to_csv('csv/DataSet.csv', index=False, sep=',')
+    
+dfNeighbor = ImportCsv('csv/FaceNeighbor.csv')
 
 '''
 Function which generates a redicube from a dataset
@@ -83,17 +85,20 @@ List the edges of on face who are note placed
 '''
 def ListNotGoodEdgeOnFace(r,numFace):
     listFailedEdge = []
+    listEdge = [[0,1],[1,0],[1,2],[2,1]]
     
-    #cas ligne 2
-    if(r.cube[numFace].tab[i][0] == r.cube[numFace].couleur):
+    #for each edge
+    for i in range(0,4):
         
-    else:
+        if(r.cube[numFace].tab[listEdge[i][0]][listEdge[i][1]] != r.cube[i].couleur):
+            neighbor = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['neighbor']
+        '''    
+            edge = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['edge']
+            print(neighbor)
+            print(edge)
+        '''
         
-    if(r.cube[numFace].tab[i][2] == r.cube[numFace].couleur):
-        
-    else:
-                
-    return 0
+    return listFailedEdge
     
 
 '''
