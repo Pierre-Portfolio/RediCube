@@ -3,18 +3,20 @@ import Face as f
 import pandas as pd
 import time
 
-def ImportCsv():
-    df = pd.read_csv('csv/DataSet.csv')
+def ImportCsv(csv):
+    df = pd.read_csv(csv)
     return df;
 
 def ExportCsv(df):
     df.to_csv('csv/DataSet.csv', index=False, sep=',')
+    
+dfNeighbor = ImportCsv('csv/FaceNeighbor.csv')
 
 '''
 Function which generates a redicube from a dataset
 '''
 def CreateRedicubeToResolve(n):
-    df = ImportCsv()
+    df = ImportCsv('csv/DataSet.csv')
     text = df.loc[n].Pos
     listLigne = [text[i:i+3] for i in range(0, len(text), 3)]
     listLigne2 = []
@@ -78,6 +80,35 @@ def PlaceAllCoins(r,numFace,coinToComplete):
             r.Move(hauteur,numMove,-1)
     return r;
 
+'''
+List the edges of on face who are note placed
+'''
+def ListNotGoodEdgeOnFace(r,numFace):
+    listFailedEdge = []
+    listEdge = [0,[0,1],[1,0],[1,2],[2,1]]
+    
+    #for each edge
+    for i in range(1,5):
+        #ce if ici a besoin d'etre reparer il accepte jamais la egde 4
+        if(r.cube[numFace].tab[listEdge[i][0]][listEdge[i][1]] != r.cube[numFace].couleur):
+            print(i)   
+            numFaceNeighbor = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['neighbor'].to_list()
+            numEdge = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['edge'].to_list()
+            #check the edge dependence
+            if(r.cube[numFaceNeighbor[0]].tab[listEdge[numEdge[0]][0]][listEdge[numEdge[0]][1]] != r.cube[numFaceNeighbor[0]].couleur):
+                listFailedEdge.append(i)     
+    return listFailedEdge
+    
+
+'''
+To place the first courone
+'''
+def FirstCouronne():
+    return 0
+
+'''
+global function which resolve one redicube
+'''
 def ResolveRediCube(n):
     r = CreateRedicubeToResolve(n)
     listCoin = FindlistCoin(r)
