@@ -3,8 +3,8 @@ import Face as f
 import pandas as pd
 import time
 
-def ImportCsv():
-    df = pd.read_csv('csv/DataSet.csv')
+def ImportCsv(csv):
+    df = pd.read_csv(csv)
     return df;
 
 def ExportCsv(df):
@@ -14,7 +14,7 @@ def ExportCsv(df):
 Function which generates a redicube from a dataset
 '''
 def CreateRedicubeToResolve(n):
-    df = ImportCsv()
+    df = ImportCsv('csv/DataSet.csv')
     text = df.loc[n].Pos
     listLigne = [text[i:i+3] for i in range(0, len(text), 3)]
     listLigne2 = []
@@ -78,6 +78,33 @@ def PlaceAllCoins(r,numFace,coinToComplete):
             r.Move(hauteur,numMove,-1)
     return r;
 
+'''
+List the edges of on face who are note placed
+'''
+def ListNotGoodEdgeOnFace(r,numFace):
+    listFailedEdge = []
+    
+    #cas ligne 2
+    if(r.cube[numFace].tab[i][0] == r.cube[numFace].couleur):
+        
+    else:
+        
+    if(r.cube[numFace].tab[i][2] == r.cube[numFace].couleur):
+        
+    else:
+                
+    return 0
+    
+
+'''
+To place the first courone
+'''
+def FirstCouronne():
+    return 0
+
+'''
+global function which resolve one redicube
+'''
 def ResolveRediCube(n):
     r = CreateRedicubeToResolve(n)
     listCoin = FindlistCoin(r)
