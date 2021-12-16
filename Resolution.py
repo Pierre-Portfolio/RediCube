@@ -89,12 +89,14 @@ def ListNotGoodEdgeOnFace(r,numFace):
     
     #for each edge
     for i in range(1,5):
+        #ce if ici a besoin d'etre reparer il accepte jamais la egde 4
         if(r.cube[numFace].tab[listEdge[i][0]][listEdge[i][1]] != r.cube[numFace].couleur):
+            print(i)   
             numFaceNeighbor = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['neighbor'].to_list()
             numEdge = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['edge'].to_list()
             #check the edge dependence
-            if(r.cube[numFaceNeighbor].tab[listEdge[numEdge][0]][listEdge[numEdge][1]] != r.cube[numFaceNeighbor].couleur):
-                print("pas bien placé")
+            if(r.cube[numFaceNeighbor[0]].tab[listEdge[numEdge[0]][0]][listEdge[numEdge[0]][1]] != r.cube[numFaceNeighbor[0]].couleur):
+                listFailedEdge.append(i)     
     return listFailedEdge
     
 
