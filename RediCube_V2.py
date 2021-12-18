@@ -3,8 +3,9 @@ import pandas as pd
 import random as rd
 import time
 from Face import Face
+import Visualisation as vi
 
-Moves=pd.read_csv('Moves.csv',sep=';')
+Moves=pd.read_csv('csv/Moves_V2.csv',sep=';')
 
 class RediCube():
     def __init__(self,L=[]):

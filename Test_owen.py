@@ -165,7 +165,9 @@ def BestCoup3(r):
     print("--- %s seconds ---" % (time.time() - start_time))
     return List_Coups
 
-#def Jouer(r):
+def Play_moves(r,M):
+    for i in range(len(M)-1):
+        r.Move(M[i]['hauteur'],M[i]['num'],M[i]['sens'])
 
 
 ##ERREUR, fini par bloquer, cycle sans fin, répétition de coups
