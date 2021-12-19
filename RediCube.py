@@ -11,6 +11,8 @@ face = 6
 listFaceCouleur = ['G','Y','R','W','O','B']
 
 Moves=pd.read_csv('csv/Moves.csv',sep=';')
+correction_moves = pd.read_csv('csv/Correction_moves.csv',sep=';')
+
 
 '''
 Redicube : liste de Face, redicube => .cube, face=> .tab
@@ -136,7 +138,7 @@ class RediCube():
     parametres: numéro de chaque face(3), et numéro de chaque angle(3) concerné, sens de rotation
     Fonction qui ne renvoie rien, effectue le mouvement du RediCube, self.cube est modifié
     '''
-    def RotationCorners(self,numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,sens):
+    def RotationCorners(self,numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,hauteur,num,sens):
         sommet1,arreteHori1,arreteVert1 = self.CornerCoordonnees(numFace1,numCorner1)
         sommet2,arreteHori2,arreteVert2 = self.CornerCoordonnees(numFace2,numCorner2)
         sommet3,arreteHori3,arreteVert3 = self.CornerCoordonnees(numFace3,numCorner3)
@@ -158,6 +160,21 @@ class RediCube():
             self.cube[numFace1].tab[arreteHori1[0]][arreteHori1[1]],self.cube[numFace1].tab[arreteVert1[0]][arreteVert1[1]],self.cube[numFace2].tab[arreteHori2[0]][arreteHori2[1]],self.cube[numFace2].tab[arreteVert2[0]][arreteVert2[1]],self.cube[numFace3].tab[arreteHori3[0]][arreteHori3[1]],self.cube[numFace3].tab[arreteVert3[0]][arreteVert3[1]] = self.cube[numFace2].tab[arreteVert2[0]][arreteVert2[1]],self.cube[numFace2].tab[arreteHori2[0]][arreteHori2[1]],self.cube[numFace3].tab[arreteVert3[0]][arreteVert3[1]],self.cube[numFace3].tab[arreteHori3[0]][arreteHori3[1]],self.cube[numFace1].tab[arreteVert1[0]][arreteVert1[1]],self.cube[numFace1].tab[arreteHori1[0]][arreteHori1[1]]
 
 
+        ###CORRECTION###
+        #inversion arretes horizontale et verticale sur une face pour chaque mouvement
+        numFaceCorrection = correction_moves[(correction_moves['hauteur']==hauteur) & (correction_moves['numero']==num) & (correction_moves['sens']==sens)]['numero de face'].to_list()[0]
+
+        if numFaceCorrection == numFace1:
+            r.InversionArretes(numFace1,arreteHori1,arreteVert1)
+        elif numFaceCorrection == numFace2:
+            r.InversionArretes(numFace2,arreteHori2,arreteVert2)
+        else:
+            r.InversionArretes(numFace3,arreteHori3,arreteVert3)
+
+
+    def InversionArretes(self,numFace,arreteHori,arreteVert):
+        self.cube[numFace].tab[arreteHori[0]][arreteHori[1]],self.cube[numFace].tab[arreteVert[0]][arreteVert[1]] = self.cube[numFace].tab[arreteVert[0]][arreteVert[1]],self.cube[numFace].tab[arreteHori[0]][arreteHori[1]]
+
     '''
     Fonction qui effectue une rotation du RediCube
     parametres: hauteur du mouvement(up,down), numéro du mouvement(1:4), sens(1:horaire, -1:anti-horaire)
@@ -169,7 +186,7 @@ class RediCube():
         [numFace1,numFace2,numFace3] = Moves[(Moves['hauteur']==hauteur) & (Moves['numero']==num)]['numero de face'].to_list()
         [numCorner1,numCorner2,numCorner3] = Moves[(Moves['hauteur']==hauteur) & (Moves['numero']==num)]['numero de corner'].to_list()
 
-        self.RotationCorners(numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,sens)
+        self.RotationCorners(numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,hauteur,num,sens)
 
 
     '''
