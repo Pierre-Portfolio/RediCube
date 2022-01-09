@@ -165,11 +165,11 @@ class RediCube():
         numFaceCorrection = correction_moves[(correction_moves['hauteur']==hauteur) & (correction_moves['numero']==num) & (correction_moves['sens']==sens)]['numero de face'].to_list()[0]
 
         if numFaceCorrection == numFace1:
-            r.InversionArretes(numFace1,arreteHori1,arreteVert1)
+            self.InversionArretes(numFace1,arreteHori1,arreteVert1)
         elif numFaceCorrection == numFace2:
-            r.InversionArretes(numFace2,arreteHori2,arreteVert2)
+            self.InversionArretes(numFace2,arreteHori2,arreteVert2)
         else:
-            r.InversionArretes(numFace3,arreteHori3,arreteVert3)
+            self.InversionArretes(numFace3,arreteHori3,arreteVert3)
 
 
     def InversionArretes(self,numFace,arreteHori,arreteVert):
