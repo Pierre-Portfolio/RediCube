@@ -229,6 +229,7 @@ class RediCube():
         return hauteur,numMove
 
     def MelangeVisuel(self,nb):
+        vi.Visualisation(self)
         for i in range(nb):
             NumMouv=random.randint(0,7)
             sens=random.randint(0,1)
@@ -242,6 +243,7 @@ class RediCube():
 
 
 
-            time.sleep(1)
+            #time.sleep(1)
+            input('\nappuyer sur entrée\n')
             self.Move(Mouv['hauteur'],Mouv['numero'],sens)
             vi.Visualisation(self)
