@@ -209,7 +209,7 @@ class RediCube():
 
             #time.sleep(1)
             self.Move(Mouv['hauteur'],Mouv['numero'],sens)
-            print(self)
+            #print(self)
 
     '''
     Fonction
