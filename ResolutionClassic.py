@@ -83,22 +83,22 @@ def PlaceAllCoins(r,numFace,coinToComplete):
 '''
 List the edges of on face who are note placed
 '''
-def ListNotGoodEdgeOnFace(r,numFace):
-    listFailedEdge = []
+def ListBadEdgeOnFace(r,numFace):
     listEdge = [0,[0,1],[1,0],[1,2],[2,1]]
+    edgeDone = []
     
     #for each edge
     for i in range(1,5):
-        #ce if ici a besoin d'etre reparer il accepte jamais la egde 4
-        if(r.cube[numFace].tab[listEdge[i][0]][listEdge[i][1]] != r.cube[numFace].couleur):
-            print(i)   
+        if(r.cube[numFace].tab[listEdge[i][0]][listEdge[i][1]] == r.cube[numFace].couleur):
+            #Save the numface and the edge
             numFaceNeighbor = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['neighbor'].to_list()
             numEdge = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['edge'].to_list()
+            
             #check the edge dependence
-            if(r.cube[numFaceNeighbor[0]].tab[listEdge[numEdge[0]][0]][listEdge[numEdge[0]][1]] != r.cube[numFaceNeighbor[0]].couleur):
-                listFailedEdge.append(i)     
-    return listFailedEdge
-    
+            if(r.cube[ numFaceNeighbor[0] ].tab[ listEdge[numEdge[0]][0] ][ listEdge[numEdge[0]][1] ] == r.cube[numFaceNeighbor[0]].couleur):
+                edgeDone.append(i)   
+                
+    return list(set([1,2,3,4]) - set(edgeDone))
 
 '''
 To place the first courone
@@ -111,7 +111,11 @@ global function which resolve one redicube
 '''
 def ResolveRediCube(n):
     r = CreateRedicubeToResolve(n)
-    listCoin = FindBadCoin(r)
-    r.nbCoup = len(listCoin)
-    r = PlaceAllCoins(r,r.faceprincipal,listCoin)
+    listBadCoin = FindBadCoin(r)
+    
+    r.nbCoup = len(listBadCoin)
+    r = PlaceAllCoins(r,r.faceprincipal,listBadCoin)
+    
+    listBadEdge = ListBadEdgeOnFace(r, r.faceprincipal)
+    print(listBadEdge)
     return r
