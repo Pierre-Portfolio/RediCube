@@ -3,12 +3,6 @@ import Face as f
 import pandas as pd
 import time
 
-def ImportCsv():
-    df = pd.read_csv('csv/DataSet.csv')
-    return df;
-
-def ExportCsv(df):
-    df.to_csv('csv/DataSet.csv', index=False, sep=',')
 
 def FindRedicubeToResolve(n):
     df = ImportCsv()
@@ -29,6 +23,7 @@ def FindRedicubeToResolve(n):
 
     return rd.RediCube(listFace)
 
+#1 pour chaque piece de la bonne couleur
 def Cout(r):
     rd_resolu = rd.RediCube()
     res=0
@@ -40,6 +35,7 @@ def Cout(r):
 
     return res
 
+#2 points pour les sommets
 def Cout2(r):
     rd_resolu = rd.RediCube()
     res=0
@@ -53,6 +49,24 @@ def Cout2(r):
                         res+=1
 
     return res
+
+def Cout3(r):
+    Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
+    rd_resolu = rd.RediCube()
+    res=0
+    for index,row in Aretes.iterrows():
+        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
+            res+=1
+
+    Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
+    for index,row in Sommets.iterrows():
+        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
+            res+=1
+
+    return res
+
+
+
 
 def BestCoup(r):
     List_Coups=[]
@@ -78,6 +92,7 @@ def BestCoup2(r):
     List_Coups=sorted(List_Coups, key=lambda x: x[1], reverse = True)
     return List_Coups
 
+#Arbre profondeur 4
 def BestCoup3(r):
     start_time = time.time()
 
