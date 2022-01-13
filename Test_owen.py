@@ -50,7 +50,7 @@ def Cout2(r):
 
     return res
 
-def Cout3(r):
+def Cout4(r):
     Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
     rd_resolu = rd.RediCube()
     res=0
@@ -92,7 +92,8 @@ def BestCoup2(r):
     List_Coups=sorted(List_Coups, key=lambda x: x[1], reverse = True)
     return List_Coups
 
-#Arbre profondeur 4
+##Arbre profondeur 4
+#Fonctionne avec cout 2
 def BestCoup3(r):
     start_time = time.time()
 
@@ -179,6 +180,96 @@ def BestCoup3(r):
     List_Coups=sorted(List_Coups, key=lambda x: x[-1], reverse = True)
     print("--- %s seconds ---" % (time.time() - start_time))
     return List_Coups
+
+#Focntionne avec Cout4
+def BestCoup4(r):
+    start_time = time.time()
+
+    List_Coups=[]
+    L=[]
+    for hauteur1 in ('up','down'):
+        print('HAUTEUR',hauteur1)
+        for num1 in range(1,5):
+            print('NUMERO',str(num1))
+            for sens1 in (1,-1):
+                L=[]
+                print('SENS')
+                copy_r = r.Copy()
+                L1=[]
+                copy_r.Move(hauteur1,num1,sens1)
+                L1.append({'hauteur':hauteur1,'num':num1,'sens':sens1})
+
+                if Cout4(copy_r) == 78:
+                    L.extend(L1)
+                    L.append(Cout4(copy_r))
+                    List_Coups.append(L)
+                    break
+                for hauteur2 in ('up','down'):
+                    for num2 in range(1,5):
+                        for sens2 in (1,-1):
+                            copy_r = r.Copy()
+                            copy_r.Move(L1[0]['hauteur'],L1[0]['num'],L1[0]['sens'])
+
+                            copy_r.Move(hauteur2,num2,sens2)
+                            L2=[]
+                            L2.append({'hauteur':hauteur2,'num':num2,'sens':sens2})
+
+                            if Cout4(copy_r) == 78:
+                                L.extend(L1)
+                                L.extend(L2)
+                                L.append(Cout4(copy_r))
+                                List_Coups.append(L)
+                                break
+
+                            for hauteur3 in ('up','down'):
+                                for num3 in range(1,5):
+                                    for sens3 in (1,-1):
+                                        copy_r = r.Copy()
+                                        copy_r.Move(L1[0]['hauteur'],L1[0]['num'],L1[0]['sens'])
+                                        copy_r.Move(L2[0]['hauteur'],L2[0]['num'],L2[0]['sens'])
+
+                                        copy_r.Move(hauteur3,num3,sens3)
+                                        L3=[]
+                                        L3.append({'hauteur':hauteur3,'num':num3,'sens':sens3})
+
+                                        if Cout4(copy_r) == 78:
+                                            L.extend(L1)
+                                            L.extend(L2)
+                                            L.extend(L3)
+                                            L.append(Cout4(copy_r))
+                                            List_Coups.append(L)
+                                            break
+
+                                        for hauteur4 in ('up','down'):
+                                            for num4 in range(1,5):
+                                                for sens4 in (1,-1):
+                                                    L=[]
+                                                    copy_r = r.Copy()
+                                                    copy_r.Move(L1[0]['hauteur'],L1[0]['num'],L1[0]['sens'])
+                                                    copy_r.Move(L2[0]['hauteur'],L2[0]['num'],L2[0]['sens'])
+                                                    copy_r.Move(L3[0]['hauteur'],L3[0]['num'],L3[0]['sens'])
+
+                                                    L4=[]
+                                                    copy_r.Move(hauteur4,num4,sens4)
+                                                    L4.append({'hauteur':hauteur4,'num':num4,'sens':sens4})
+
+                                                    L.extend(L1)
+                                                    L.extend(L2)
+                                                    L.extend(L3)
+                                                    L.extend(L4)
+                                                    L.append(Cout4(copy_r))
+
+                                                    List_Coups.append(L)
+
+
+
+
+
+    List_Coups=sorted(List_Coups, key=lambda x: x[-1], reverse = True)
+    print("--- %s seconds ---" % (time.time() - start_time))
+    return List_Coups
+
+
 
 def Play_moves(r,M):
     for i in range(len(M)-1):
