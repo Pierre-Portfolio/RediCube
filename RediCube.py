@@ -53,19 +53,6 @@ class RediCube():
         l0=self.cube[0].__str__()
         res+=l0[0:3] + '\n     ' + l0[4:7] + '\n     ' + l0[8:11]
 
-        '''
-        r1=self.Copy()
-        r1.cube[1].tab=np.array(r1.cube[1].tab)#matrice
-        r1.cube[1].tab=r1.cube[1].tab.T#transposee matrice
-        r1.cube[1].tab=np.fliplr(r1.cube[1].tab)#inversion 1ere et derniere ligne
-
-
-        r3=self.Copy()
-        r3.cube[3].tab=np.array(r3.cube[3].tab)
-        r3.cube[3].tab=r3.cube[3].tab.T
-        r3.cube[3].tab=np.flipud(r3.cube[3].tab)#inversion 1ere et derniere colonne
-        '''
-
         l1 = self.cube[1].__str__()[0:3] + '  ' + self.cube[2].__str__()[0:3] + '  ' + self.cube[3].__str__()[0:3] + '  ' + self.cube[4].__str__()[0:3] + '  '
         l2 = self.cube[1].__str__()[4:7] + '  ' + self.cube[2].__str__()[4:7] + '  ' + self.cube[3].__str__()[4:7] + '  ' + self.cube[4].__str__()[4:7] + '  '
         l3 = self.cube[1].__str__()[8:11] + '  ' + self.cube[2].__str__()[8:11] + '  ' + self.cube[3].__str__()[8:11] + '  ' + self.cube[4].__str__()[8:11] + '  '

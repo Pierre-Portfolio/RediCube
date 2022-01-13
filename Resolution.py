@@ -33,9 +33,9 @@ def CreateRedicubeToResolve(n):
     return rd.RediCube(listFace)
 
 '''
-Find the best face for starting the resolve of redicube
+Find the best face for starting the resolve of redicube & send list of bad coin
 '''
-def FindlistCoin(r):
+def FindBadCoin(r):
     bestface = 0
     bestscoreface = 0
     coinDone = []
@@ -111,7 +111,7 @@ global function which resolve one redicube
 '''
 def ResolveRediCube(n):
     r = CreateRedicubeToResolve(n)
-    listCoin = FindlistCoin(r)
+    listCoin = FindBadCoin(r)
     r.nbCoup = len(listCoin)
     r = PlaceAllCoins(r,r.faceprincipal,listCoin)
     return r
