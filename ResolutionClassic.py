@@ -125,7 +125,9 @@ def SearchPiece(r, facePiece, position):
             break
         else:
             print('pas trouvé')
-    return piecetrouver 
+            
+    #return the position of the edge + neighbor
+    return [dfNeighbor['face'][i], dfNeighbor['direction'][i], dfNeighbor['neighbor'][i], dfNeighbor['edge'][i]] 
 
 '''
 Place the piece at this place
