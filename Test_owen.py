@@ -3,6 +3,9 @@ import Face as f
 import pandas as pd
 import time
 
+Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
+Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
+
 
 def FindRedicubeToResolve(n):
     df = ImportCsv()
@@ -51,14 +54,12 @@ def Cout2(r):
     return res
 
 def Cout4(r):
-    Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
     rd_resolu = rd.RediCube()
     res=0
     for index,row in Aretes.iterrows():
         if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
             res+=1
 
-    Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
     for index,row in Sommets.iterrows():
         if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
             res+=1
@@ -199,7 +200,7 @@ def BestCoup4(r):
                 copy_r.Move(hauteur1,num1,sens1)
                 L1.append({'hauteur':hauteur1,'num':num1,'sens':sens1})
 
-                if Cout4(copy_r) == 78:
+                if Cout4(copy_r) == 20:
                     L.extend(L1)
                     L.append(Cout4(copy_r))
                     List_Coups.append(L)
@@ -214,7 +215,7 @@ def BestCoup4(r):
                             L2=[]
                             L2.append({'hauteur':hauteur2,'num':num2,'sens':sens2})
 
-                            if Cout4(copy_r) == 78:
+                            if Cout4(copy_r) == 20:
                                 L.extend(L1)
                                 L.extend(L2)
                                 L.append(Cout4(copy_r))
@@ -232,7 +233,7 @@ def BestCoup4(r):
                                         L3=[]
                                         L3.append({'hauteur':hauteur3,'num':num3,'sens':sens3})
 
-                                        if Cout4(copy_r) == 78:
+                                        if Cout4(copy_r) == 20:
                                             L.extend(L1)
                                             L.extend(L2)
                                             L.extend(L3)
@@ -269,6 +270,124 @@ def BestCoup4(r):
     print("--- %s seconds ---" % (time.time() - start_time))
     return List_Coups
 
+##Arbre, parcours en profondeur, Trop d'appels
+def BestCoup5(r,L=[],n=0):
+    if Cout4(r) == 20:
+        print('REDI FAIT!')
+        return L,n
+
+    #elif n==5:
+        #print('5 coups atteints')
+    else:
+        for hauteur in ('up','down'):
+            for num in range(1,5):
+                for sens in (1,-1):
+                    print({'hauteur':hauteur,'num':num,'sens':sens})
+                    L2=[i for i in L]
+                    n2=n+1
+                    copy_r = r.Copy()
+                    copy_r.Move(hauteur,num,sens)
+                    #print(Cout4(copy_r))
+                    L2.append({'hauteur':hauteur,'num':num,'sens':sens})
+                    return BestCoup5(copy_r,L2,n2)
+
+##Arbre, parcours en largeur
+def BestCoup6(r,L=[]):
+    start_time = time.time()
+
+    file=[]
+    file.append([r,L])
+
+    while Cout4(file[0][0]) != 20:
+        #print(Cout4(file[0]))
+        node = file.pop(0)
+
+        for hauteur in ('up','down'):
+            for num in range(1,5):
+                for sens in (1,-1):
+                    L2=[i for i in node[1]]
+                    copy_r = node[0].Copy()
+                    copy_r.Move(hauteur,num,sens)
+                    L2.append({'hauteur':hauteur,'num':num,'sens':sens})
+                    #print({'hauteur':hauteur,'num':num,'sens':sens})
+                    file.append([copy_r,L2])
+
+
+    print('Redi FAIT')
+    print(Cout4(file[0][0]))
+    print(file[0][0])
+    print(file[0][1])
+    print("--- %s seconds ---" % (time.time() - start_time))
+
+##Arbre, parcours en largeur, elagage //2
+def BestCoup7(r,L=[]):
+    start_time = time.time()
+
+    file=[]
+    file.append([r,L,Cout4(r)])
+
+    while Cout4(file[0][0]) != 20:
+        #print(Cout4(file[0]))
+        node = file.pop(0)
+
+        Ltemp=[]
+        for hauteur in ('up','down'):
+            for num in range(1,5):
+                for sens in (1,-1):
+                    L2=[i for i in node[1]]
+                    copy_r = node[0].Copy()
+                    copy_r.Move(hauteur,num,sens)
+                    L2.append({'hauteur':hauteur,'num':num,'sens':sens})
+                    #print({'hauteur':hauteur,'num':num,'sens':sens})
+                    Ltemp.append([copy_r,L2,Cout4(copy_r)])
+
+        #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
+        Ltemp=sorted(Ltemp, key=lambda x: x[2], reverse = True)
+        Ltemp=Ltemp[:4]
+        #print(Ltemp)
+        file.extend(Ltemp)
+
+
+    print('Redi FAIT')
+    print(Cout4(file[0][0]))
+    print(file[0][0])
+    print(file[0][1])
+    print("--- %s seconds ---" % (time.time() - start_time))
+
+##Arbre, parcours en largeur, elagage
+def BestCoup8(r,L=[]):
+    start_time = time.time()
+
+    file=[]
+    file.append([r,L,Cout4(r)])
+
+    while Cout4(file[0][0]) != 20:
+        #print(Cout4(file[0]))
+        node = file.pop(0)
+
+        Ltemp=[]
+        for hauteur in ('up','down'):
+            for num in range(1,5):
+                for sens in (1,-1):
+                    L2=[i for i in node[1]]
+                    copy_r = node[0].Copy()
+                    copy_r.Move(hauteur,num,sens)
+                    L2.append({'hauteur':hauteur,'num':num,'sens':sens})
+                    #print({'hauteur':hauteur,'num':num,'sens':sens})
+                    Ltemp.append([copy_r,L2,Cout4(copy_r)])
+
+        #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
+        Ltemp=sorted(Ltemp, key=lambda x: x[2], reverse = True)
+        Ltemp=[i for i in Ltemp if i[2]>(Cout4(node[0])-2)]
+        #print(Ltemp)
+        file.extend(Ltemp)
+
+
+    print('Redi FAIT')
+    print(Cout4(file[0][0]))
+    print(file[0][0])
+    print(file[0][1])
+    print("--- %s seconds ---" % (time.time() - start_time))
 
 
 def Play_moves(r,M):
