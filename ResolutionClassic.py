@@ -121,10 +121,8 @@ def SearchPiece(r, facePiece, position):
         
         if( (actualColorEdge == ColorEdge or actualColorEdge == ColorEdgeNeighbor) & (actualColorNeighbor == ColorEdge or actualColorNeighbor == ColorEdgeNeighbor)):
             piecetrouver = True
-            print('trouvé bon edge : ' + str(dfNeighbor['face'][i]) + ' neighbor ' + str(dfNeighbor['direction'][i]) )
+            #print('trouvé bon edge : ' + str(dfNeighbor['face'][i]) + ' neighbor ' + str(dfNeighbor['direction'][i]) )
             break
-        else:
-            print('pas trouvé')
             
     #return the position of the edge + neighbor
     return [dfNeighbor['face'][i], dfNeighbor['direction'][i], dfNeighbor['neighbor'][i], dfNeighbor['edge'][i]] 
