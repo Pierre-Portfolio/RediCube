@@ -224,9 +224,16 @@ class RediCube():
 
     def MelangeVisuel(self,nb):
         vi.Visualisation(self)
+        (NumMouv0,sens0) = (-1,2)
         for i in range(nb):
             NumMouv=random.randint(0,7)
             sens=random.randint(0,1)
+            while (NumMouv==NumMouv0) and (sens!=sens0):
+                NumMouv=random.randint(0,7)
+                sens=random.randint(0,1)
+
+            (NumMouv0,sens0) = (NumMouv,sens)
+
             if sens == 0:
                 sens =-1
             Mouv=Moves.drop_duplicates(subset=['hauteur','numero']).iloc[NumMouv]
