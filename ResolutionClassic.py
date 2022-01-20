@@ -12,6 +12,9 @@ def ExportCsv(df):
     
 dfNeighbor = ImportCsv('csv/FaceNeighbor.csv')
 
+#Constante
+listEdge = [0,[0,1],[1,0],[1,2],[2,1]]
+
 '''
 Function which generates a redicube from a dataset
 '''
@@ -84,7 +87,6 @@ def PlaceAllCoins(r,numFace,coinToComplete):
 List the edges of on face who are note placed
 '''
 def ListBadEdgeOnFace(r,numFace):
-    listEdge = [0,[0,1],[1,0],[1,2],[2,1]]
     edgeDone = []
     
     #for each edge
@@ -99,6 +101,37 @@ def ListBadEdgeOnFace(r,numFace):
                 edgeDone.append(i)   
                 
     return list(set([1,2,3,4]) - set(edgeDone))
+
+'''
+Search the piece on the RediCube
+'''
+def SearchPiece(r, facePiece, position):
+    piecetrouver = False
+    ColornbEdge = facePiece
+    ColorEdge = rd.listFaceCouleur[ColornbEdge]
+    
+    ColorNbEdgeNeighbor = dfNeighbor[(dfNeighbor['face']==facePiece) & (dfNeighbor['direction']==position)]['edge'].to_list()[0]
+    ColorEdgeNeighbor = rd.listFaceCouleur[ColorNbEdgeNeighbor]
+    
+    for i in dfNeighbor.index: 
+        #color of the edge
+        actualColorEdge = r.cube[dfNeighbor['neighbor'][i]].tab[listEdge[dfNeighbor['edge'][i]][0]] [listEdge[dfNeighbor['edge'][i]][1]]
+        actualColorNeighbor = r.cube[dfNeighbor['face'][i]].tab[listEdge[dfNeighbor['direction'][i]][0]] [listEdge[dfNeighbor['direction'][i]][1]]
+        
+        
+        if( (actualColorEdge == ColorEdge or actualColorEdge == ColorEdgeNeighbor) & (actualColorNeighbor == ColorEdge or actualColorNeighbor == ColorEdgeNeighbor)):
+            piecetrouver = True
+            print('trouvé bon edge : ' + str(dfNeighbor['face'][i]) + ' neighbor ' + str(dfNeighbor['direction'][i]) )
+            break
+        else:
+            print('pas trouvé')
+    return piecetrouver 
+
+'''
+Place the piece at this place
+'''
+def PlaceEdge():
+    return 0
 
 '''
 To place the first courone
