@@ -319,12 +319,12 @@ def BestCoup6(r,L=[]):
     print(file[0][1])
     print("--- %s seconds ---" % (time.time() - start_time))
 
-##Arbre, parcours en largeur, elagage //2
-def BestCoup7(r,L=[]):
+##Arbre, parcours en largeur, elagage top n (cout)
+def BestCoup7(r,n):
     start_time = time.time()
 
     file=[]
-    file.append([r,L,Cout4(r)])
+    file.append([r,[],Cout4(r)])
 
     while Cout4(file[0][0]) != 20:
         #print(Cout4(file[0]))
@@ -343,7 +343,7 @@ def BestCoup7(r,L=[]):
 
         #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
         Ltemp=sorted(Ltemp, key=lambda x: x[2], reverse = True)
-        Ltemp=Ltemp[:4]
+        Ltemp=Ltemp[:n]
         #print(Ltemp)
         file.extend(Ltemp)
 
@@ -354,12 +354,12 @@ def BestCoup7(r,L=[]):
     print(file[0][1])
     print("--- %s seconds ---" % (time.time() - start_time))
 
-##Arbre, parcours en largeur, elagage
-def BestCoup8(r,L=[]):
+##Arbre, parcours en largeur, elagage palier n de difference de cout avec le rd d'origine
+def BestCoup8(r,n):
     start_time = time.time()
 
     file=[]
-    file.append([r,L,Cout4(r)])
+    file.append([r,[],Cout4(r)])
 
     while Cout4(file[0][0]) != 20:
         #print(Cout4(file[0]))
@@ -378,7 +378,7 @@ def BestCoup8(r,L=[]):
 
         #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
         Ltemp=sorted(Ltemp, key=lambda x: x[2], reverse = True)
-        Ltemp=[i for i in Ltemp if i[2]>(Cout4(node[0])-2)]
+        Ltemp=[i for i in Ltemp if i[2]>=(Cout4(node[0])-n)]
         #print(Ltemp)
         file.extend(Ltemp)
 
@@ -394,39 +394,3 @@ def Play_moves(r,M):
     for i in range(len(M)-1):
         r.Move(M[i]['hauteur'],M[i]['num'],M[i]['sens'])
 
-
-##ERREUR, fini par bloquer, cycle sans fin, répétition de coups
-
-
-def FindFirstFace(r):
-    bestface = 0
-    bestscoreface = 0
-    coinDone = []
-
-    for f in range(rd.face):
-        newface=0
-
-        for l in [0,2]:
-            for c in [0,2]:
-                newscoreface = 0
-                newcoinDone = []
-                if r.cube[f].tab[l][c] == r.cube[f].couleur:
-                    newscoreface = newscoreface + 1
-
-                    if l==0 and c==0:
-                        newcoinDone.append(1)
-                    elif l==0 and c==2:
-                        newcoinDone.append(2)
-                    elif l==2 and c==0:
-                        newcoinDone.append(3)
-                    else:
-                        newcoinDone.append(4)
-
-
-                if(newscoreface > bestscoreface):
-                    bestface = f
-                    bestscoreface = newscoreface
-                    coinDone = [coin for coin in newcoinDone]
-    r.faceprincipal = bestface
-    print(coinDone)
-    return list(set([1,2,3,4]) - set(coinDone))
