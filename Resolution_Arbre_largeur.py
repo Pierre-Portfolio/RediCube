@@ -3,6 +3,7 @@ import Face as f
 import pandas as pd
 import time
 pd.set_option('display.max_columns', 10)
+import multiprocessing
 
 Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
 Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
@@ -24,10 +25,12 @@ def Cout(r):
 def Resolution_Arbre(r):
     start_time = time.time()
 
+    compteur=0
     file=[]
     file.append([r,[]])
 
-    while Cout(file[0][0]) != 20:
+    while Cout(file[0][0]) != 20 and compteur<6000:
+        compteur+1
         #print(Cout(file[0]))
         node = file.pop(0)
 
@@ -41,7 +44,11 @@ def Resolution_Arbre(r):
                     #print({'hauteur':hauteur,'num':num,'sens':sens})
                     file.append([copy_r,L2])
 
-    return round(time.time() - start_time,2)
+    T=-1
+    if compteur<6000:
+        T=round(time.time() - start_time,2)
+
+    return T
 
     '''
     print('Redi FAIT')
@@ -55,11 +62,14 @@ def Resolution_Arbre(r):
 def Resolution_Arbre_elagage1(r,n): #1<n<7
     start_time = time.time()
 
+    compteur=0
     file=[]
     file.append([r,[],Cout(r)])
 
-    while Cout(file[0][0]) != 20:
+
+    while Cout(file[0][0]) != 20 and compteur<6000:
         #print(Cout(file[0]))
+        compteur+=1
         node = file.pop(0)
 
         Ltemp=[]
@@ -79,7 +89,11 @@ def Resolution_Arbre_elagage1(r,n): #1<n<7
         #print(Ltemp)
         file.extend(Ltemp)
 
-    return round(time.time() - start_time,2)
+    T=-1
+    if compteur<6000:
+        T=round(time.time() - start_time,2)
+
+    return T
 
     '''
     print('Redi FAIT')
@@ -93,10 +107,12 @@ def Resolution_Arbre_elagage1(r,n): #1<n<7
 def Resolution_Arbre_elagage2(r,n): #1<n
     start_time = time.time()
 
+    compteur=0
     file=[]
     file.append([r,[],Cout(r)])
 
-    while Cout(file[0][0]) != 20:
+    while Cout(file[0][0]) != 20 and compteur<6000:
+        compteur+=1
         #print(Cout(file[0]))
         node = file.pop(0)
 
@@ -117,7 +133,11 @@ def Resolution_Arbre_elagage2(r,n): #1<n
         #print(Ltemp)
         file.extend(Ltemp)
 
-    return round(time.time() - start_time,2)
+    T=-1
+    if compteur<6000:
+        T=round(time.time() - start_time,2)
+
+    return T
 
     '''
     print('Redi FAIT')

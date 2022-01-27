@@ -2,6 +2,7 @@ import RediCube as rd
 import Face as f
 import pandas as pd
 import time
+import multiprocessing
 
 Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
 Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
@@ -323,10 +324,12 @@ def BestCoup6(r,L=[]):
 def BestCoup7(r,n):
     start_time = time.time()
 
+    compteur=0
     file=[]
     file.append([r,[],Cout4(r)])
 
     while Cout4(file[0][0]) != 20:
+        compteur+=1
         #print(Cout4(file[0]))
         node = file.pop(0)
 
@@ -348,11 +351,13 @@ def BestCoup7(r,n):
         file.extend(Ltemp)
 
 
+
     print('Redi FAIT')
     print(Cout4(file[0][0]))
     print(file[0][0])
     print(file[0][1])
     print("--- %s seconds ---" % (time.time() - start_time))
+    print(compteur)
 
 ##Arbre, parcours en largeur, elagage palier n de difference de cout avec le rd d'origine
 def BestCoup8(r,n):
