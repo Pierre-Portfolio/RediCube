@@ -113,6 +113,9 @@ def SearchPiece(r, facePiece, position):
     ColorNbEdgeNeighbor = dfNeighbor[(dfNeighbor['face']==facePiece) & (dfNeighbor['direction']==position)]['edge'].to_list()[0]
     ColorEdgeNeighbor = rd.listFaceCouleur[ColorNbEdgeNeighbor]
     
+    print(ColornbEdge)
+    print(ColorNbEdgeNeighbor)
+    '''
     for i in dfNeighbor.index: 
         #color of the edge
         actualColorEdge = r.cube[dfNeighbor['neighbor'][i]].tab[listEdge[dfNeighbor['edge'][i]][0]] [listEdge[dfNeighbor['edge'][i]][1]]
@@ -121,17 +124,31 @@ def SearchPiece(r, facePiece, position):
         
         if( (actualColorEdge == ColorEdge or actualColorEdge == ColorEdgeNeighbor) & (actualColorNeighbor == ColorEdge or actualColorNeighbor == ColorEdgeNeighbor)):
             piecetrouver = True
-            #print('trouvé bon edge : ' + str(dfNeighbor['face'][i]) + ' neighbor ' + str(dfNeighbor['direction'][i]) )
+            print('trouvé bon edge : ' + str(dfNeighbor['face'][i]) + ' neighbor ' + str(dfNeighbor['direction'][i]) )
             break
-            
+        else:
+            print('pas trouvé')
     #return the position of the edge + neighbor
     return [dfNeighbor['face'][i], dfNeighbor['direction'][i], dfNeighbor['neighbor'][i], dfNeighbor['edge'][i]] 
+    '''
 
-'''
-Place the piece at this place
-'''
-def PlaceEdge():
+def PlaceEdge(r, facePiece, parcour):
+    if(facePiece == 0):
+        print("pas encore fait")
+    elif(facePiece == 1):
+        print("pas encore fait")
+    elif(facePiece == 2):
+        print("en cour")
+        
+    elif(facePiece == 3):
+        print("pas encore fait")
+    elif(facePiece == 4):
+        print("pas encore fait")
+    else:
+        print("pas encore fait")
     return 0
+
+
 
 '''
 To place the first courone
@@ -151,4 +168,12 @@ def ResolveRediCube(n):
     
     listBadEdge = ListBadEdgeOnFace(r, r.faceprincipal)
     print(listBadEdge)
+    
+    for i in listBadEdge:
+        tab = SearchPiece(r, r.faceprincipal, i)
+        print(tab)
+        
+        
+        #print('face principale : ' + str(r.faceprincipal))
+        #print(tab)
     return r
