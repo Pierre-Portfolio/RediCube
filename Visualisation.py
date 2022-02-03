@@ -21,6 +21,12 @@ def Visualisation(r):
     distant_light(direction=vector(0,0,-2), color=color.white)
     distant_light(direction=vector(0,0,2), color=color.white)
 
+    #Flèches
+    ar_x=arrow(pos=vector(-4,0,0),axis=vector(1,0,0),color=color.blue)
+    ar_y=arrow(pos=vector(-4,0,0),axis=vector(0,1,0),color=color.green)
+    ar_z=arrow(pos=vector(-4,0,0),axis=vector(0,0,1),color=color.red)
+
+
     #Visualisation du Redi Cube
                                                                 #Sommets
                                                                 #=======
