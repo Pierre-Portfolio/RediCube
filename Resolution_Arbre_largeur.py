@@ -29,8 +29,8 @@ def Resolution_Arbre(r):
     file=[]
     file.append([r,[]])
 
-    while Cout(file[0][0]) != 20 and compteur<6000:
-        compteur+1
+    while Cout(file[0][0]) != 20 and compteur<10000:
+        compteur+=1
         #print(Cout(file[0]))
         node = file.pop(0)
 
@@ -44,11 +44,13 @@ def Resolution_Arbre(r):
                     #print({'hauteur':hauteur,'num':num,'sens':sens})
                     file.append([copy_r,L2])
 
+    '''
     T=-1
-    if compteur<6000:
+    if compteur<10000:
         T=round(time.time() - start_time,2)
+    '''
 
-    return T
+    return compteur
 
     '''
     print('Redi FAIT')
@@ -67,7 +69,7 @@ def Resolution_Arbre_elagage1(r,n): #1<n<7
     file.append([r,[],Cout(r)])
 
 
-    while Cout(file[0][0]) != 20 and compteur<6000:
+    while Cout(file[0][0]) != 20 and compteur<5555:
         #print(Cout(file[0]))
         compteur+=1
         node = file.pop(0)
@@ -89,11 +91,13 @@ def Resolution_Arbre_elagage1(r,n): #1<n<7
         #print(Ltemp)
         file.extend(Ltemp)
 
+    '''
     T=-1
-    if compteur<6000:
+    if compteur<5555:
         T=round(time.time() - start_time,2)
+    '''
 
-    return T
+    return compteur
 
     '''
     print('Redi FAIT')
@@ -111,7 +115,7 @@ def Resolution_Arbre_elagage2(r,n): #1<n
     file=[]
     file.append([r,[],Cout(r)])
 
-    while Cout(file[0][0]) != 20 and compteur<6000:
+    while Cout(file[0][0]) != 20 and compteur<4000:
         compteur+=1
         #print(Cout(file[0]))
         node = file.pop(0)
@@ -133,11 +137,13 @@ def Resolution_Arbre_elagage2(r,n): #1<n
         #print(Ltemp)
         file.extend(Ltemp)
 
+    '''
     T=-1
-    if compteur<6000:
+    if compteur<4000:
         T=round(time.time() - start_time,2)
+    '''
 
-    return T
+    return compteur
 
     '''
     print('Redi FAIT')
@@ -152,7 +158,7 @@ def Test_Resolution(n):
     df=pd.DataFrame(columns=['melange','temps resolution arbre',
     'temps resolution elagage 1 n=2','temps resolution elagage 1 n=3','temps resolution elagage 1 n=4','temps resolution elagage 1 n=5','temps resolution elagage 1 n=6',
     'temps resolution elagage 2 n=1','temps resolution elagage 2 n=2','temps resolution elagage 2 n=3','temps resolution elagage 2 n=4','temps resolution elagage 2 n=5'])
-    for melange in range(1,4):
+    for melange in range(1,7):
         for redi in range(n):
             r=rd.RediCube()
             r.Melange(melange)
