@@ -1,0 +1,10 @@
+melange;temps resolution arbre;temps resolution elagage 1 n=2;temps resolution elagage 1 n=3;temps resolution elagage 1 n=4;temps resolution elagage 1 n=5;temps resolution elagage 1 n=6;temps resolution elagage 2 n=1;temps resolution elagage 2 n=2;temps resolution elagage 2 n=3;temps resolution elagage 2 n=4;temps resolution elagage 2 n=5
+1;5;1;1;1;1;1;1;1;1;1;1
+1;5;1;1;1;1;1;1;1;1;1;1
+1;15;1;1;1;1;1;1;1;1;1;1
+2;208;3;4;5;6;7;5;5;13;17;17
+2;35;3;4;5;6;7;5;5;13;17;17
+2;140;3;4;5;6;7;5;5;17;17;17
+3;77;3;4;5;6;7;5;9;13;17;17
+3;1581;9;16;25;36;49;39;107;277;289;289
+3;2631;11;22;37;56;79;52;103;377;529;529
