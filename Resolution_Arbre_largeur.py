@@ -185,5 +185,34 @@ def Test_Resolution(n):
     df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')#enregistrement des données
     #return df
 
+def Test_Resolution2(n):
+    df=pd.DataFrame(columns=['melange',
+    'temps resolution elagage 1 n=2','temps resolution elagage 1 n=3','temps resolution elagage 1 n=4','temps resolution elagage 1 n=5','temps resolution elagage 1 n=6',
+    'temps resolution elagage 2 n=1','temps resolution elagage 2 n=2'])
+    for melange in range(3,6):
+        for redi in range(n):
+            r=rd.RediCube()
+            r.Melange(melange)
+
+            #t1=Resolution_Arbre(r)
+
+            t2=Resolution_Arbre_elagage1(r,2)
+            t3=Resolution_Arbre_elagage1(r,3)
+            t4=Resolution_Arbre_elagage1(r,4)
+            t5=Resolution_Arbre_elagage1(r,5)
+            t6=Resolution_Arbre_elagage1(r,6)
+
+            t7=Resolution_Arbre_elagage2(r,1)
+            t8=Resolution_Arbre_elagage2(r,2)
+            #t9=Resolution_Arbre_elagage2(r,3)
+            #t10=Resolution_Arbre_elagage2(r,4)
+            #t11=Resolution_Arbre_elagage2(r,5)
+
+            df=df.append({'melange':int(melange),'melange':melange,
+            'temps resolution elagage 1 n=2':t2,'temps resolution elagage 1 n=3':t3,'temps resolution elagage 1 n=4':t4,'temps resolution elagage 1 n=5':t5,'temps resolution elagage 1 n=6':t6,
+            'temps resolution elagage 2 n=1':t7,'temps resolution elagage 2 n=2':t8},ignore_index=True)
+
+    df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')
+
 
 
