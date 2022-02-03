@@ -44,13 +44,14 @@ def Resolution_Arbre(r):
                     #print({'hauteur':hauteur,'num':num,'sens':sens})
                     file.append([copy_r,L2])
 
-    '''
+
     T=-1
     if compteur<10000:
-        T=round(time.time() - start_time,2)
-    '''
+        #T=round(time.time() - start_time,2)
+        T=compteur
 
-    return compteur
+
+    return T
 
     '''
     print('Redi FAIT')
@@ -91,13 +92,13 @@ def Resolution_Arbre_elagage1(r,n): #1<n<7
         #print(Ltemp)
         file.extend(Ltemp)
 
-    '''
     T=-1
     if compteur<5555:
-        T=round(time.time() - start_time,2)
-    '''
+        #T=round(time.time() - start_time,2)
+        T=compteur
 
-    return compteur
+
+    return T
 
     '''
     print('Redi FAIT')
@@ -137,13 +138,13 @@ def Resolution_Arbre_elagage2(r,n): #1<n
         #print(Ltemp)
         file.extend(Ltemp)
 
-    '''
     T=-1
     if compteur<4000:
-        T=round(time.time() - start_time,2)
-    '''
+        #T=round(time.time() - start_time,2)
+        T=compteur
 
-    return compteur
+
+    return T
 
     '''
     print('Redi FAIT')
@@ -158,7 +159,7 @@ def Test_Resolution(n):
     df=pd.DataFrame(columns=['melange','temps resolution arbre',
     'temps resolution elagage 1 n=2','temps resolution elagage 1 n=3','temps resolution elagage 1 n=4','temps resolution elagage 1 n=5','temps resolution elagage 1 n=6',
     'temps resolution elagage 2 n=1','temps resolution elagage 2 n=2','temps resolution elagage 2 n=3','temps resolution elagage 2 n=4','temps resolution elagage 2 n=5'])
-    for melange in range(1,7):
+    for melange in range(1,4):
         for redi in range(n):
             r=rd.RediCube()
             r.Melange(melange)
@@ -181,7 +182,7 @@ def Test_Resolution(n):
             'temps resolution elagage 1 n=2':t2,'temps resolution elagage 1 n=3':t3,'temps resolution elagage 1 n=4':t4,'temps resolution elagage 1 n=5':t5,'temps resolution elagage 1 n=6':t6,
             'temps resolution elagage 2 n=1':t7,'temps resolution elagage 2 n=2':t8,'temps resolution elagage 2 n=3':t9,'temps resolution elagage 2 n=4':t10,'temps resolution elagage 2 n=5':t11},ignore_index=True)
 
-    df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test.csv',';',index=False,mode='w')#enregistrement des données
+    df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')#enregistrement des données
     #return df
 
 
