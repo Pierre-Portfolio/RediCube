@@ -27,6 +27,19 @@ def Cout(r):
 
     return res
 
+def Cout2(r):
+    rd_resolu = rd.RediCube()
+    res=0
+    for index,row in Aretes.iterrows():
+        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
+            res+=2
+
+    for index,row in Sommets.iterrows():
+        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
+            res+=1
+
+    return res
+
 ##Arbre, parcours en largeur
 def Resolution_Arbre(r,N=N_sans_elagage):
     start_time = time.time()
@@ -35,7 +48,7 @@ def Resolution_Arbre(r,N=N_sans_elagage):
     file=[]
     file.append([r,[]])
 
-    while Cout(file[0][0]) != 20 and compteur<N:
+    while Cout2(file[0][0]) != 32 and compteur<N:
         compteur+=1
         #print(Cout(file[0]))
         node = file.pop(0)
@@ -71,7 +84,7 @@ def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
     file.append([r,[],Cout(r)])
 
 
-    while Cout(file[0][0]) != 20 and compteur<N:
+    while Cout2(file[0][0]) != 32 and compteur<N:
         #print(Cout(file[0]))
         compteur+=1
         node = file.pop(0)
@@ -85,7 +98,7 @@ def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
                     copy_r.Move(hauteur,num,sens)
                     L2.append({'hauteur':hauteur,'num':num,'sens':sens})
                     #print({'hauteur':hauteur,'num':num,'sens':sens})
-                    Ltemp.append([copy_r,L2,Cout(copy_r)])
+                    Ltemp.append([copy_r,L2,Cout2(copy_r)])
 
         #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
         Ltemp=sorted(Ltemp, key=lambda x: x[2], reverse = True)
@@ -112,7 +125,7 @@ def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
     file=[]
     file.append([r,[],Cout(r)])
 
-    while Cout(file[0][0]) != 20 and compteur<N:
+    while Cout2(file[0][0]) != 32 and compteur<N:
         compteur+=1
         #print(Cout(file[0]))
         node = file.pop(0)
@@ -126,11 +139,11 @@ def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
                     copy_r.Move(hauteur,num,sens)
                     L2.append({'hauteur':hauteur,'num':num,'sens':sens})
                     #print({'hauteur':hauteur,'num':num,'sens':sens})
-                    Ltemp.append([copy_r,L2,Cout(copy_r)])
+                    Ltemp.append([copy_r,L2,Cout2(copy_r)])
 
         #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
         Ltemp=sorted(Ltemp, key=lambda x: x[2], reverse = True)
-        Ltemp=[i for i in Ltemp if i[2]>=(Cout(node[0])-n)]
+        Ltemp=[i for i in Ltemp if i[2]>=(Cout2(node[0])-n)]
         #print(Ltemp)
         file.extend(Ltemp)
 
@@ -253,7 +266,7 @@ def Comparaison_resolutions_fonction2(D,cout_min,cout_max,n):
         print(str(redi+1) + '/' + str(n))
         r=rd.RediCube()
         r.Recherche_cout(cout_min,cout_max)
-        Ligne=[Cout(r)]
+        Ligne=[Cout2(r)]
 
         if D['sans_elagage']==True:
             t1,n1,s1=Resolution_Arbre(r)
