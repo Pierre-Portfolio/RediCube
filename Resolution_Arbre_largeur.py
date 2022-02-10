@@ -311,4 +311,62 @@ def Comparaison_resolutions_fonction2(D,cout_min,cout_max,n):
     #PATH#
     df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')
 
+##Comparaison des differentes fonctions en fonction d'une liste de redi
+def Comparaison_resolutions_fonction3(D,L):
+    columns=['Cout']
+    for keys,values in D.items():
+        if values==True:
+            columns.append(keys+'_noeuds')
+            columns.append(keys+'_nbCoups')
+
+    df=pd.DataFrame(columns=columns)
+
+    compteur=0
+    for r in L:
+        compteur+=1
+        print('---------------')
+        print(str(compteur) + '/' + str(len(L)))
+        Ligne=[compteur]
+
+        if D['sans_elagage']==True:
+            t1,n1,s1=Resolution_Arbre(r)
+            Ligne.extend([n1,len(s1)])
+
+        if D['elagage1_n=2']==True:
+            t2,n2,s2=Resolution_Arbre_elagage1(r,2)
+            Ligne.extend([n2,len(s2)])
+        if D['elagage1_n=3']==True:
+            t3,n3,s3=Resolution_Arbre_elagage1(r,3)
+            Ligne.extend([n3,len(s3)])
+        if D['elagage1_n=4']==True:
+            t4,n4,s4=Resolution_Arbre_elagage1(r,4)
+            Ligne.extend([n4,len(s4)])
+        if D['elagage1_n=5']==True:
+            t5,n5,s5=Resolution_Arbre_elagage1(r,5)
+            Ligne.extend([n5,len(s5)])
+        if D['elagage1_n=6']==True:
+            t6,n6,s6=Resolution_Arbre_elagage1(r,6)
+            Ligne.extend([n6,len(s6)])
+
+        if D['elagage2_n=1']==True:
+            t7,n7,s7=Resolution_Arbre_elagage2(r,1)
+            Ligne.extend([n7,len(s7)])
+        if D['elagage2_n=2']==True:
+            t8,n8,s8=Resolution_Arbre_elagage2(r,2)
+            Ligne.extend([n8,len(s8)])
+        if D['elagage2_n=3']==True:
+            t9,n9,s9=Resolution_Arbre_elagage2(r,3)
+            Ligne.extend([n9,len(s9)])
+        if D['elagage2_n=4']==True:
+            t10,n10,s10=Resolution_Arbre_elagage2(r,4)
+            Ligne.extend([n10,len(s10)])
+        if D['elagage2_n=5']==True:
+            t11,n11,s11=Resolution_Arbre_elagage2(r,5)
+            Ligne.extend([n11,len(s11)])
+
+        df.loc[len(df)]=Ligne
+
+    #PATH#
+    df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')
+
 
