@@ -11,6 +11,7 @@ Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
 #Constante
 face = 6
 listFaceCouleur = ['G','Y','R','W','O','B']
+listAllCoup = [("up",1,-1), ("up",1,1), ("up",2,-1), ("up",2,1), ("up",3,-1), ("up",3,1), ("up",4,-1) , ("up",4,1), ("down",1,-1), ("down",1,1), ("down",2,-1), ("down",2,1), ("down",3,-1), ("down",3,1), ("down",4,-1) , ("down",4,1)]
 
 Moves=pd.read_csv('csv/Moves.csv',sep=';')
 correction_moves = pd.read_csv('csv/Correction_moves.csv',sep=';')
@@ -27,6 +28,7 @@ class RediCube():
         cube = []
         self.faceprincipal = 0
         self.nbCoups = 0
+        self.lastcoup = tuple()
         if L == [] :
             for c in listFaceCouleur:
                 cube.append(Face(couleur=c))
@@ -176,7 +178,7 @@ class RediCube():
         [numCorner1,numCorner2,numCorner3] = Moves[(Moves['hauteur']==hauteur) & (Moves['numero']==num)]['numero de corner'].to_list()
 
         self.RotationCorners(numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,hauteur,num,sens)
-
+        self.lastcoup = (hauteur,num,sens)
 
     '''
     Fonction qui mélange le RediCube en prenant en paramètre le nombre de coup effectués pour le mélange
@@ -216,7 +218,7 @@ class RediCube():
 
 
     '''
-    Fonction
+    Fonction which return the type
     '''
     def Type(self,ligne,colonne):
         if [ligne,colonne] in ([0,0],[0,2],[2,0],[2,2]):
@@ -232,6 +234,9 @@ class RediCube():
 
         return hauteur,numMove
 
+    '''
+    Return a visual of a redicube
+    '''
     def MelangeVisuel(self,nb):
         vi.Visualisation(self)
         (NumMouv0,sens0) = (-1,2)
@@ -259,29 +264,28 @@ class RediCube():
             self.Move(Mouv['hauteur'],Mouv['numero'],sens)
             vi.Visualisation(self)
 
+    '''
+    Return a list of all possibilities
+    '''
+    def listCoup(self):
+        ListCoupRestant = [i for i in listAllCoup]
+        if self.lastcoup != ():
+            #On empeche de revenir ou arriere ou de faire 2 fois le meme coup
+            ListCoupRestant.remove((self.lastcoup[0],self.lastcoup[1],-1))
+            ListCoupRestant.remove((self.lastcoup[0],self.lastcoup[1],1))
+            return ListCoupRestant
+        else:
+            return listAllCoup
 
-def Cout(r):
-    rd_resolu = RediCube()
-    res=0
-    for index,row in Aretes.iterrows():
-        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-            res+=1
+    def Cout(r):
+        rd_resolu = RediCube()
+        res=0
+        for index,row in Aretes.iterrows():
+            if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
+                res+=1
 
-    for index,row in Sommets.iterrows():
-        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
-            res+=1
+        for index,row in Sommets.iterrows():
+            if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
+                res+=1
 
-    return res
-
-def Cout2(r):
-    rd_resolu = RediCube()
-    res=0
-    for index,row in Aretes.iterrows():
-        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-            res+=2
-
-    for index,row in Sommets.iterrows():
-        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
-            res+=1
-
-    return res
+        return res
