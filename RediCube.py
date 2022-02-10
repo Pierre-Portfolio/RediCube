@@ -277,15 +277,30 @@ class RediCube():
         else:
             return listAllCoup
 
-    def Cout(r):
-        rd_resolu = RediCube()
-        res=0
-        for index,row in Aretes.iterrows():
-            if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-                res+=1
 
-        for index,row in Sommets.iterrows():
-            if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
-                res+=1
+def Cout(r):
+    rd_resolu = RediCube()
+    res=0
+    for index,row in Aretes.iterrows():
+        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
+            res+=1
 
-        return res
+    for index,row in Sommets.iterrows():
+        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
+            res+=1
+
+    return res
+
+def Cout2(r):
+    rd_resolu = RediCube()
+    res=0
+    for index,row in Aretes.iterrows():
+        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
+            res+=2
+
+    for index,row in Sommets.iterrows():
+        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
+            res+=1
+
+    return res
+
