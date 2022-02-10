@@ -5,13 +5,14 @@ import random
 import time
 from Face import Face
 import Visualisation as vi
-Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
-Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
+
 
 #Constante
 face = 6
 listFaceCouleur = ['G','Y','R','W','O','B']
 listAllCoup = [("up",1,-1), ("up",1,1), ("up",2,-1), ("up",2,1), ("up",3,-1), ("up",3,1), ("up",4,-1) , ("up",4,1), ("down",1,-1), ("down",1,1), ("down",2,-1), ("down",2,1), ("down",3,-1), ("down",3,1), ("down",4,-1) , ("down",4,1)]
+Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
+Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
 
 Moves=pd.read_csv('csv/Moves.csv',sep=';')
 correction_moves = pd.read_csv('csv/Correction_moves.csv',sep=';')
@@ -46,6 +47,7 @@ class RediCube():
             for j in range(3):
                 for k in range(3):
                     r.cube[i].tab[j][k] = self.cube[i].tab[j][k]
+        r.lastcoup=self.lastcoup
         return r
 
 
@@ -267,7 +269,7 @@ class RediCube():
     '''
     Return a list of all possibilities
     '''
-    def listCoup(self):
+    def ListCoups(self):
         ListCoupRestant = [i for i in listAllCoup]
         if self.lastcoup != ():
             #On empeche de revenir ou arriere ou de faire 2 fois le meme coup

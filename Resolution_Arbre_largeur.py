@@ -43,6 +43,8 @@ def Cout2(r):
 ##Arbre, parcours en largeur
 def Resolution_Arbre(r,N=N_sans_elagage):
     start_time = time.time()
+    #on remet à 0 l'ancien coup
+    r.lastcoup=tuple()
 
     compteur=0
     file=[]
@@ -50,18 +52,15 @@ def Resolution_Arbre(r,N=N_sans_elagage):
 
     while Cout2(file[0][0]) != 32 and compteur<N:
         compteur+=1
-        #print(Cout(file[0]))
         node = file.pop(0)
 
-        for hauteur in ('up','down'):
-            for num in range(1,5):
-                for sens in (1,-1):
-                    L2=[i for i in node[1]]
-                    copy_r = node[0].Copy()
-                    copy_r.Move(hauteur,num,sens)
-                    L2.append({'hauteur':hauteur,'num':num,'sens':sens})
-                    #print({'hauteur':hauteur,'num':num,'sens':sens})
-                    file.append([copy_r,L2])
+        for coup in (r.ListCoups()):
+            L2=[i for i in node[1]]
+            copy_r = node[0].Copy()
+            copy_r.Move(coup[0],coup[1],coup[2])
+            L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
+            #print({'hauteur':hauteur,'num':num,'sens':sens})
+            file.append([copy_r,L2])
 
 
     tf=time.time() - start_time
@@ -78,6 +77,7 @@ def Resolution_Arbre(r,N=N_sans_elagage):
 ##Arbre, parcours en largeur, elagage top n (cout)
 def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
     start_time = time.time()
+    r.lastcoup=tuple()
 
     compteur=0
     file=[]
@@ -85,20 +85,17 @@ def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
 
 
     while Cout2(file[0][0]) != 32 and compteur<N:
-        #print(Cout(file[0]))
         compteur+=1
         node = file.pop(0)
-
         Ltemp=[]
-        for hauteur in ('up','down'):
-            for num in range(1,5):
-                for sens in (1,-1):
-                    L2=[i for i in node[1]]
-                    copy_r = node[0].Copy()
-                    copy_r.Move(hauteur,num,sens)
-                    L2.append({'hauteur':hauteur,'num':num,'sens':sens})
-                    #print({'hauteur':hauteur,'num':num,'sens':sens})
-                    Ltemp.append([copy_r,L2,Cout2(copy_r)])
+
+        for coup in (r.ListCoups()):
+            L2=[i for i in node[1]]
+            copy_r = node[0].Copy()
+            copy_r.Move(coup[0],coup[1],coup[2])
+            L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
+            #print({'hauteur':hauteur,'num':num,'sens':sens})
+            Ltemp.append([copy_r,L2,Cout2(copy_r)])
 
         #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
         Ltemp=sorted(Ltemp, key=lambda x: x[2], reverse = True)
@@ -120,6 +117,7 @@ def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
 ##Arbre, parcours en largeur, elagage palier n de difference de cout avec le rd d'origine
 def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
     start_time = time.time()
+    r.lastcoup=tuple()
 
     compteur=0
     file=[]
@@ -127,19 +125,16 @@ def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
 
     while Cout2(file[0][0]) != 32 and compteur<N:
         compteur+=1
-        #print(Cout(file[0]))
         node = file.pop(0)
-
         Ltemp=[]
-        for hauteur in ('up','down'):
-            for num in range(1,5):
-                for sens in (1,-1):
-                    L2=[i for i in node[1]]
-                    copy_r = node[0].Copy()
-                    copy_r.Move(hauteur,num,sens)
-                    L2.append({'hauteur':hauteur,'num':num,'sens':sens})
-                    #print({'hauteur':hauteur,'num':num,'sens':sens})
-                    Ltemp.append([copy_r,L2,Cout2(copy_r)])
+
+        for coup in (r.ListCoups()):
+            L2=[i for i in node[1]]
+            copy_r = node[0].Copy()
+            copy_r.Move(coup[0],coup[1],coup[2])
+            L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
+            #print({'hauteur':hauteur,'num':num,'sens':sens})
+            Ltemp.append([copy_r,L2,Cout2(copy_r)])
 
         #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
         Ltemp=sorted(Ltemp, key=lambda x: x[2], reverse = True)
@@ -158,7 +153,7 @@ def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
     #Temps de resolution, nombre de noeuds parcouru, solution
     return tf,nb_noeuds,sol
 
-
+##Fonction permettant de calculer le temps pris pour un N noeuds
 def Comparaison_vitesse_fonctions(nb_noeuds=1000):
     df=pd.DataFrame(columns=['temps resolution elagage 1 n=2','temps resolution elagage 1 n=3',
     'temps resolution elagage 1 n=4','temps resolution elagage 1 n=5','temps resolution elagage 1 n=6',
@@ -191,9 +186,15 @@ def Comparaison_vitesse_fonctions(nb_noeuds=1000):
 
     df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\Comparaison_temps_fonctions.csv',';',index=False,mode='w')
 
+##Constante indiquant les fonctions à testet
 D={'sans_elagage':True,
 'elagage1_n=2':True,'elagage1_n=3':True,'elagage1_n=4':True,'elagage1_n=5':True,'elagage1_n=6':True,
 'elagage2_n=1':True,'elagage2_n=2':True,'elagage2_n=3':True,'elagage2_n=4':True,'elagage2_n=5':True}
+
+
+'''
+ATTENTION AU PATH UTILISE A LA FIN LORS DE L'ECRITURE DU CSV
+'''
 
 ##Comparaison des differentes fonctions en fonction de plusieurs mélanges
 def Comparaison_resolutions_fonction(D,melange_min,melange_max,n):
@@ -249,6 +250,7 @@ def Comparaison_resolutions_fonction(D,melange_min,melange_max,n):
 
             df.loc[len(df)]=Ligne
 
+    #PATH#
     df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')
 
 ##Comparaison des differentes fonctions en fonction de plusieurs couts
@@ -306,94 +308,7 @@ def Comparaison_resolutions_fonction2(D,cout_min,cout_max,n):
 
         df.loc[len(df)]=Ligne
 
+    #PATH#
     df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')
-
-
-def Test_Resolution(n):
-    df=pd.DataFrame(columns=['melange','temps resolution arbre',
-    'temps resolution elagage 1 n=2','temps resolution elagage 1 n=3','temps resolution elagage 1 n=4','temps resolution elagage 1 n=5','temps resolution elagage 1 n=6',
-    'temps resolution elagage 2 n=1','temps resolution elagage 2 n=2','temps resolution elagage 2 n=3','temps resolution elagage 2 n=4','temps resolution elagage 2 n=5'])
-    for melange in range(1,4):
-        for redi in range(n):
-            r=rd.RediCube()
-            r.Melange(melange)
-
-            t1=Resolution_Arbre(r)
-
-            t2=Resolution_Arbre_elagage1(r,2)
-            t3=Resolution_Arbre_elagage1(r,3)
-            t4=Resolution_Arbre_elagage1(r,4)
-            t5=Resolution_Arbre_elagage1(r,5)
-            t6=Resolution_Arbre_elagage1(r,6)
-
-            t7=Resolution_Arbre_elagage2(r,1)
-            t8=Resolution_Arbre_elagage2(r,2)
-            t9=Resolution_Arbre_elagage2(r,3)
-            t10=Resolution_Arbre_elagage2(r,4)
-            t11=Resolution_Arbre_elagage2(r,5)
-
-            df=df.append({'melange':int(melange),'melange':melange,'temps resolution arbre':t1,
-            'temps resolution elagage 1 n=2':t2,'temps resolution elagage 1 n=3':t3,'temps resolution elagage 1 n=4':t4,'temps resolution elagage 1 n=5':t5,'temps resolution elagage 1 n=6':t6,
-            'temps resolution elagage 2 n=1':t7,'temps resolution elagage 2 n=2':t8,'temps resolution elagage 2 n=3':t9,'temps resolution elagage 2 n=4':t10,'temps resolution elagage 2 n=5':t11},ignore_index=True)
-
-    df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')#enregistrement des données
-    #return df
-
-def Test_Resolution2(n):
-    df=pd.DataFrame(columns=['melange',
-    'temps resolution elagage 1 n=2','temps resolution elagage 1 n=3','temps resolution elagage 1 n=4','temps resolution elagage 1 n=5','temps resolution elagage 1 n=6',
-    'temps resolution elagage 2 n=1','temps resolution elagage 2 n=2'])
-    for melange in range(3,6):
-        for redi in range(n):
-            r=rd.RediCube()
-            r.Melange(melange)
-
-            #t1=Resolution_Arbre(r)
-
-            t2=Resolution_Arbre_elagage1(r,2)
-            t3=Resolution_Arbre_elagage1(r,3)
-            t4=Resolution_Arbre_elagage1(r,4)
-            t5=Resolution_Arbre_elagage1(r,5)
-            t6=Resolution_Arbre_elagage1(r,6)
-
-            t7=Resolution_Arbre_elagage2(r,1)
-            t8=Resolution_Arbre_elagage2(r,2)
-            #t9=Resolution_Arbre_elagage2(r,3)
-            #t10=Resolution_Arbre_elagage2(r,4)
-            #t11=Resolution_Arbre_elagage2(r,5)
-
-            df=df.append({'melange':int(melange),'melange':melange,
-            'temps resolution elagage 1 n=2':t2,'temps resolution elagage 1 n=3':t3,'temps resolution elagage 1 n=4':t4,'temps resolution elagage 1 n=5':t5,'temps resolution elagage 1 n=6':t6,
-            'temps resolution elagage 2 n=1':t7,'temps resolution elagage 2 n=2':t8},ignore_index=True)
-
-    df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test2_Owen.csv',';',index=False,mode='w')
-
-def Test_Resolution3(n):
-    df=pd.DataFrame(columns=['melange','temps resolution elagage 1 n=3','temps resolution elagage 1 n=4',
-    'temps resolution elagage 1 n=5'])
-    for melange in range(5,8):
-        for redi in range(n):
-            r=rd.RediCube()
-            r.Melange(melange)
-
-            #t1=Resolution_Arbre(r)
-
-            #t2=Resolution_Arbre_elagage1(r,2)
-            t3=Resolution_Arbre_elagage1(r,3)
-            t4=Resolution_Arbre_elagage1(r,4)
-            t5=Resolution_Arbre_elagage1(r,5)
-            #t6=Resolution_Arbre_elagage1(r,6)
-
-            #t7=Resolution_Arbre_elagage2(r,1)
-            #t8=Resolution_Arbre_elagage2(r,2)
-            #t9=Resolution_Arbre_elagage2(r,3)
-            #t10=Resolution_Arbre_elagage2(r,4)
-            #t11=Resolution_Arbre_elagage2(r,5)
-
-            df=df.append({'melange':int(melange),'melange':melange,'temps resolution elagage 1 n=3':t3,
-            'temps resolution elagage 1 n=4':t4,'temps resolution elagage 1 n=5':t5},ignore_index=True)
-
-    df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test2_Owen.csv',';',index=False,mode='w')
-
 
 
