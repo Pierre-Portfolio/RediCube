@@ -5,6 +5,8 @@ import random
 import time
 from Face import Face
 import Visualisation as vi
+Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
+Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
 
 #Constante
 face = 6
@@ -205,6 +207,14 @@ class RediCube():
             self.Move(Mouv['hauteur'],Mouv['numero'],sens)
             #print(self)
 
+    def Recherche_cout(self,c_inf,c_max,melange_min=-1):
+        compteur=0
+        while((Cout(self) not in (range(c_inf,c_max+1))) or compteur<melange_min):
+            compteur+=1
+            self.Melange(1)
+            #print(Cout(self))
+
+
     '''
     Fonction
     '''
@@ -248,3 +258,17 @@ class RediCube():
             input('\nappuyer sur entrée\n')
             self.Move(Mouv['hauteur'],Mouv['numero'],sens)
             vi.Visualisation(self)
+
+
+def Cout(r):
+    rd_resolu = RediCube()
+    res=0
+    for index,row in Aretes.iterrows():
+        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
+            res+=1
+
+    for index,row in Sommets.iterrows():
+        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
+            res+=1
+
+    return res
