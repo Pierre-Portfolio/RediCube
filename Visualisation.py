@@ -5,9 +5,6 @@ from vpython import *
 import math as m
 import RediCube as rd
 
-
-
-
 def Couleur(r,variable):
     col={'G':vector(0,1,0),'Y':vector(1,1,0),'R':vector(1, 0, 0),'W':vector(1, 1, 1),'O':vector(1,0.2,0),'B':vector(0,0,1)}
     return col[r.cube[int(variable[1:2])].tab[int(variable[3:4])][int(variable[5:6])]]
@@ -22,10 +19,14 @@ def Visualisation(r):
     distant_light(direction=vector(0,0,2), color=color.white)
 
     #Flèches
-    ar_x=arrow(pos=vector(-4,0,0),axis=vector(1,0,0),color=color.blue)
+    ar_x=arrow(pos=vector(-4,0,0),axis=vector(1,0,0),color=color.red)
     ar_y=arrow(pos=vector(-4,0,0),axis=vector(0,1,0),color=color.green)
-    ar_z=arrow(pos=vector(-4,0,0),axis=vector(0,0,1),color=color.red)
-
+    ar_z=arrow(pos=vector(-4,0,0),axis=vector(0,0,1),color=color.blue)
+    
+    #Noms des axes
+    text(text="x",pos=vector(-3,-0.1,0),height=.2)
+    text(text="y",pos=vector(-4,1.1,0),height=.2)
+    text(text="z",pos=vector(-4,-.1,1.2),height=.2,axis=vector(0,0,-1))
 
     #Visualisation du Redi Cube
                                                                 #Sommets
@@ -349,3 +350,19 @@ def Visualisation(r):
     bda2=vertex(pos=vector(.55,-1.5,-1.45),color = Couleur(r,'f5l2c1'))
     bda3=vertex(pos=vector(.1,-1.5,-1),color = Couleur(r,'f5l2c1'))
     tf5l2c1=triangle(v0=bda1,v1=bda2,v2=bda3)
+    
+    my_label=label()
+    def B(d):
+        print("The button said this: ", d.text)
+    def C(d):
+        print("The button said this: ", d.text)
+    def D(wi):
+        print("The button said this: ", d.text)
+    wtext(text="\n\n")
+    winput(width=600,bind=D)
+    wtext(text="\n\n                                        ")
+    button( bind=B, text='Valider' )
+    wtext(text="            ")
+    button(bind=C ,text="Résoudre")
+    
+    
