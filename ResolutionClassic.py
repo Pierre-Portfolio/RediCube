@@ -49,6 +49,7 @@ def CreateRedicubeToResolveVisua2(n):
     text = df.loc[n].Pos
     r = CreateRedicubeToResolve(text)
     rd.vi.Visualisation(r,text)
+    return r
     
 '''
 Function which generates a redicube from the dataset
