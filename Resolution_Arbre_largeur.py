@@ -5,14 +5,20 @@ import time
 pd.set_option('display.max_columns', 10)
 import multiprocessing
 import numpy as np
+import ResolutionClassic
 
 Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
 Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
 
 #Nombre correspondant à 5 min de traitement sur ma machine (Owen)
 N_sans_elagage=9358
+'''
 N_elagage1=5452
 N_elagage2=3906
+'''
+#30min
+N_elagage1=82000
+N_elagage2=60000
 
 def Cout(r):
     rd_resolu = rd.RediCube()
@@ -251,7 +257,7 @@ def Comparaison_resolutions_fonction(D,melange_min,melange_max,n):
             df.loc[len(df)]=Ligne
 
     #PATH#
-    df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')
+            df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')
 
 ##Comparaison des differentes fonctions en fonction de plusieurs couts
 def Comparaison_resolutions_fonction2(D,cout_min,cout_max,n):
@@ -308,8 +314,8 @@ def Comparaison_resolutions_fonction2(D,cout_min,cout_max,n):
 
         df.loc[len(df)]=Ligne
 
-    #PATH#
-    df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')
+
+        df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')
 
 ##Comparaison des differentes fonctions en fonction d'une liste de redi
 def Comparaison_resolutions_fonction3(D,L):
@@ -367,6 +373,17 @@ def Comparaison_resolutions_fonction3(D,L):
         df.loc[len(df)]=Ligne
 
     #PATH#
-    df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')
+        df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')
+
+D2={'sans_elagage':False,
+'elagage1_n=2':False,'elagage1_n=3':True,'elagage1_n=4':False,'elagage1_n=5':False,'elagage1_n=6':False,
+'elagage2_n=1':False,'elagage2_n=2':False,'elagage2_n=3':False,'elagage2_n=4':False,'elagage2_n=5':False}
+
+def FonctionPierre(D,n_inf,n_sup):
+    L=[]
+    for n in range(n_inf,n_sup+1):
+        L.append(ResolutionClassic.CreateRedicubeToResolve(n))
+
+    Comparaison_resolutions_fonction3(D,L)
 
 

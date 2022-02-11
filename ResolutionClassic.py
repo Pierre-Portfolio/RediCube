@@ -5,7 +5,7 @@ import time
 
 def ImportCsv(csv):
     df = pd.read_csv(csv)
-    return df;
+    return df
 
 def ExportCsv(df):
     df.to_csv('csv/DataSet.csv', index=False, sep=',')
