@@ -381,9 +381,23 @@ D2={'sans_elagage':False,
 
 def FonctionPierre(D,n_inf,n_sup):
     L=[]
+    df = pd.read_csv(r'csv\DataSet.csv',sep=';')
     for n in range(n_inf,n_sup+1):
-        L.append(ResolutionClassic.CreateRedicubeToResolve(n))
+        r=ResolutionClassic.CreateRedicubeToResolve(n)
+        t,noeuds,s = Resolution_Arbre_elagage1(r,3)
+        st=''
+        for i in s:
+            st+='('
+            st+=i['hauteur']
+            st+=','
+            st+=str(i['num'])
+            st+=','
+            st+=str(i['sens'])
+            st+='),'
+        df.loc[n,'Solution']=st
+        df.loc[n,'Nombre_noeuds']=noeuds
+        df.loc[n,'Temps']=t
 
-    Comparaison_resolutions_fonction3(D,L)
+        df.to_csv(r'csv\DataSet.csv',';',index=False,mode='w')
 
 

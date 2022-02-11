@@ -4,11 +4,11 @@ import pandas as pd
 import time
 
 def ImportCsv(csv):
-    df = pd.read_csv(csv)
+    df = pd.read_csv(csv,sep=';')
     return df
 
 def ExportCsv(df):
-    df.to_csv('csv/DataSet.csv', index=False, sep=',')
+    df.to_csv('csv/DataSet.csv', index=False, sep=';')
     
 dfNeighbor = ImportCsv('csv/FaceNeighbor.csv')
 
