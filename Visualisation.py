@@ -4,11 +4,24 @@
 from vpython import *
 import math as m
 import RediCube as rd
+import ResolutionClassic as rc
 
 def Couleur(r,variable):
     col={'G':vector(0,1,0),'Y':vector(1,1,0),'R':vector(1, 0, 0),'W':vector(1, 1, 1),'O':vector(1,0.2,0),'B':vector(0,0,1)}
     return col[r.cube[int(variable[1:2])].tab[int(variable[3:4])][int(variable[5:6])]]
 
+def TextBox(aaaa):
+    return int(aaaa)
+
+def D(aaaa):
+    r1=rd.RediCube()
+    print("-----------------------------------------------------------")
+    print(TextBox(aaaa))
+    print("-----------------------------------------------------------")
+    r1.MelangeVisuel(TextBox(aaaa))
+    Visualisation(r1)
+
+                  
 def Visualisation(r):
     #Lumières
     distant_light(direction=vector(2,0,0), color=color.white)
@@ -350,19 +363,15 @@ def Visualisation(r):
     bda2=vertex(pos=vector(.55,-1.5,-1.45),color = Couleur(r,'f5l2c1'))
     bda3=vertex(pos=vector(.1,-1.5,-1),color = Couleur(r,'f5l2c1'))
     tf5l2c1=triangle(v0=bda1,v1=bda2,v2=bda3)
+        
+    aaaa=input("Entrez votre valeur")
+    #wtext(text="\n\n")
+    b=button(text="Valider",bind=D)
+    #winput(width=600,bind=D)
+    #wtext(text="\n\n                                        ")
+    #wtext(text="            ")
+    #button(text="Résoudre")
+
     
-    my_label=label()
-    def B(d):
-        print("The button said this: ", d.text)
-    def C(d):
-        print("The button said this: ", d.text)
-    def D(wi):
-        print("The button said this: ", d.text)
-    wtext(text="\n\n")
-    winput(width=600,bind=D)
-    wtext(text="\n\n                                        ")
-    button( bind=B, text='Valider' )
-    wtext(text="            ")
-    button(bind=C ,text="Résoudre")
     
     
