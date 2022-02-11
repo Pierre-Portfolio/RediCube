@@ -4,23 +4,22 @@ import pandas as pd
 import time
 
 def ImportCsv(csv):
-    df = pd.read_csv(csv,sep=';')
+    df = pd.read_csv(csv,sep=';');
     return df
 
 def ExportCsv(df):
-    df.to_csv('csv/DataSet.csv', index=False, sep=';')
+    df.to_csv('csv/DataSet.csv', index=False, sep=';');
     
 dfNeighbor = ImportCsv('csv/FaceNeighbor.csv')
 
 #Constante
 listEdge = [0,[0,1],[1,0],[1,2],[2,1]]
 
+
 '''
-Function which generates a redicube from a dataset
+Function which generate redicube from a string
 '''
-def CreateRedicubeToResolve(n):
-    df = ImportCsv('csv/DataSet.csv')
-    text = df.loc[n].Pos
+def CreateRedicubeToResolve(text):
     listLigne = [text[i:i+3] for i in range(0, len(text), 3)]
     listLigne2 = []
     for i in listLigne:
@@ -34,6 +33,30 @@ def CreateRedicubeToResolve(n):
       listFace.append(f.Face(rd.listFaceCouleur[couleur],listLigne2[i:i+3]))
       couleur+=1
     return rd.RediCube(listFace)
+
+'''
+Function which generate a redicube from the visualisation
+'''
+def CreateRedicubeToResolveVisua(text):
+    r = CreateRedicubeToResolve(text)
+    rd.vi.Visualisation(r,text)
+    
+'''
+Function which generate a redicube from the visualisation
+'''
+def CreateRedicubeToResolveVisua2(n):
+    df = ImportCsv('csv/DataSet.csv')
+    text = df.loc[n].Pos
+    r = CreateRedicubeToResolve(text)
+    rd.vi.Visualisation(r,text)
+    
+'''
+Function which generates a redicube from the dataset
+'''
+def CreateRedicubeToResolveDataSet(n):
+    df = ImportCsv('csv/DataSet.csv')
+    text = df.loc[n].Pos
+    return CreateRedicubeToResolve(text)
 
 '''
 Find the best face for starting the resolve of redicube & send list of bad coin
@@ -84,7 +107,7 @@ def PlaceAllCoins(r,numFace,coinToComplete):
     return r;
 
 '''
-List the edges of on face who are note placed
+List the edges of on face who are not placed
 '''
 def ListBadEdgeOnFace(r,numFace):
     edgeDone = []
@@ -101,79 +124,3 @@ def ListBadEdgeOnFace(r,numFace):
                 edgeDone.append(i)   
                 
     return list(set([1,2,3,4]) - set(edgeDone))
-
-'''
-Search the piece on the RediCube
-'''
-def SearchPiece(r, facePiece, position):
-    piecetrouver = False
-    ColornbEdge = facePiece
-    ColorEdge = rd.listFaceCouleur[ColornbEdge]
-    
-    ColorNbEdgeNeighbor = dfNeighbor[(dfNeighbor['face']==facePiece) & (dfNeighbor['direction']==position)]['edge'].to_list()[0]
-    ColorEdgeNeighbor = rd.listFaceCouleur[ColorNbEdgeNeighbor]
-    
-    print(ColornbEdge)
-    print(ColorNbEdgeNeighbor)
-    '''
-    for i in dfNeighbor.index: 
-        #color of the edge
-        actualColorEdge = r.cube[dfNeighbor['neighbor'][i]].tab[listEdge[dfNeighbor['edge'][i]][0]] [listEdge[dfNeighbor['edge'][i]][1]]
-        actualColorNeighbor = r.cube[dfNeighbor['face'][i]].tab[listEdge[dfNeighbor['direction'][i]][0]] [listEdge[dfNeighbor['direction'][i]][1]]
-        
-        
-        if( (actualColorEdge == ColorEdge or actualColorEdge == ColorEdgeNeighbor) & (actualColorNeighbor == ColorEdge or actualColorNeighbor == ColorEdgeNeighbor)):
-            piecetrouver = True
-            print('trouvé bon edge : ' + str(dfNeighbor['face'][i]) + ' neighbor ' + str(dfNeighbor['direction'][i]) )
-            break
-        else:
-            print('pas trouvé')
-    #return the position of the edge + neighbor
-    return [dfNeighbor['face'][i], dfNeighbor['direction'][i], dfNeighbor['neighbor'][i], dfNeighbor['edge'][i]] 
-    '''
-
-def PlaceEdge(r, facePiece, parcour):
-    if(facePiece == 0):
-        print("pas encore fait")
-    elif(facePiece == 1):
-        print("pas encore fait")
-    elif(facePiece == 2):
-        print("en cour")
-        
-    elif(facePiece == 3):
-        print("pas encore fait")
-    elif(facePiece == 4):
-        print("pas encore fait")
-    else:
-        print("pas encore fait")
-    return 0
-
-
-
-'''
-To place the first courone
-'''
-def FirstCouronne():
-    return 0
-
-'''
-global function which resolve one redicube
-'''
-def ResolveRediCube(n):
-    r = CreateRedicubeToResolve(n)
-    listBadCoin = FindBadCoin(r)
-    
-    r.nbCoup = len(listBadCoin)
-    r = PlaceAllCoins(r,r.faceprincipal,listBadCoin)
-    
-    listBadEdge = ListBadEdgeOnFace(r, r.faceprincipal)
-    print(listBadEdge)
-    
-    for i in listBadEdge:
-        tab = SearchPiece(r, r.faceprincipal, i)
-        print(tab)
-        
-        
-        #print('face principale : ' + str(r.faceprincipal))
-        #print(tab)
-    return r
