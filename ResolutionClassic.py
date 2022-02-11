@@ -2,14 +2,16 @@ import RediCube as rd
 import Face as f
 import pandas as pd
 import time
+import Resolution_Arbre_largeur
+import Visualisation as vi
 
 def ImportCsv(csv):
-    df = pd.read_csv(csv,sep=';');
+    df = pd.read_csv(csv,sep=';')
     return df
 
 def ExportCsv(df):
-    df.to_csv('csv/DataSet.csv', index=False, sep=';');
-    
+    df.to_csv('csv/DataSet.csv', index=False, sep=';')
+
 dfNeighbor = ImportCsv('csv/FaceNeighbor.csv')
 
 #Constante
@@ -39,8 +41,8 @@ Function which generate a redicube from the visualisation
 '''
 def CreateRedicubeToResolveVisua(text):
     r = CreateRedicubeToResolve(text)
-    rd.vi.Visualisation(r,text)
-    
+    vi.Visualisation(r)
+
 '''
 Function which generate a redicube from the visualisation
 '''
@@ -48,9 +50,9 @@ def CreateRedicubeToResolveVisua2(n):
     df = ImportCsv('csv/DataSet.csv')
     text = df.loc[n].Pos
     r = CreateRedicubeToResolve(text)
-    rd.vi.Visualisation(r,text)
+    vi.Visualisation(r)
     return r
-    
+
 '''
 Function which generates a redicube from the dataset
 '''
@@ -58,6 +60,21 @@ def CreateRedicubeToResolveDataSet(n):
     df = ImportCsv('csv/DataSet.csv')
     text = df.loc[n].Pos
     return CreateRedicubeToResolve(text)
+
+def ResolveRedicubeVisual(n):
+    df=pd.read_csv(r'csv\Dataset.csv',sep=';')
+    r=CreateRedicubeToResolve(df.loc[n]['Pos'])
+    time.sleep(2)
+    s=df.loc[n]['Solution']
+    s=s.split('),(')
+    s[0]=s[0].replace('(','')
+    s[-1]=s[-1].replace('),','')
+    L=[i.split(',') for i in s]
+    for move in L:
+        r.Move(move[0],int(move[1]),int(move[2]))
+        vi.Visualisation(r)
+        time.sleep(1)
+
 
 '''
 Find the best face for starting the resolve of redicube & send list of bad coin
@@ -112,16 +129,16 @@ List the edges of on face who are not placed
 '''
 def ListBadEdgeOnFace(r,numFace):
     edgeDone = []
-    
+
     #for each edge
     for i in range(1,5):
         if(r.cube[numFace].tab[listEdge[i][0]][listEdge[i][1]] == r.cube[numFace].couleur):
             #Save the numface and the edge
             numFaceNeighbor = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['neighbor'].to_list()
             numEdge = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['edge'].to_list()
-            
+
             #check the edge dependence
             if(r.cube[ numFaceNeighbor[0] ].tab[ listEdge[numEdge[0]][0] ][ listEdge[numEdge[0]][1] ] == r.cube[numFaceNeighbor[0]].couleur):
-                edgeDone.append(i)   
-                
+                edgeDone.append(i)
+
     return list(set([1,2,3,4]) - set(edgeDone))
