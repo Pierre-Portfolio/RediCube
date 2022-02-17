@@ -39,27 +39,25 @@ def CreateRedicubeToResolve(text):
 '''
 Function which generate a redicube from the visualisation
 '''
-def CreateRedicubeToResolveVisua(text):
-    r = CreateRedicubeToResolve(text)
-    vi.Visualisation(r)
-
-'''
-Function which generate a redicube from the visualisation
-'''
-def CreateRedicubeToResolveVisua2(n):
+def CreateRedicubeToResolveVisua(n):
     df = ImportCsv('csv/DataSet.csv')
     text = df.loc[n].Pos
     r = CreateRedicubeToResolve(text)
-    vi.Visualisation(r)
     return r
 
-'''
-Function which generates a redicube from the dataset
-'''
-def CreateRedicubeToResolveDataSet(n):
-    df = ImportCsv('csv/DataSet.csv')
-    text = df.loc[n].Pos
-    return CreateRedicubeToResolve(text)
+"""
+Function which generates a redicubes from dataset or the visualisation
+"""
+def CreateRedicubeToResolveInputVisua(textinput):
+    if isinstance(textinput, int):
+        CreateRedicubeToResolveVisua(textinput)
+    else:
+        if textinput.count('X') == 6:
+            CreateRedicubeToResolve(textinput)
+        else:
+            return rd.RediCube()
+        
+        
 
 def ResolveRedicubeVisual(n):
     df=pd.read_csv(r'csv\Dataset.csv',sep=';')
