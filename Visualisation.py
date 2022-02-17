@@ -11,16 +11,20 @@ def Couleur(r,variable):
     return col[r.cube[int(variable[1:2])].tab[int(variable[3:4])][int(variable[5:6])]]
 
 def TextBox(aaaa):
-    return int(aaaa)
+    return int(aaaa.text.replace("\n",""))
 
 def D(aaaa):
-    r1=rd.RediCube()
     print("-----------------------------------------------------------")
     print(TextBox(aaaa))
     print("-----------------------------------------------------------")
-    r1.MelangeVisuel(TextBox(aaaa))
-    Visualisation(r1)
+    rc.CreateRedicubeToResolveVisua2(TextBox(aaaa))
+    #Visualisation(r)
 
+def input_number():
+    wtext(text="\n\n")
+    w1=wtext(text="Veuillez sélectionner une valeur entre 0 et 9999.")    
+    wtext(text="\n\n")
+    aaaa=winput(text="",width=600,bind=D)
                   
 def Visualisation(r):
     #Lumières
@@ -363,10 +367,10 @@ def Visualisation(r):
     bda2=vertex(pos=vector(.55,-1.5,-1.45),color = Couleur(r,'f5l2c1'))
     bda3=vertex(pos=vector(.1,-1.5,-1),color = Couleur(r,'f5l2c1'))
     tf5l2c1=triangle(v0=bda1,v1=bda2,v2=bda3)
-        
-    aaaa=input("Entrez votre valeur")
+    
+    input_number()
     #wtext(text="\n\n")
-    b=button(text="Valider",bind=D)
+    #b=button(text="Valider",bind=D)
     #winput(width=600,bind=D)
     #wtext(text="\n\n                                        ")
     #wtext(text="            ")
