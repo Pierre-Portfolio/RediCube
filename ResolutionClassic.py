@@ -49,13 +49,13 @@ def CreateRedicubeToResolveVisua(n):
 Function which generates a redicubes from dataset or the visualisation
 """
 def CreateRedicubeToResolveInputVisua(textinput):
+    r = rd.RediCube()
     if isinstance(textinput, int):
-        CreateRedicubeToResolveVisua(textinput)
+        r = CreateRedicubeToResolveVisua(textinput)
     else:
         if textinput.count('X') == 6:
-            CreateRedicubeToResolve(textinput)
-        else:
-            return rd.RediCube()
+            r = CreateRedicubeToResolve(textinput)
+    return r
         
         
 
