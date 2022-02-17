@@ -12,13 +12,14 @@ Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
 
 #Nombre correspondant à 5 min de traitement sur ma machine (Owen)
 N_sans_elagage=9358
-'''
+
 N_elagage1=5452
 N_elagage2=3906
 '''
 #30min
 N_elagage1=82000
 N_elagage2=60000
+'''
 
 def Cout(r):
     rd_resolu = rd.RediCube()
@@ -55,9 +56,9 @@ def Resolution_Arbre(r,N=N_sans_elagage):
     compteur=0
     file=[]
     file.append([r,[]])
-    R=rd.RediCube()
+    cube=rd.RediCube().cube
 
-    while Cout2(file[0][0]) != 32 and compteur<N:
+    while file[0][0].cube != cube and compteur<N:
         compteur+=1
         node = file.pop(0)
 
@@ -73,6 +74,7 @@ def Resolution_Arbre(r,N=N_sans_elagage):
     tf=time.time() - start_time
     nb_noeuds=-1
     sol=[]
+    print(compteur)
     if compteur<N:
         nb_noeuds=compteur
         sol=file[0][1]
