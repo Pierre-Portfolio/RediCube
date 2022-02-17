@@ -186,7 +186,7 @@ class RediCube():
     Fonction qui mélange le RediCube en prenant en paramètre le nombre de coup effectués pour le mélange
     Fonction qui ne renvoie rien, les mouvements sont effectués sur le RediCube, self.cube est modifié
     '''
-    def Melange(self,nb):
+    def Melange(self,nb,afficher=True):
         (NumMouv0,sens0) = (-1,2)
         for i in range(nb):
             NumMouv=random.randint(0,7)
@@ -200,10 +200,11 @@ class RediCube():
             if sens == 0:
                 sens =-1
             Mouv=Moves.drop_duplicates(subset=['hauteur','numero']).iloc[NumMouv]
-            if sens == 1:
-                print('\nhauteur :',Mouv['hauteur'],', numéro de rotation: ',Mouv['numero'],', rotation sens horaire')
-            else:
-                print('\nhauteur :',Mouv['hauteur'],', numéro de rotation :',Mouv['numero'],', rotation sens anti-horaire')
+            if afficher==True:
+                if sens == 1:
+                    print('\nhauteur :',Mouv['hauteur'],', numéro de rotation: ',Mouv['numero'],', rotation sens horaire')
+                else:
+                    print('\nhauteur :',Mouv['hauteur'],', numéro de rotation :',Mouv['numero'],', rotation sens anti-horaire')
 
 
 

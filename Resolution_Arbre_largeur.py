@@ -55,6 +55,7 @@ def Resolution_Arbre(r,N=N_sans_elagage):
     compteur=0
     file=[]
     file.append([r,[]])
+    R=rd.RediCube()
 
     while Cout2(file[0][0]) != 32 and compteur<N:
         compteur+=1
