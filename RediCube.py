@@ -70,35 +70,6 @@ class RediCube():
 
         return res
 
-
-    '''
-    Fonction pas utilisée
-    Fonction qui pour un angle(1:4) et une face(0:5) donnée renvoie les arretes et le sommet composant l'angle
-    '''
-    def Corner(self,numFace,numCorner):
-        if numCorner == 1:
-            sommet = self.cube[numFace].tab[0][0]
-            arreteHori = self.cube[numFace].tab[0][1]
-            arreteVert = self.cube[numFace].tab[1][0]
-
-        elif numCorner == 2:
-            sommet = self.cube[numFace].tab[0][2]
-            arreteHori = self.cube[numFace].tab[0][1]
-            arreteVert = self.cube[numFace].tab[1][2]
-
-        elif numCorner == 3:
-            sommet = self.cube[numFace].tab[2][0]
-            arreteHori = self.cube[numFace].tab[2][1]
-            arreteVert = self.cube[numFace].tab[1][0]
-
-        elif numCorner == 4:
-            sommet = self.cube[numFace].tab[2][2]
-            arreteHori = self.cube[numFace].tab[2][1]
-            arreteVert = self.cube[numFace].tab[1][2]
-
-        return sommet,arreteHori,arreteVert
-
-
     '''
     Fonction qui pour un angle(1:4) et une face(0:5) donnée renvoie les coordonnées des arretes et du sommet composant      l'angle
     Renvoie 3 tuples, (ligne,colonne)

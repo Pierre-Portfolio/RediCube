@@ -39,42 +39,24 @@ def CreateRedicubeToResolve(text):
 '''
 Function which generate a redicube from the visualisation
 '''
-def CreateRedicubeToResolveVisua(text):
-    r = CreateRedicubeToResolve(text)
-    vi.Visualisation(r)
-
-'''
-Function which generate a redicube from the visualisation
-'''
-def CreateRedicubeToResolveVisua2(n):
+def CreateRedicubeToResolveVisua(n):
     df = ImportCsv('csv/DataSet.csv')
     text = df.loc[n].Pos
     r = CreateRedicubeToResolve(text)
-    vi.Visualisation(r)
     return r
 
-'''
-Function which generates a redicube from the dataset
-'''
-def CreateRedicubeToResolveDataSet(n):
-    df = ImportCsv('csv/DataSet.csv')
-    text = df.loc[n].Pos
-    return CreateRedicubeToResolve(text)
-
-def ResolveRedicubeVisual(n):
-    df=pd.read_csv(r'csv\Dataset.csv',sep=';')
-    r=CreateRedicubeToResolve(df.loc[n]['Pos'])
-    time.sleep(2)
-    s=df.loc[n]['Solution']
-    s=s.split('),(')
-    s[0]=s[0].replace('(','')
-    s[-1]=s[-1].replace('),','')
-    L=[i.split(',') for i in s]
-    for move in L:
-        r.Move(move[0],int(move[1]),int(move[2]))
-        vi.Visualisation(r)
-        time.sleep(1)
-
+"""
+Function which generates a redicubes from dataset or the visualisation
+"""
+def CreateRedicubeToResolveInputVisua(textinput):
+    r = rd.RediCube()
+    if isinstance(textinput, int):
+        r = CreateRedicubeToResolveVisua(textinput)
+    else:
+        if textinput.count('X') == 6:
+            r = CreateRedicubeToResolve(textinput)
+    vi.Visualisation(r)
+    return r
 
 '''
 Find the best face for starting the resolve of redicube & send list of bad coin
@@ -107,22 +89,6 @@ def FindBadCoin(r):
             coinDone = newcoinDone
     r.faceprincipal = bestface
     return list(set([1,2,3,4]) - set(coinDone))
-
-'''
-To place the coin of an face of the redicube
-'''
-def PlaceAllCoins(r,numFace,coinToComplete):
-    tabL = [0,0,0,2,2]
-    tabC = [0,0,2,0,2]
-    for i in coinToComplete:
-        hauteur,numMove = r.InverseMove(numFace,i)
-        newR = r.Copy()
-        newR.Move(hauteur,numMove,1)
-        if(newR.cube[numFace].tab[tabL[i]][tabC[i]] == newR.cube[numFace].couleur):
-            r.Move(hauteur,numMove,1)
-        else:
-            r.Move(hauteur,numMove,-1)
-    return r;
 
 '''
 List the edges of on face who are not placed
