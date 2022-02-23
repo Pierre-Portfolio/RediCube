@@ -90,7 +90,7 @@ def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
 
     compteur=0
     file=[]
-    file.append([r,[],Cout(r)])
+    file.append([r,[],Cout2(r)])
 
 
     while Cout2(file[0][0]) != 32 and compteur<N:
@@ -130,7 +130,7 @@ def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
 
     compteur=0
     file=[]
-    file.append([r,[],Cout(r)])
+    file.append([r,[],Cout2(r)])
 
     while Cout2(file[0][0]) != 32 and compteur<N:
         compteur+=1
@@ -169,7 +169,7 @@ def Resolution_Arbre_elagage3(r,n): #1<n
     r.lastcoup=tuple()
     compteur=0
     file=[]
-    file.append([r,[],Cout(r)])
+    file.append([r,[],Cout2(r)])
     nextfile=[]
     trouver = False
 
@@ -179,6 +179,7 @@ def Resolution_Arbre_elagage3(r,n): #1<n
         else:
             while file:
                 print("passage a la largeur suivante")
+                print(file)
                 compteur+=1
                 node = file.pop(0)
                 
