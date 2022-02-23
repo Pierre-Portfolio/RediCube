@@ -7,6 +7,8 @@ import numpy as np
 import ResolutionClassic
 pd.set_option('display.max_columns', 10)
 
+
+
 Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
 Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
 
@@ -16,7 +18,7 @@ N_sans_elagage=9358
 N_elagage1=5452
 N_elagage2=3906
 '''
-#30min
+#30mins
 N_elagage1=82000
 N_elagage2=60000
 '''
