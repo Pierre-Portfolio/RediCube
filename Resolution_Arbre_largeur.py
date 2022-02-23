@@ -162,6 +162,46 @@ def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
     #Temps de resolution, nombre de noeuds parcouru, solution
     return tf,nb_noeuds,sol
 
+
+##Arbre, parcours en largeur, elagage palier n de difference de cout avec le rd d'origine
+def Resolution_Arbre_elagage3(r,n): #1<n
+    start_time = time.time()
+    r.lastcoup=tuple()
+    compteur=0
+    file=[]
+    file.append([r,[],Cout(r)])
+    nextfile=[]
+    trouver = False
+
+    while not trouver:
+        if Cout2(file[0][0]) == 32:
+            trouver = True
+        else:
+            while file:
+                print("passage a la largeur suivante")
+                compteur+=1
+                node = file.pop(0)
+                
+                for coup in (r.ListCoups()):
+                    L2=[i for i in node[1]]
+                    copy_r = node[0].Copy()
+                    copy_r.Move(coup[0],coup[1],coup[2])
+                    L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
+                    #print({'hauteur':hauteur,'num':num,'sens':sens})
+                    nextfile.append([copy_r,L2,Cout2(copy_r)])
+            
+            #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
+            nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
+            nextfile=nextfile[:n]
+            file.extend(nextfile)
+            nextfile=[]
+            
+    tf=round(time.time() - start_time,2)
+    sol=file[0][1]
+    #Temps de resolution, nombre de noeuds parcouru, solution
+    return tf,compteur,sol
+
+
 ##Fonction permettant de calculer le temps pris pour un N noeuds
 def Comparaison_vitesse_fonctions(nb_noeuds=1000):
     df=pd.DataFrame(columns=['temps resolution elagage 1 n=2','temps resolution elagage 1 n=3',
@@ -382,12 +422,11 @@ D2={'sans_elagage':False,
 'elagage1_n=2':False,'elagage1_n=3':True,'elagage1_n=4':False,'elagage1_n=5':False,'elagage1_n=6':False,
 'elagage2_n=1':False,'elagage2_n=2':False,'elagage2_n=3':False,'elagage2_n=4':False,'elagage2_n=5':False}
 
-def FonctionPierre(D,n_inf,n_sup):
-    L=[]
+def FonctionPierre(n_inf,n_sup):
     df = pd.read_csv(r'csv\DataSet.csv',sep=';')
     for n in range(n_inf,n_sup+1):
-        r=ResolutionClassic.CreateRedicubeToResolve(n)
-        t,noeuds,s = Resolution_Arbre_elagage1(r,3)
+        r=ResolutionClassic.CreateRedicubeToResolveVisua(n)
+        t,noeuds,s = Resolution_Arbre_elagage3(r,9)
         st=''
         for i in s:
             st+='('
@@ -400,6 +439,8 @@ def FonctionPierre(D,n_inf,n_sup):
         df.loc[n,'Solution']=st
         df.loc[n,'Nombre_noeuds']=noeuds
         df.loc[n,'Temps']=t
+        print('###################################################################################')
+        print('Solution ' + str(n) + ' : ' + st + ' Nombre_noeuds : ' + str(noeuds) + ', Temps : ' + str(t))
 
         df.to_csv(r'csv\DataSet.csv',';',index=False,mode='w')
 
