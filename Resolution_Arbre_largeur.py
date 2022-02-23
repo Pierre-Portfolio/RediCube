@@ -179,7 +179,6 @@ def Resolution_Arbre_elagage3(r,n): #1<n
         else:
             while file:
                 print("passage a la largeur suivante")
-                print(file)
                 compteur+=1
                 node = file.pop(0)
                 
@@ -192,9 +191,11 @@ def Resolution_Arbre_elagage3(r,n): #1<n
                     nextfile.append([copy_r,L2,Cout2(copy_r)])
             
             #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
+            print(nextfile)
+            print("Tri")
             nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
-            nextfile=nextfile[:n]
-            file.extend(nextfile)
+            file = nextfile[:n]
+            print(file)
             nextfile=[]
             
     tf=round(time.time() - start_time,2)
@@ -427,7 +428,7 @@ def FonctionPierre(n_inf,n_sup):
     df = pd.read_csv(r'csv\DataSet.csv',sep=';')
     for n in range(n_inf,n_sup+1):
         r=ResolutionClassic.CreateRedicubeToResolveVisua(n)
-        t,noeuds,s = Resolution_Arbre_elagage3(r,9)
+        t,noeuds,s = Resolution_Arbre_elagage3(r,3)
         st=''
         for i in s:
             st+='('
