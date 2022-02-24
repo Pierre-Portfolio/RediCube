@@ -445,5 +445,17 @@ def FonctionPierre(n_inf,n_sup):
         print('Solution ' + str(n) + ' : ' + st + ' Nombre_noeuds : ' + str(noeuds) + ', Temps : ' + str(t))
 
         df.to_csv(r'csv\DataSet.csv',';',index=False,mode='w')
-
-
+        
+'''
+Return the number of coup of all redicube of the datatset
+'''
+def listCoupdataset():
+    df = pd.read_csv(r'csv\DataSet.csv',sep=';')
+    SavenbCoup = []
+    for n in range(0,1000):
+        r=ResolutionClassic.CreateRedicubeToResolveVisua(n)
+        coup = Cout2(r)
+        SavenbCoup.append(coup)
+        print('Score du Redi ' + str(n) + ' : ' + str(coup))
+    SavenbCoup = SavenbCoup.sort(reverse = True)
+    print(SavenbCoup)
