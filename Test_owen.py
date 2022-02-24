@@ -14,9 +14,9 @@ Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
 
 #Nombre correspondant à 5 min de traitement sur ma machine (Owen)
 N_sans_elagage=9358
-
 N_elagage1=5452
 N_elagage2=3906
+
 '''
 #30mins
 N_elagage1=82000
