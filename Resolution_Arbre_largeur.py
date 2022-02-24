@@ -191,11 +191,8 @@ def Resolution_Arbre_elagage3(r,n): #1<n
                     nextfile.append([copy_r,L2,Cout2(copy_r)])
             
             #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
-            print(nextfile)
-            print("Tri")
             nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
             file = nextfile[:n]
-            print(file)
             nextfile=[]
             
     tf=round(time.time() - start_time,2)
