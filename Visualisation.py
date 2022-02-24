@@ -5,6 +5,7 @@ from vpython import *
 import math as m
 import RediCube as rd
 import ResolutionClassic as rc
+import Resolution_Arbre_largeur as ra
 
 def Couleur(r,variable):
     col={'G':vector(0,1,0),'Y':vector(1,1,0),'R':vector(1, 0, 0),'W':vector(1, 1, 1),'O':vector(1,0.2,0),'B':vector(0,0,1)}
@@ -12,12 +13,13 @@ def Couleur(r,variable):
 
 def TextBox(aaaa):
     return int(aaaa.text.replace("\n",""))
+    #return int(aaaa)
 
 def D(aaaa):
     print("-----------------------------------------------------------")
     print(TextBox(aaaa))
     print("-----------------------------------------------------------")
-    rc.CreateRedicubeToResolveVisua2(TextBox(aaaa))
+    r=rc.CreateRedicubeToResolveInputVisua(TextBox(aaaa))
     #Visualisation(r)
 
 def input_number():
@@ -25,7 +27,15 @@ def input_number():
     w1=wtext(text="Veuillez sélectionner une valeur entre 0 et 9999.")    
     wtext(text="\n\n")
     aaaa=winput(text="",width=600,bind=D)
-                  
+    #return rc.CreateRedicubeToResolveInputVisua(TextBox(cube))
+
+def ResolutionVisuel(r):
+    tf,compteur,sol=ra.Resolution_Arbre_elagage3(r,5)
+    w_sol=wtext(text='{}'.format(sol))
+    w_tf=wtext(text='{}'.format(tf))
+    w_compt=wtext(text='{}'.format(compteur)) 
+    
+    
 def Visualisation(r):
     #Lumières
     distant_light(direction=vector(2,0,0), color=color.white)
@@ -369,6 +379,7 @@ def Visualisation(r):
     tf5l2c1=triangle(v0=bda1,v1=bda2,v2=bda3)
     
     input_number()
+    ResolutionVisuel(r)
     #wtext(text="\n\n")
     #b=button(text="Valider",bind=D)
     #winput(width=600,bind=D)
