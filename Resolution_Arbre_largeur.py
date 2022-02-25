@@ -215,7 +215,6 @@ def Resolution_Arbre_elagage4(r,n,nbBeforeRollback): #1<n
     nextfileRollBack=file
     nextfileBestCount = file[0][2]
     nbIncBeforeRollBack = nbBeforeRollback
-    needToRollBack = False
     
     while not trouver:
         if Cout2(file[0][0]) == 32:
@@ -236,26 +235,24 @@ def Resolution_Arbre_elagage4(r,n,nbBeforeRollback): #1<n
             
             #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
             nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
+            file = nextfile[:n]
             
             if nextfile[0][2] > nextfileBestCount:
                 nextfileRollBack=nextfile
                 nextfileBestCount = nextfile[0][2]
                 nbIncBeforeRollBack = nbBeforeRollback
             else:
-                nbIncBeforeRollBack = nbIncBeforeRollBack - 1;
+                nbIncBeforeRollBack = nbIncBeforeRollBack - 1
                 if nbIncBeforeRollBack == 0:
                     nbIncBeforeRollBack = nbBeforeRollback
                     file = nextfileRollBack[:n]
-                    nextfileRollBack = nextfileRollBack[:n]
-                    needToRollBack = True
+                    nextfileBestCount = file[0][2]
+                    nextfileRollBack = nextfileRollBack[n:]                   
                     print("Rollback")
-            
-            if not needToRollBack:
-                file = nextfile[2:n+2]
-                print("Profondeur suivante")
-            else:
-                needToRollBack = False
-                
+                else:
+                    print("profondeur suivante")
+            #reset
+            nextfile=[]
             
             
     tf=round(time.time() - start_time,2)
