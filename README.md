@@ -8,7 +8,7 @@
 
 ## Petit résumé
 
-- Conçu par Oskar Van Deventer en 2009 et publié par MoYu début juin 2017, le Redi Cube est un variant du Rubik's Cube à trois couches sur lequel chaque virage déplace les trois bords l'entourant.
+- Conçu par Oskar Van Deventer en 2009 et publié par MoYu début juin 2017, le Redi Cube est une variante du Rubik's Cube à trois couches sur lequel chaque virage déplace les trois bords l'entourant.
 
 ## Objectifs
 
