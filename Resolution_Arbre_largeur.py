@@ -181,24 +181,31 @@ def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
 
 
 ##Arbre, parcours en largeur, elagage palier n de difference de cout avec le rd d'origine
-def Resolution_Arbre_elagage3(r,n): #1<n
+def Resolution_Arbre_elagage3(r,n,nbBeforeRollback): #1<n
     start_time = time.time()
     r.lastcoup=tuple()
-    compteur=0
+    compteurnbNoeud = 0
+    nbDeDieu = 0
     file=[]
     file.append([r,[],Cout2(r)])
     nextfile=[]
     trouver = False
-
+    
+    #variable Rollback
+    nextfileRollBack=file
+    nextfileBestCount = file[0][2]
+    nbIncBeforeRollBack = nbBeforeRollback
+    nbDeDieuBeforeRollBack = nbDeDieu
+    
     while not trouver:
         if Cout2(file[0][0]) == 32:
             trouver = True
         else:
             while file:
-                print("passage a la largeur suivante")
-                compteur+=1
+                print("score noeud suivante : " + str(Cout2(file[0][0])))
+                compteurnbNoeud+=1
                 node = file.pop(0)
-
+                
                 for coup in (r.ListCoups()):
                     L2=[i for i in node[1]]
                     copy_r = node[0].Copy()
@@ -206,16 +213,32 @@ def Resolution_Arbre_elagage3(r,n): #1<n
                     L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
                     #print({'hauteur':hauteur,'num':num,'sens':sens})
                     nextfile.append([copy_r,L2,Cout2(copy_r)])
-
+            
             #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
             nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
             file = nextfile[:n]
+            
+            if nextfile[0][2] > nextfileBestCount:
+                nextfileRollBack=nextfile
+                nextfileBestCount = nextfile[0][2]
+                nbIncBeforeRollBack = nbBeforeRollback
+                nbDeDieu += 1
+                nbDeDieuBeforeRollBack = nbDeDieu
+                print("profondeur suivante avec pour nombre de dieu : " + str(nbDeDieu))
+            else:
+                nbIncBeforeRollBack = nbIncBeforeRollBack - 1
+                if nbIncBeforeRollBack == 0:
+                    nbIncBeforeRollBack = nbBeforeRollback
+                    file = nextfileRollBack[:n]
+                    nextfileBestCount = file[0][2]
+                    nextfileRollBack = nextfileRollBack[n:]   
+                    nbDeDieu = nbDeDieuBeforeRollBack
+                    print("Rollback")
+                else:
+                    nbDeDieu += 1
+                    print("profondeur suivante avec pour nombre de dieu : " + str(nbDeDieu))
+            #reset
             nextfile=[]
-
-    tf=round(time.time() - start_time,2)
-    sol=file[0][1]
-    #Temps de resolution, nombre de noeuds parcouru, solution
-    return tf,compteur,sol
 
 
 ##Fonction permettant de calculer le temps pris pour un N noeuds
