@@ -108,3 +108,25 @@ def ListBadEdgeOnFace(r,numFace):
                 edgeDone.append(i)
 
     return list(set([1,2,3,4]) - set(edgeDone))
+
+'''
+Avant premiere face:
+    on analyse face par face et effectuons le scoring suivant:
+        1 point: coin bien placé
+        2 point: arette bien placé
+        3 points: coin & son arette
+        4 points: une ligne
+        5 points: 1 coint et ses 2 arettes
+            
+    -> Une fois la premiere face faite on reset le roolback a cet instant T
+    -> Blocage du nbr de coup a 4
+    
+    -> Changement Potentielle ( a tester ) du scoring suivant ci-dessous :
+    Scoring poentielle suivant:
+        1point: coin bien placé
+        2point: coin & son arette
+        3points: une ligne
+        5points: 1 coint et ses 2 arettes
+'''
+def CoutPierre():
+    return 0
