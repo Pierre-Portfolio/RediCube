@@ -83,7 +83,7 @@ def FindBadCoin(r):
                     newcoinDone.append(2)
                 else:
                     newcoinDone.append(4)
-        if(newscoreface > bestscoreface):
+        if(newscoreface >= bestscoreface):
             bestface = i
             bestscoreface = newscoreface
             coinDone = newcoinDone
