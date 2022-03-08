@@ -11,12 +11,12 @@ import Visualisation as vi
 face = 6
 listFaceCouleur = ['G','Y','R','W','O','B']
 listAllCoup = [("up",1,-1), ("up",1,1), ("up",2,-1), ("up",2,1), ("up",3,-1), ("up",3,1), ("up",4,-1) , ("up",4,1), ("down",1,-1), ("down",1,1), ("down",2,-1), ("down",2,1), ("down",3,-1), ("down",3,1), ("down",4,-1) , ("down",4,1)]
+ListCoinFace = [(),(),(),(),(),()]
+
 Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
 Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
-
 Moves=pd.read_csv('csv/Moves.csv',sep=';')
 correction_moves = pd.read_csv('csv/Correction_moves.csv',sep=';')
-
 
 '''
 Redicube : liste de Face, redicube => .cube, face=> .tab
@@ -240,10 +240,26 @@ class RediCube():
 
     '''
     Return a list of all possibilities
-    '''
+    
     def ListCoups(self):
         ListCoupRestant = [i for i in listAllCoup]
         if self.lastcoup != ():
+            #On empeche de revenir ou arriere ou de faire 2 fois le meme coup
+            ListCoupRestant.remove((self.lastcoup[0],self.lastcoup[1],-1))
+            ListCoupRestant.remove((self.lastcoup[0],self.lastcoup[1],1))
+            return ListCoupRestant
+        else:
+            return listAllCoup
+     '''   
+    
+    def ListCoups(self):
+        ListCoupRestant = [i for i in listAllCoup]
+        if self.lastcoup != ():
+            
+            #Si premiere face terminé on la bloque
+            if self.faceprincipal != -1:
+                recupCoin = ListCoinFace(self.faceprincipal)
+                
             #On empeche de revenir ou arriere ou de faire 2 fois le meme coup
             ListCoupRestant.remove((self.lastcoup[0],self.lastcoup[1],-1))
             ListCoupRestant.remove((self.lastcoup[0],self.lastcoup[1],1))
