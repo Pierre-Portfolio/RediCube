@@ -47,6 +47,23 @@ def Cout2(r):
 
     return res
 
+#Si l'arrete sur une des 2 faces, collée au sommet de l'autre face => en 1 coup
+'''
+  FACE VERTE                FACE VERTE
+     XXX                       XXX
+     XX|X                      XX|R..V
+     X |XX                     X |XR
+
+  FACE ROUGE                FACE ROUGE
+     X |XV                     X |XX
+     XX|V..R                   XX|X
+     XXX                       XXX
+
+'''
+#A FAIRE : ajout num corner concerné pour chaque arrete, retrouver le mouv, et regardé si l'arrete et mis en 1 coup, et le sommet n'est pas enlevé
+
+#sommet pas mis, sur l'autre face de l'arrete, et arrete à la face opposé => 2coups
+
 ##Arbre, parcours en largeur
 def Resolution_Arbre(r,N=N_sans_elagage):
     start_time = time.time()
@@ -162,33 +179,26 @@ def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
     #Temps de resolution, nombre de noeuds parcouru, solution
     return tf,nb_noeuds,sol
 
+
 ##Arbre, parcours en largeur, elagage palier n de difference de cout avec le rd d'origine
-##nbChooseRollback est le nombre de coup choisi avant un potentielle rollback
-def Resolution_Arbre_elagage4(r,n,nbBeforeRollback): #1<n
+def Resolution_Arbre_elagage3(r,n): #1<n
     start_time = time.time()
     r.lastcoup=tuple()
-    compteurnbNoeud = 0
-    nbDeDieu = 0
+    compteur=0
     file=[]
     file.append([r,[],Cout2(r)])
     nextfile=[]
     trouver = False
-    
-    #variable Rollback
-    nextfileRollBack=file
-    nextfileBestCount = file[0][2]
-    nbIncBeforeRollBack = nbBeforeRollback
-    nbDeDieuBeforeRollBack = nbDeDieu
-    
+
     while not trouver:
         if Cout2(file[0][0]) == 32:
             trouver = True
         else:
             while file:
-                print("score noeud suivante : " + str(Cout2(file[0][0])))
-                compteurnbNoeud+=1
+                print("passage a la largeur suivante")
+                compteur+=1
                 node = file.pop(0)
-                
+
                 for coup in (r.ListCoups()):
                     L2=[i for i in node[1]]
                     copy_r = node[0].Copy()
@@ -196,38 +206,17 @@ def Resolution_Arbre_elagage4(r,n,nbBeforeRollback): #1<n
                     L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
                     #print({'hauteur':hauteur,'num':num,'sens':sens})
                     nextfile.append([copy_r,L2,Cout2(copy_r)])
-            
+
             #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
             nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
             file = nextfile[:n]
-            
-            if nextfile[0][2] > nextfileBestCount:
-                nextfileRollBack=nextfile
-                nextfileBestCount = nextfile[0][2]
-                nbIncBeforeRollBack = nbBeforeRollback
-                nbDeDieu += 1
-                nbDeDieuBeforeRollBack = nbDeDieu
-                print("profondeur suivante avec pour nombre de dieu : " + str(nbDeDieu))
-            else:
-                nbIncBeforeRollBack = nbIncBeforeRollBack - 1
-                if nbIncBeforeRollBack == 0:
-                    nbIncBeforeRollBack = nbBeforeRollback
-                    file = nextfileRollBack[:n]
-                    nextfileBestCount = file[0][2]
-                    nextfileRollBack = nextfileRollBack[n:]   
-                    nbDeDieu = nbDeDieuBeforeRollBack
-                    print("Rollback")
-                else:
-                    nbDeDieu += 1
-                    print("profondeur suivante avec pour nombre de dieu : " + str(nbDeDieu))
-            #reset
             nextfile=[]
-            
-            
+
     tf=round(time.time() - start_time,2)
     sol=file[0][1]
     #Temps de resolution, nombre de noeuds parcouru, solution
-    return tf,compteurnbNoeud,sol
+    return tf,compteur,sol
+
 
 ##Fonction permettant de calculer le temps pris pour un N noeuds
 def Comparaison_vitesse_fonctions(nb_noeuds=1000):
@@ -449,11 +438,11 @@ D2={'sans_elagage':False,
 'elagage1_n=2':False,'elagage1_n=3':True,'elagage1_n=4':False,'elagage1_n=5':False,'elagage1_n=6':False,
 'elagage2_n=1':False,'elagage2_n=2':False,'elagage2_n=3':False,'elagage2_n=4':False,'elagage2_n=5':False}
 
-def FonctionPierre(n_inf,n_sup,n,nbBeforeRollback):
+def FonctionPierre(n_inf,n_sup):
     df = pd.read_csv(r'csv\DataSet.csv',sep=';')
     for n in range(n_inf,n_sup+1):
         r=ResolutionClassic.CreateRedicubeToResolveVisua(n)
-        t,noeuds,s = Resolution_Arbre_elagage4(r,12,5)
+        t,noeuds,s = Resolution_Arbre_elagage3(r,3)
         st=''
         for i in s:
             st+='('
@@ -468,9 +457,9 @@ def FonctionPierre(n_inf,n_sup,n,nbBeforeRollback):
         df.loc[n,'Temps']=t
         print('###################################################################################')
         print('Solution ' + str(n) + ' : ' + st + ' Nombre_noeuds : ' + str(noeuds) + ', Temps : ' + str(t))
-        time.sleep(3)
+
         df.to_csv(r'csv\DataSet.csv',';',index=False,mode='w')
-        
+
 '''
 Return the number of coup of all redicube of the datatset
 '''
