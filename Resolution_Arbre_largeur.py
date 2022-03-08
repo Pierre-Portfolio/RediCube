@@ -181,7 +181,7 @@ def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
 
 
 ##Arbre, parcours en largeur, elagage palier n de difference de cout avec le rd d'origine
-def Resolution_Arbre_elagage3(r,n,nbBeforeRollback): #1<n
+def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
     start_time = time.time()
     r.lastcoup=tuple()
     compteurnbNoeud = 0
