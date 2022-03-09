@@ -183,8 +183,6 @@ class RediCube():
                 else:
                     print('\nhauteur :',Mouv['hauteur'],', numéro de rotation :',Mouv['numero'],', rotation sens anti-horaire')
 
-
-
             #time.sleep(1)
             self.Move(Mouv['hauteur'],Mouv['numero'],sens)
             #print(self)
@@ -268,6 +266,9 @@ class RediCube():
     Return bool witch said if the first face is finished
     '''
     def firstFaceFinish(self):
+        for i in face:
+            print("Test");
+            'self.cube(i)
         return False;
 
     '''
