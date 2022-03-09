@@ -49,6 +49,43 @@ def Cout2(r):
 
     return res
 
+'''
+arretes voisines, si elle est à l'une de ses coordonées
+regarder s'il y a un sommet voisin de la même couleur
+'''
+def Cout3(r):
+    rd_resolu = rd.RediCube()
+    res=0
+    for index,row in Aretes.iterrows():
+        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
+            res+=2
+        elif:#Arrete a un coup
+            #Arretes voisines
+            AretesVoisines=Aretes[(Aretes['hauteur move 1']==row['hauteur move 1']) & (Aretes['numero move 1']==row['numero move 1'])]
+            AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 2']==row['hauteur move 1']) & (Aretes['numero move 2']==row['numero move 1'])])
+
+            AretesVoisines=AretesVoisines.append[(Aretes['hauteur move 1']==row['hauteur move 2']) & (Aretes['numero move 1']==row['numero move 2'])]
+            AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 2']==row['hauteur move 2']) & (Aretes['numero move 2']==row['numero move 2'])])
+
+
+    for index,row in Sommets.iterrows():
+        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
+            res+=1
+
+    return res
+
+#Retourne les coordonnées des 2 sommets voisins, pour les coordonnées d'une arete
+def SommetsVoisins(ligne,colonne):
+    if ligne in (0,2):
+        s1=(ligne,colonne-1)
+        s2=(ligne,colonne+1)
+
+    elif ligne==1:
+        s1=(ligne-1,colonne)
+        s2=(ligne+1,colonne)
+
+    return s1,s2
+
 ##Arbre, parcours en largeur, elagage top n (cout)
 def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
     start_time = time.time()

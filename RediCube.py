@@ -268,7 +268,7 @@ class RediCube():
     def firstFaceFinish(self):
         for i in face:
             print("Test");
-            'self.cube(i)
+            self.cube(i)
         return False;
 
     '''
