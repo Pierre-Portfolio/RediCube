@@ -101,19 +101,35 @@ def ListBadEdgeOnFace(r,numFace):
         if(r.cube[numFace].tab[listEdge[i][0]][listEdge[i][1]] == r.cube[numFace].couleur):
             #Save the numface and the edge
             numFaceNeighbor = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['neighbor'].to_list()
+            '''
             numEdge = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['edge'].to_list()
 
+            print("succes")
+            
             #check the edge dependence
             if(r.cube[ numFaceNeighbor[0] ].tab[ listEdge[numEdge[0]][0] ][ listEdge[numEdge[0]][1] ] == r.cube[numFaceNeighbor[0]].couleur):
                 edgeDone.append(i)
 
-    return list(set([1,2,3,4]) - set(edgeDone))
+    return list(set([1,2,3,4]) - set(edgeDone))'''
 
 '''
-Return boolean for said if the first face is finished
+Return boolean witch return the value of the principale face after checked it was finished
 '''
-def FirstCouronne():
-    return 0
+def FirstCouronne(r):
+    for i in range(rd.face):
+        color = r.cube[i].couleur
+        goodface = [[color,color,color],[color,'X',color],[color,color,color]]
+        if goodface == r.cube[i].tab:
+            
+            #We know of coin is good so we check edge 
+            if len(ListBadEdgeOnFace(r,i)) == 0:
+                r.faceprincipal = i
+        
+        #We leave the function
+        if(r.faceprincipal != -1):
+            print("on sort d'ici")
+            break
+    return r.faceprincipal
 
 '''
 Avant premiere face:
