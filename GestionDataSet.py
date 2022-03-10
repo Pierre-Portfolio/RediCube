@@ -18,7 +18,7 @@ def StartGenerateDataSet(nbfois):
             df = df.append({"Pos":text},ignore_index=True)
             nbfind += 1
             print("Une new valeur ajouté : " , nbfind)
-    df.to_csv(df, index=False, sep=';')
+    df.to_csv('csv/DataSet.csv', index=False, sep=';')
     print("--- %s seconds ---" % (rd.time.time() - start_time))
     
 '''

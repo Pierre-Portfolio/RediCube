@@ -3,6 +3,7 @@ import pandas as pd
 import time
 import numpy as np
 import ResolutionClassic
+import GestionDataSet
 
 pd.set_option('display.max_columns', 10)
 Aretes=pd.read_csv('csv/Aretes.csv',sep=';')

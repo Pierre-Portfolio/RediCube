@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
-
-#Imports de librairies
+#Imports librairies
 from vpython import *
 import math as m
 import Resolution_Arbre_largeur as ra
-import GestionDataSet as Gd
 
 def Couleur(r,variable):
     col={'G':vector(0,1,0),'Y':vector(1,1,0),'R':vector(1, 0, 0),'W':vector(1, 1, 1),'O':vector(1,0.2,0),'B':vector(0,0,1)}
