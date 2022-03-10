@@ -66,8 +66,9 @@ def Cout3(r):
             #Arretes voisines
             AretesVoisines=Aretes[(Aretes['hauteur move 1']==row['hauteur move 1']) & (Aretes['numero move 1']==row['numero move 1'])]
             AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 2']==row['hauteur move 1']) & (Aretes['numero move 2']==row['numero move 1'])])
+            #print(AretesVoisines)
 
-            AretesVoisines=AretesVoisines.append[(Aretes['hauteur move 1']==row['hauteur move 2']) & (Aretes['numero move 1']==row['numero move 2'])]
+            AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 1']==row['hauteur move 2']) & (Aretes['numero move 1']==row['numero move 2'])])
             AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 2']==row['hauteur move 2']) & (Aretes['numero move 2']==row['numero move 2'])])
 
             for index2,row2 in AretesVoisines.iterrows():
@@ -116,10 +117,11 @@ def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
 
     compteur=0
     file=[]
-    file.append([r,[],Cout(r)])
+    file.append([r,[],Cout3(r)])
     cube=rd.RediCube().cube
 
-    while file[0][0].cube != cube and compteur<N:
+
+    while Cout3(file[0][0]) != 44 and compteur<N:
         compteur+=1
         node = file.pop(0)
         Ltemp=[]
@@ -127,6 +129,7 @@ def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
         for coup in (r.ListCoups()):
             L2=[i for i in node[1]]
             copy_r = node[0].Copy()
+
             copy_r.Move(coup[0],coup[1],coup[2])
             L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
             #print({'hauteur':hauteur,'num':num,'sens':sens})
@@ -155,7 +158,7 @@ def Resolution_Arbre_elagage1_V2(r,n,N=N_elagage1): #1<n<7
 
     compteur=0
     file=[]
-    file.append([r,[],Cout(r)])
+    file.append([r,[],Cout2(r)])
     cube=rd.RediCube().cube
     All_Redi=[]
     All_Redi.append(r.cube)
