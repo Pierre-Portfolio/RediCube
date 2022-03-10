@@ -96,6 +96,7 @@ List the edges of on face who are not placed
 def ListBadEdgeOnFace(r,numFace):
     edgeDone = []
 
+    
     #for each edge
     for i in range(1,5):
         if(r.cube[numFace].tab[listEdge[i][0]][listEdge[i][1]] == r.cube[numFace].couleur):
