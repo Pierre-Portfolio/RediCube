@@ -5,7 +5,7 @@ import time
 import Resolution_Arbre_largeur
 import Visualisation as vi
 
-dfNeighbor = ImportCsv('csv/FaceNeighbor.csv')
+dfNeighbor = pd.read_csv('csv/FaceNeighbor.csv')
 
 #Constante
 listEdge = [0,[0,1],[1,0],[1,2],[2,1]]

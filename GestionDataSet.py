@@ -58,5 +58,4 @@ def CreateRedicubeToResolveInputVisua(textinput):
     else:
         if textinput.count('X') == 6:
             r = CreateRedicubeToResolve(textinput)
-    rd.vi.Visualisation(r)
     return r
