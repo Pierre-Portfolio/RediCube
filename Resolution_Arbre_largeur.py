@@ -302,6 +302,11 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
                     print("profondeur suivante avec pour nombre de dieu : " + str(nbDeDieu))
             #reset
             nextfile=[]
+            
+        tf=round(time.time() - start_time,2)
+        sol=file[0][1]
+        #Temps de resolution, nombre de noeuds parcouru, solution
+        return sol,tf,nbDeDieu,compteurnbNoeud,
 
 
 ##Fonction permettant de calculer le temps pris pour un N noeuds
