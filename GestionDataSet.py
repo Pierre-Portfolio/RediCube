@@ -44,18 +44,20 @@ Function which generates a redicube from the visualisation
 '''
 def CreateRedicubeToResolveVisua(n):
     df = rd.pd.read_csv('csv/DataSet.csv',sep=';')
+    if n >= len(df):
+        return ["error","Valeur maximale autorisé : " + str(len(df))]
     text = df.loc[n].Pos
     r = CreateRedicubeToResolve(text)
-    return r
+    return ["succes",r]
 
 """
 Function which generates a redicubes from dataset or the visualisation
 """
 def CreateRedicubeToResolveInputVisua(textinput):
-    r = rd.RediCube()
     if isinstance(textinput, int):
-        r = CreateRedicubeToResolveVisua(textinput)
+        return CreateRedicubeToResolveVisua(textinput)
     else:
-        if textinput.count('X') == 6:
-            r = CreateRedicubeToResolve(textinput)
-    return r
+        if textinput.count('X') == 6 and len(textinput) == 54:
+            return ["succes",CreateRedicubeToResolve(textinput)]
+        else:
+            return ["error", "Impossible de créer un RediCube"]
