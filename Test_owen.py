@@ -130,7 +130,7 @@ def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
             copy_r.Move(coup[0],coup[1],coup[2])
             L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
             #print({'hauteur':hauteur,'num':num,'sens':sens})
-            Ltemp.append([copy_r,L2,Cout2(copy_r)])
+            Ltemp.append([copy_r,L2,Cout3(copy_r)])
 
         #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
         Ltemp=sorted(Ltemp, key=lambda x: x[2], reverse = True)
