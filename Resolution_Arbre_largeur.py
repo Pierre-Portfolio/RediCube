@@ -190,13 +190,13 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
     file.append([r,[],Cout2(r)])
     nextfile=[]
     trouver = False
-    
+
     #variable Rollback
     nextfileRollBack=file
     nextfileBestCount = file[0][2]
     nbIncBeforeRollBack = nbBeforeRollback
     nbDeDieuBeforeRollBack = nbDeDieu
-    
+
     while not trouver:
         if Cout3(file[0][0]) == 44:
             trouver = True
@@ -205,7 +205,7 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
                 print("score noeud suivante : " + str(Cout3(file[0][0])))
                 compteurnbNoeud+=1
                 node = file.pop(0)
-                
+
                 for coup in (r.ListCoups()):
                     L2=[i for i in node[1]]
                     copy_r = node[0].Copy()
@@ -213,11 +213,11 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
                     L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
                     #print({'hauteur':hauteur,'num':num,'sens':sens})
                     nextfile.append([copy_r,L2,Cout3(copy_r)])
-            
+
             #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
             nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
             file = nextfile[:n]
-            
+
             if nextfile[0][2] > nextfileBestCount:
                 nextfileRollBack=nextfile
                 nextfileBestCount = nextfile[0][2]
@@ -231,7 +231,7 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
                     nbIncBeforeRollBack = nbBeforeRollback
                     file = nextfileRollBack[:n]
                     nextfileBestCount = file[0][2]
-                    nextfileRollBack = nextfileRollBack[n:]   
+                    nextfileRollBack = nextfileRollBack[n:]
                     nbDeDieu = nbDeDieuBeforeRollBack
                     print("Rollback")
                 else:
