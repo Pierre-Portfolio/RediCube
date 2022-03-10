@@ -57,10 +57,25 @@ def Cout3(r):
     rd_resolu = rd.RediCube()
     res=0
     for index,row in Aretes.iterrows():
+        #Arete mise
         if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
 
-            #Arete mise = 3 points
-            res+=3
+            s1,s2 = SommetsVoisins(row['Ligne1'],row['Colonne1'])
+            #Arete mise collée à un sommet
+            if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == r.cube[row['Face1']].tab[s1[0]][s1[1]]) or (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == r.cube[row['Face1']].tab[s2[0]][s2[1]]):
+
+                #Arete mise collée à 2 sommets
+                if r.cube[row['Face1']].tab[s1[0]][s1[1]] == r.cube[row['Face1']].tab[s2[0]][s2[1]]:
+                    res+=6
+
+                #Arete mise collée à un sommet
+                else:
+                    res += 4
+
+            #Arete mise
+            else:
+                res+=3
+
 
         else:#Arrete a un coup
             #Arretes voisines
@@ -121,7 +136,7 @@ def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
     cube=rd.RediCube().cube
 
 
-    while Cout3(file[0][0]) != 44 and compteur<N:
+    while Cout3(file[0][0]) != 80 and compteur<N:
         compteur+=1
         node = file.pop(0)
         Ltemp=[]
