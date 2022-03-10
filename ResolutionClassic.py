@@ -5,58 +5,10 @@ import time
 import Resolution_Arbre_largeur
 import Visualisation as vi
 
-def ImportCsv(csv):
-    df = pd.read_csv(csv,sep=';')
-    return df
-
-def ExportCsv(df):
-    df.to_csv('csv/DataSet.csv', index=False, sep=';')
-
 dfNeighbor = ImportCsv('csv/FaceNeighbor.csv')
 
 #Constante
 listEdge = [0,[0,1],[1,0],[1,2],[2,1]]
-
-
-'''
-Function which generate redicube from a string
-'''
-def CreateRedicubeToResolve(text):
-    listLigne = [text[i:i+3] for i in range(0, len(text), 3)]
-    listLigne2 = []
-    for i in listLigne:
-        l=[]
-        for j in i:
-            l.append(j)
-        listLigne2.append(l)
-    listFace=[]
-    couleur=0
-    for i in range(0,len(listLigne2),3):
-      listFace.append(f.Face(rd.listFaceCouleur[couleur],listLigne2[i:i+3]))
-      couleur+=1
-    return rd.RediCube(listFace)
-
-'''
-Function which generate a redicube from the visualisation
-'''
-def CreateRedicubeToResolveVisua(n):
-    df = ImportCsv('csv/DataSet.csv')
-    text = df.loc[n].Pos
-    r = CreateRedicubeToResolve(text)
-    return r
-
-"""
-Function which generates a redicubes from dataset or the visualisation
-"""
-def CreateRedicubeToResolveInputVisua(textinput):
-    r = rd.RediCube()
-    if isinstance(textinput, int):
-        r = CreateRedicubeToResolveVisua(textinput)
-    else:
-        if textinput.count('X') == 6:
-            r = CreateRedicubeToResolve(textinput)
-    vi.Visualisation(r)
-    return r
 
 '''
 Find the best face for starting the resolve of redicube & send list of bad coin

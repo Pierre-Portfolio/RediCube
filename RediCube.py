@@ -1,17 +1,22 @@
-#import
+# Import lib
+from Face import Face
 import numpy as np
 import pandas as pd
 import random
 import time
-from Face import Face
-import Visualisation as vi
+
+
+# Import Csv
+Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
+Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
+Moves=pd.read_csv('csv/Moves.csv',sep=';')
+correction_moves = pd.read_csv('csv/Correction_moves.csv',sep=';')
 
 
 #Constante
 face = 6
 listFaceCouleur = ['G','Y','R','W','O','B']
 listAllCoup = [("up",1,-1), ("up",1,1), ("up",2,-1), ("up",2,1), ("up",3,-1), ("up",3,1), ("up",4,-1) , ("up",4,1), ("down",1,-1), ("down",1,1), ("down",2,-1), ("down",2,1), ("down",3,-1), ("down",3,1), ("down",4,-1) , ("down",4,1)]
-
 ListCoinFace = [[("down",2,1),("down",1,1),("up",1,1),("up",2,1),("down",2,-1),("down",1,-1),("up",1,-1),("up",2,-1)], 
                 [("down",2,1),("down",4,1),("up",1,1),("up",3,1),("down",2,-1),("down",4,-1),("up",1,-1),("up",3,-1)], 
                 [("up",1,1),("up",2,1),("up",3,1),("up",4,1),("up",1,-1),("up",2,-1),("up",3,-1),("up",4,-1)],
@@ -19,19 +24,12 @@ ListCoinFace = [[("down",2,1),("down",1,1),("up",1,1),("up",2,1),("down",2,-1),(
                 [("down",2,1),("down",1,1),("down",4,1),("down",3,1),("down",2,-1),("down",1,-1),("down",4,-1),("down",3,-1)],
                 [("down",4,1),("down",3,1),("up",3,1),("up",4,1),("down",4,-1),("down",3,-1),("up",3,-1),("up",4,-1)]]
 
-Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
-Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
-Moves=pd.read_csv('csv/Moves.csv',sep=';')
-correction_moves = pd.read_csv('csv/Correction_moves.csv',sep=';')
 
-'''
-Redicube : liste de Face, redicube => .cube, face=> .tab
-indiquer en paramètre la liste de Face, sinon par défaut le RediCube et créé résolu
-'''
+#Class and Function
 class RediCube():
+    #if matrice is not define, we return a fully 'finished' cube.
+    # color code : R for red, W for white, O for orange, Y for yellow, G for green, B for blue
     def __init__(self,L=[]):
-        #if matrice is not define, we return a fully 'finished' cube.
-        # color code : R for red, W for white, O for orange, Y for yellow, G for green, B for blue
         cube = []
         self.faceprincipal = -1
         self.nbCoups = 0
@@ -40,12 +38,11 @@ class RediCube():
             for c in listFaceCouleur:
                 cube.append(Face(couleur=c))
             self.cube = cube
-
         else:
             self.cube = L
 
     '''
-    fonction renvoyant une copie d'un RediCube
+    Return a copy of a RediCube
     '''
     def Copy(self):
         r=RediCube()
@@ -75,10 +72,10 @@ class RediCube():
         res+= '\n\n     ' + l4[0:3] + '\n     ' + l4[4:7] + '\n     ' + l4[8:11]
 
         return res
+    
 
     '''
-    Fonction qui pour un angle(1:4) et une face(0:5) donnée renvoie les coordonnées des arretes et du sommet composant      l'angle
-    Renvoie 3 tuples, (ligne,colonne)
+    Return a Tuple of coordinate containing a row and columns with two parameters : angle(1:4), face(0:5)
     '''
     def CornerCoordonnees(self,numFace,numCorner):
         if numCorner == 1:
@@ -102,10 +99,15 @@ class RediCube():
             arreteVert = (1,2)
 
         return sommet,arreteHori,arreteVert
+    
+    
+    def InversionArretes(self,numFace,arreteHori,arreteVert):
+        self.cube[numFace].tab[arreteHori[0]][arreteHori[1]],self.cube[numFace].tab[arreteVert[0]][arreteVert[1]] = self.cube[numFace].tab[arreteVert[0]][arreteVert[1]],self.cube[numFace].tab[arreteHori[0]][arreteHori[1]]
+
 
     '''
-    Fonction qui effectue une rotation du RediCube
-    parametres: numéro de chaque face(3), et numéro de chaque angle(3) concerné, sens de rotation
+    Its a procedure to perform a rotation of the RediCube
+    parameters: numéro de chaque face(3), et numéro de chaque angle(3) concerné, sens de rotation
     Fonction qui ne renvoie rien, effectue le mouvement du RediCube, self.cube est modifié
     '''
     def RotationCorners(self,numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,hauteur,num,sens):
@@ -141,10 +143,6 @@ class RediCube():
         else:
             self.InversionArretes(numFace3,arreteHori3,arreteVert3)
 
-
-    def InversionArretes(self,numFace,arreteHori,arreteVert):
-        self.cube[numFace].tab[arreteHori[0]][arreteHori[1]],self.cube[numFace].tab[arreteVert[0]][arreteVert[1]] = self.cube[numFace].tab[arreteVert[0]][arreteVert[1]],self.cube[numFace].tab[arreteHori[0]][arreteHori[1]]
-
     '''
     Fonction qui effectue une rotation du RediCube
     parametres: hauteur du mouvement(up,down), numéro du mouvement(1:4), sens(1:horaire, -1:anti-horaire)
@@ -158,6 +156,7 @@ class RediCube():
 
         self.RotationCorners(numFace1,numCorner1,numFace2,numCorner2,numFace3,numCorner3,hauteur,num,sens)
         self.lastcoup = (hauteur,num,sens)
+        
 
     '''
     Fonction qui mélange le RediCube en prenant en paramètre le nombre de coup effectués pour le mélange
@@ -182,66 +181,37 @@ class RediCube():
                     print('\nhauteur :',Mouv['hauteur'],', numéro de rotation: ',Mouv['numero'],', rotation sens horaire')
                 else:
                     print('\nhauteur :',Mouv['hauteur'],', numéro de rotation :',Mouv['numero'],', rotation sens anti-horaire')
-
-            #time.sleep(1)
             self.Move(Mouv['hauteur'],Mouv['numero'],sens)
-            #print(self)
+            
 
+    '''
+    Return the cost search of a RediCube
+    '''
     def Recherche_cout(self,c_inf,c_max,melange_min=-1):
         compteur=0
         while((self.Cout() not in (range(c_inf,c_max+1))) or compteur<melange_min):
             compteur+=1
             self.Melange(1)
-            #print(Cout(self))
 
 
     '''
-    Fonction which return the type
+    Return the type : Corner or Edge
     '''
     def Type(self,ligne,colonne):
         if [ligne,colonne] in ([0,0],[0,2],[2,0],[2,2]):
             return 'sommet'
         return 'arrete'
+    
 
     '''
-    Fonction qui return la hauteur et le numero du mouvement d'une face et d'un coin donné
+    Return the movement and the high of a face and corner parameter
     '''
     def InverseMove(self,numFace,numCorner):
         hauteur = Moves[(Moves['numero de face']==numFace) & (Moves['numero de corner']==numCorner)]['hauteur'].tolist()[0]
         numMove = Moves[(Moves['numero de face']==numFace) & (Moves['numero de corner']==numCorner)]['numero'].tolist()[0]
-
         return hauteur,numMove
 
-    '''
-    Return a visual of a redicube
-    '''
-    def MelangeVisuel(self,nb):
-        vi.Visualisation(self)
-        (NumMouv0,sens0) = (-1,2)
-        for i in range(nb):
-            NumMouv=random.randint(0,7)
-            sens=random.randint(0,1)
-            while (NumMouv==NumMouv0) and (sens!=sens0):
-                NumMouv=random.randint(0,7)
-                sens=random.randint(0,1)
-
-            (NumMouv0,sens0) = (NumMouv,sens)
-
-            if sens == 0:
-                sens =-1
-            Mouv=Moves.drop_duplicates(subset=['hauteur','numero']).iloc[NumMouv]
-            if sens == 1:
-                print('\nhauteur :',Mouv['hauteur'],', numéro de rotation: ',Mouv['numero'],', rotation sens horaire')
-            else:
-                print('\nhauteur :',Mouv['hauteur'],', numéro de rotation :',Mouv['numero'],', rotation sens anti-horaire')
-
-
-
-            #time.sleep(1)
-            input('\nappuyer sur entrée\n')
-            self.Move(Mouv['hauteur'],Mouv['numero'],sens)
-            vi.Visualisation(self)  
-    
+ 
     '''
     Return the List of Coup
     '''
@@ -262,6 +232,7 @@ class RediCube():
         
         return list(set(listAllCoup) - set(ListCoupDelete))
 
+
     '''
     Return bool witch said if the first face is finished
     '''
@@ -270,20 +241,3 @@ class RediCube():
             print("Test");
             self.cube(i)
         return False;
-
-    '''
-    Return the Cout of an RediCube
-    '''
-    def Cout(self):
-        rd_resolu = RediCube()
-        res=0
-        for index,row in Aretes.iterrows():
-            if (self.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (self.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-                res+=2
-    
-        for index,row in Sommets.iterrows():
-            if (self.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
-                res+=1
-    
-        return res
-

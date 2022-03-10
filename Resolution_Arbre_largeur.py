@@ -1,20 +1,18 @@
 import RediCube as rd
-import Face as f
 import pandas as pd
 import time
-pd.set_option('display.max_columns', 10)
-import multiprocessing
 import numpy as np
 import ResolutionClassic
 
+pd.set_option('display.max_columns', 10)
 Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
 Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
 
 #Nombre correspondant à 5 min de traitement sur ma machine (Owen)
 N_sans_elagage=9358
-
 N_elagage1=5452
 N_elagage2=3906
+
 '''
 #30min
 N_elagage1=82000
@@ -36,6 +34,7 @@ def Cout(r):
     return res
 
 CoutRediCubeFinish = Cout(rd_resolu)
+
 def Cout2(r):
     res=0
     for index,row in Aretes.iterrows():

@@ -3,9 +3,8 @@
 #Imports de librairies
 from vpython import *
 import math as m
-import RediCube as rd
-import ResolutionClassic as rc
 import Resolution_Arbre_largeur as ra
+import GestionDataSet as Gd
 
 def Couleur(r,variable):
     col={'G':vector(0,1,0),'Y':vector(1,1,0),'R':vector(1, 0, 0),'W':vector(1, 1, 1),'O':vector(1,0.2,0),'B':vector(0,0,1)}
@@ -391,4 +390,32 @@ def Visualisation(r):
 
     
     
-    
+'''
+Return a visual of a redicube
+'''
+def MelangeVisuel(r,nb):
+    vi.Visualisation(r)
+    (NumMouv0,sens0) = (-1,2)
+    for i in range(nb):
+        NumMouv=random.randint(0,7)
+        sens=random.randint(0,1)
+        while (NumMouv==NumMouv0) and (sens!=sens0):
+            NumMouv=random.randint(0,7)
+            sens=random.randint(0,1)
+
+        (NumMouv0,sens0) = (NumMouv,sens)
+
+        if sens == 0:
+            sens =-1
+        Mouv=Moves.drop_duplicates(subset=['hauteur','numero']).iloc[NumMouv]
+        if sens == 1:
+            print('\nhauteur :',Mouv['hauteur'],', numéro de rotation: ',Mouv['numero'],', rotation sens horaire')
+        else:
+            print('\nhauteur :',Mouv['hauteur'],', numéro de rotation :',Mouv['numero'],', rotation sens anti-horaire')
+
+
+
+        #time.sleep(1)
+        input('\nappuyer sur entrée\n')
+        r.Move(Mouv['hauteur'],Mouv['numero'],sens)
+        vi.Visualisation(r)  
