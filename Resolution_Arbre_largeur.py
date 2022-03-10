@@ -248,7 +248,7 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
     start_time = time.time()
     r.lastcoup=tuple()
     compteurnbNoeud = 0
-    nbDeDieu = 0
+    nbDeCoup = 0
     file=[]
     file.append([r,[],Cout2(r)])
     nextfile=[]
@@ -258,7 +258,7 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
     nextfileRollBack=file
     nextfileBestCount = file[0][2]
     nbIncBeforeRollBack = nbBeforeRollback
-    nbDeDieuBeforeRollBack = nbDeDieu
+    nbDeCoupBeforeRollBack = nbDeCoup
     
     while not trouver:
         if Cout(file[0][0]) == 44:
@@ -285,9 +285,9 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
                 nextfileRollBack=nextfile
                 nextfileBestCount = nextfile[0][2]
                 nbIncBeforeRollBack = nbBeforeRollback
-                nbDeDieu += 1
-                nbDeDieuBeforeRollBack = nbDeDieu
-                print("profondeur suivante avec pour nombre de dieu : " + str(nbDeDieu))
+                nbDeCoup += 1
+                nbDeCoupBeforeRollBack = nbDeCoup
+                print("profondeur suivante avec pour nombre de dieu : " + str(nbDeCoup))
             else:
                 nbIncBeforeRollBack = nbIncBeforeRollBack - 1
                 if nbIncBeforeRollBack == 0:
@@ -295,7 +295,7 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
                     file = nextfileRollBack[:n]
                     nextfileBestCount = file[0][2]
                     nextfileRollBack = nextfileRollBack[n:]   
-                    nbDeDieu = nbDeDieuBeforeRollBack
+                    nbDeDieu = nbDeCoupBeforeRollBack
                     print("Rollback")
                 else:
                     nbDeDieu += 1
@@ -306,7 +306,7 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
         tf=round(time.time() - start_time,2)
         sol=file[0][1]
         #Temps de resolution, nombre de noeuds parcouru, solution
-        return sol,tf,nbDeDieu,compteurnbNoeud,
+        return sol,tf,nbDeCoup,compteurnbNoeud,
 
 
 ##Fonction permettant de calculer le temps pris pour un N noeuds
