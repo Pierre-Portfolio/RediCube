@@ -21,8 +21,10 @@ N_elagage1=82000
 N_elagage2=60000
 '''
 
+rd_resolu = rd.RediCube()
+CoutRediCubeFinish = rd_resolu.Cout3()
+
 def Cout(r):
-    rd_resolu = rd.RediCube()
     res=0
     for index,row in Aretes.iterrows():
         if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
@@ -35,7 +37,6 @@ def Cout(r):
     return res
 
 def Cout2(r):
-    rd_resolu = rd.RediCube()
     res=0
     for index,row in Aretes.iterrows():
         if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
@@ -43,6 +44,68 @@ def Cout2(r):
 
     for index,row in Sommets.iterrows():
         if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
+            res+=1
+
+    return res
+
+
+#Retourne les coordonnées des 2 sommets voisins, pour les coordonnées d'une arete
+#Use only for Cout 3
+def SommetsVoisins(ligne,colonne):
+    if ligne in (0,2):
+        s1=(ligne,colonne-1)
+        s2=(ligne,colonne+1)
+
+    elif ligne==1:
+        s1=(ligne-1,colonne)
+        s2=(ligne+1,colonne)
+
+    return s1,s2
+
+'''
+arretes voisines, si elle est à l'une de ses coordonées
+regarder s'il y a un sommet voisin de la même couleur
+'''
+def Cout3(r):
+    rd_resolu = rd.RediCube()
+    res=0
+    for index,row in Aretes.iterrows():
+        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
+
+            #Arete mise = 3 points
+            res+=3
+
+        else:#Arrete a un coup
+            #Arretes voisines
+            AretesVoisines=Aretes[(Aretes['hauteur move 1']==row['hauteur move 1']) & (Aretes['numero move 1']==row['numero move 1'])]
+            AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 2']==row['hauteur move 1']) & (Aretes['numero move 2']==row['numero move 1'])])
+
+            AretesVoisines=AretesVoisines.append[(Aretes['hauteur move 1']==row['hauteur move 2']) & (Aretes['numero move 1']==row['numero move 2'])]
+            AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 2']==row['hauteur move 2']) & (Aretes['numero move 2']==row['numero move 2'])])
+
+            for index2,row2 in AretesVoisines.iterrows():
+                #Arete placée à un coup#
+                if (r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row2['Face2']].tab[row2['Ligne2']][row2['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
+                    s1,s2 = SommetsVoisins(row2['Ligne1'],row2['Colonne1'])
+                    #Arete collée au sommet
+                    if (r.cube[row2['Face1']].tab[s1[0]][s1[1]] == r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]) or (r.cube[row2['Face1']].tab[s2[0]][s2[1]] == r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]):
+
+                        #Arete et sommet à un coup d'être mis = 2 points
+                        res+=2
+
+                #Arete placée à un coup#
+                elif (r.cube[row2['Face2']].tab[row2['Ligne2']][row2['Colonne2']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
+                    s1,s2 = SommetsVoisins(row2['Ligne1'],row2['Colonne1'])
+                    #Arete collée au sommet
+                    if (r.cube[row2['Face1']].tab[s1[0]][s1[1]] == r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]) or (r.cube[row2['Face1']].tab[s2[0]][s2[1]] == r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]):
+
+                        #Arete et sommet à un coup d'être mis = 2 points
+                        res+=2
+
+    for index,row in Sommets.iterrows():
+        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
+
+            #Sommet mis = 1 point
             res+=1
 
     return res
@@ -198,11 +261,11 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
     nbDeDieuBeforeRollBack = nbDeDieu
     
     while not trouver:
-        if Cout3(file[0][0]) == 44:
+        if Cout(file[0][0]) == 44:
             trouver = True
         else:
             while file:
-                print("score noeud suivante : " + str(Cout3(file[0][0])))
+                print("score noeud suivante : " + str(Cout(file[0][0])))
                 compteurnbNoeud+=1
                 node = file.pop(0)
                 
@@ -212,7 +275,7 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
                     copy_r.Move(coup[0],coup[1],coup[2])
                     L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
                     #print({'hauteur':hauteur,'num':num,'sens':sens})
-                    nextfile.append([copy_r,L2,Cout3(copy_r)])
+                    nextfile.append([copy_r,L2,Cout(copy_r)])
             
             #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
             nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
@@ -482,68 +545,6 @@ def FonctionPierre(n_inf,n_sup):
         print('Solution ' + str(n) + ' : ' + st + ' Nombre_noeuds : ' + str(noeuds) + ', Temps : ' + str(t))
 
         df.to_csv(r'csv\DataSet.csv',';',index=False,mode='w')
-
-
-#Retourne les coordonnées des 2 sommets voisins, pour les coordonnées d'une arete
-#Use only for Cout 3
-def SommetsVoisins(ligne,colonne):
-    if ligne in (0,2):
-        s1=(ligne,colonne-1)
-        s2=(ligne,colonne+1)
-
-    elif ligne==1:
-        s1=(ligne-1,colonne)
-        s2=(ligne+1,colonne)
-
-    return s1,s2
-
-'''
-arretes voisines, si elle est à l'une de ses coordonées
-regarder s'il y a un sommet voisin de la même couleur
-'''
-def Cout3(r):
-    rd_resolu = rd.RediCube()
-    res=0
-    for index,row in Aretes.iterrows():
-        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-
-            #Arete mise = 3 points
-            res+=3
-
-        else:#Arrete a un coup
-            #Arretes voisines
-            AretesVoisines=Aretes[(Aretes['hauteur move 1']==row['hauteur move 1']) & (Aretes['numero move 1']==row['numero move 1'])]
-            AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 2']==row['hauteur move 1']) & (Aretes['numero move 2']==row['numero move 1'])])
-
-            AretesVoisines=AretesVoisines.append[(Aretes['hauteur move 1']==row['hauteur move 2']) & (Aretes['numero move 1']==row['numero move 2'])]
-            AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 2']==row['hauteur move 2']) & (Aretes['numero move 2']==row['numero move 2'])])
-
-            for index2,row2 in AretesVoisines.iterrows():
-                #Arete placée à un coup#
-                if (r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row2['Face2']].tab[row2['Ligne2']][row2['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-                    s1,s2 = SommetsVoisins(row2['Ligne1'],row2['Colonne1'])
-                    #Arete collée au sommet
-                    if (r.cube[row2['Face1']].tab[s1[0]][s1[1]] == r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]) or (r.cube[row2['Face1']].tab[s2[0]][s2[1]] == r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]):
-
-                        #Arete et sommet à un coup d'être mis = 2 points
-                        res+=2
-
-                #Arete placée à un coup#
-                elif (r.cube[row2['Face2']].tab[row2['Ligne2']][row2['Colonne2']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-                    s1,s2 = SommetsVoisins(row2['Ligne1'],row2['Colonne1'])
-                    #Arete collée au sommet
-                    if (r.cube[row2['Face1']].tab[s1[0]][s1[1]] == r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]) or (r.cube[row2['Face1']].tab[s2[0]][s2[1]] == r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]):
-
-                        #Arete et sommet à un coup d'être mis = 2 points
-                        res+=2
-
-    for index,row in Sommets.iterrows():
-        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
-
-            #Sommet mis = 1 point
-            res+=1
-
-    return res
 
 '''
 Return the number of coup of all redicube of the datatset
