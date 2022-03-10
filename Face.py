@@ -1,9 +1,7 @@
-'''
-Face : liste de 3 listes de 3 str, correspondant aux initiales des couleurs
-face => .tab
-indiquer en paramètre l'initiale de la couleur, sinon str vide
-'''
-
+"""
+Class which creates a face of a redicube
+One face is composed of three lists of 3 char corresponding to a color
+"""
 class Face():
     def __init__(self,couleur,tab=[]):
         self.couleur = couleur
