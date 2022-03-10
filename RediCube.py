@@ -252,8 +252,8 @@ class RediCube():
         #Si premiere face resolu on bloque ses coins
         if self.faceprincipal != -1:
             ListCoupDelete = ListCoinFace[self.faceprincipal]
-        elif self.firstFaceFinish() == True:
-            print("Premiere face terminé !")    
+        #elif self.firstFaceFinish() == True:
+            #print("Premiere face terminé !")    
             
         if self.lastcoup != ():
             #On empeche de revenir ou arriere ou de faire 2 fois le meme coup

@@ -198,7 +198,7 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
     nbDeDieuBeforeRollBack = nbDeDieu
     
     while not trouver:
-        if Cout3(file[0][0]) == 32:
+        if Cout3(file[0][0]) == 44:
             trouver = True
         else:
             while file:
