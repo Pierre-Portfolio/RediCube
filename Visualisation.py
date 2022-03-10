@@ -20,7 +20,7 @@ def D(aaaa):
     print(TextBox(aaaa))
     print("-----------------------------------------------------------")
     r=rc.CreateRedicubeToResolveInputVisua(TextBox(aaaa))
-    #Visualisation(r)
+    Visualisation(r)
 
 def input_number():
     wtext(text="\n\n")
@@ -30,7 +30,7 @@ def input_number():
     #return rc.CreateRedicubeToResolveInputVisua(TextBox(cube))
 
 def ResolutionVisuel(r):
-    tf,compteur,sol=ra.Resolution_Arbre_elagage3(r,5)
+    tf,compteur,sol=ra.Resolution_Arbre_Pierre(r,3,5)
     w_sol=wtext(text='{}'.format(sol))
     w_tf=wtext(text='{}'.format(tf))
     w_compt=wtext(text='{}'.format(compteur)) 
@@ -378,8 +378,10 @@ def Visualisation(r):
     bda3=vertex(pos=vector(.1,-1.5,-1),color = Couleur(r,'f5l2c1'))
     tf5l2c1=triangle(v0=bda1,v1=bda2,v2=bda3)
     
+#while Visualisation(r)==True:
     input_number()
     ResolutionVisuel(r)
+    
     #wtext(text="\n\n")
     #b=button(text="Valider",bind=D)
     #winput(width=600,bind=D)

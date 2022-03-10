@@ -22,7 +22,6 @@ N_elagage2=60000
 '''
 
 rd_resolu = rd.RediCube()
-CoutRediCubeFinish = Cout(rd_resolu)
 
 def Cout(r):
     res=0
@@ -36,6 +35,7 @@ def Cout(r):
 
     return res
 
+CoutRediCubeFinish = Cout(rd_resolu)
 def Cout2(r):
     res=0
     for index,row in Aretes.iterrows():
