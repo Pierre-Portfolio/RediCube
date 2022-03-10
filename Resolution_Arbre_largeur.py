@@ -22,7 +22,7 @@ N_elagage2=60000
 '''
 
 rd_resolu = rd.RediCube()
-CoutRediCubeFinish = rd_resolu.Cout3()
+CoutRediCubeFinish = Cout(rd_resolu)
 
 def Cout(r):
     res=0
