@@ -297,7 +297,7 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
                     file = nextfileRollBack[:n]
                     nextfileBestCount = file[0][2]
                     nextfileRollBack = nextfileRollBack[n:]   
-                    nbDeDieu = nbDeCoupBeforeRollBack
+                    nbDeCoup = nbDeCoupBeforeRollBack
                     print("Rollback")
                 else:
                     nbDeDieu += 1
