@@ -110,6 +110,12 @@ def ListBadEdgeOnFace(r,numFace):
     return list(set([1,2,3,4]) - set(edgeDone))
 
 '''
+Return boolean for said if the first face is finished
+'''
+def FirstCouronne():
+    return 0
+
+'''
 Avant premiere face:
     on analyse face par face et effectuons le scoring suivant:
         1 point: coin bien placé
