@@ -300,8 +300,8 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
                     nbDeCoup = nbDeCoupBeforeRollBack
                     print("Rollback")
                 else:
-                    nbDeDieu += 1
-                    print("profondeur suivante avec pour nombre de dieu : " + str(nbDeDieu))
+                    nbDeCoup += 1
+                    print("profondeur suivante avec pour nombre de dieu : " + str(nbDeCoup))
             #reset
             nextfile=[]
             
