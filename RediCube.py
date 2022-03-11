@@ -267,15 +267,17 @@ class RediCube():
     '''
     Return the List of Coup
     '''
-    def ListCoups(self):
+    def ListCoups(self, actif = False):
         #ListCoupRestant = [i for i in listAllCoup]
         ListCoupDelete = []
         
-        #Si premiere face resolu on bloque ses coins
-        #if self.faceprincipal != -1:
-            #ListCoupDelete = ListCoinFace[self.faceprincipal]
-        #elif self.firstFaceFinish() == True:
-            #print("Premiere face terminé !")    
+        #Si activer
+        if actif:
+            #Si premiere face resolu on bloque ses coins
+            if self.faceprincipal != -1:
+                ListCoupDelete = ListCoinFace[self.faceprincipal]
+            #elif self.firstFaceFinish() == True:
+                #print("Premiere face terminé !")    
             
         if self.lastcoup != ():
             #On empeche de revenir ou arriere ou de faire 2 fois le meme coup
@@ -283,13 +285,3 @@ class RediCube():
             ListCoupDelete.append((self.lastcoup[0], self.lastcoup[1], 1))
         
         return list(set(listAllCoup) - set(ListCoupDelete))
-
-
-    '''
-    Return bool witch said if the first face is finished
-    '''
-    def firstFaceFinish(self):
-        for i in face:
-            print("Test");
-            self.cube(i)
-        return False;
