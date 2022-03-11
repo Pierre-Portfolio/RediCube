@@ -266,7 +266,6 @@ class RediCube():
     Return the List of Coup
     '''
     def ListCoups(self, actif = False):
-        #ListCoupRestant = [i for i in listAllCoup]
         ListCoupDelete = []
         
         #Si activer
