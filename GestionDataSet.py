@@ -48,7 +48,7 @@ def CreateRedicubeToResolveVisua(n):
         return ["error","Valeur maximale autorisé : " + str(len(df))]
     text = df.loc[n].Pos
     r = CreateRedicubeToResolve(text)
-    return ["succes",r]
+    return r
 
 """
 Function which generates a redicubes from dataset or the visualisation
@@ -58,6 +58,6 @@ def CreateRedicubeToResolveInputVisua(textinput):
         return CreateRedicubeToResolveVisua(textinput)
     else:
         if textinput.count('X') == 6 and len(textinput) == 54:
-            return ["succes",CreateRedicubeToResolve(textinput)]
+            return CreateRedicubeToResolve(textinput)
         else:
             return ["error", "Impossible de créer un RediCube"]
