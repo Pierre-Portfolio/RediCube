@@ -1,142 +1,37 @@
-import RediCube as rd
-import pandas as pd
-import time
-import numpy as np
-import ResolutionClassic
-import GestionDataSet
+#Import
+import GestionDataSet as gd
 
-pd.set_option('display.max_columns', 10)
-Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
-Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
+#import csv
+gd.rd.pd.set_option('display.max_columns', 10)
+Aretes= gd.rd.pd.read_csv('csv/Aretes.csv',sep=';')
+Sommets= gd.rd.pd.read_csv('csv/Sommets.csv',sep=';')
+dfNeighbor = gd.rd.pd.read_csv('csv/FaceNeighbor.csv')
 
-#Nombre correspondant à 5 min de traitement sur ma machine (Owen)
+#Constante
+listEdge = [0,[0,1],[1,0],[1,2],[2,1]]
+rd_resolu = gd.rd.RediCube()
+CoutRediCubeFinish = rd_resolu.Cout()
+
+#Test Elagage
+#5min
 N_sans_elagage=9358
 N_elagage1=5452
 N_elagage2=3906
-
-'''
 #30min
-N_elagage1=82000
-N_elagage2=60000
-'''
+#N_elagage1=82000
+#N_elagage2=60000
 
-rd_resolu = rd.RediCube()
-
-def Cout(r):
-    res=0
-    for index,row in Aretes.iterrows():
-        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-            res+=1
-
-    for index,row in Sommets.iterrows():
-        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
-            res+=1
-
-    return res
-
-CoutRediCubeFinish = Cout(rd_resolu)
-
-def Cout2(r):
-    res=0
-    for index,row in Aretes.iterrows():
-        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-            res+=2
-
-    for index,row in Sommets.iterrows():
-        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
-            res+=1
-
-    return res
-
-
-#Retourne les coordonnées des 2 sommets voisins, pour les coordonnées d'une arete
-#Use only for Cout 3
-def SommetsVoisins(ligne,colonne):
-    if ligne in (0,2):
-        s1=(ligne,colonne-1)
-        s2=(ligne,colonne+1)
-
-    elif ligne==1:
-        s1=(ligne-1,colonne)
-        s2=(ligne+1,colonne)
-
-    return s1,s2
-
-'''
-arretes voisines, si elle est à l'une de ses coordonées
-regarder s'il y a un sommet voisin de la même couleur
-'''
-def Cout3(r):
-    rd_resolu = rd.RediCube()
-    res=0
-    for index,row in Aretes.iterrows():
-        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-
-            #Arete mise = 3 points
-            res+=3
-
-        else:#Arrete a un coup
-            #Arretes voisines
-            AretesVoisines=Aretes[(Aretes['hauteur move 1']==row['hauteur move 1']) & (Aretes['numero move 1']==row['numero move 1'])]
-            AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 2']==row['hauteur move 1']) & (Aretes['numero move 2']==row['numero move 1'])])
-
-            AretesVoisines=AretesVoisines.append[(Aretes['hauteur move 1']==row['hauteur move 2']) & (Aretes['numero move 1']==row['numero move 2'])]
-            AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 2']==row['hauteur move 2']) & (Aretes['numero move 2']==row['numero move 2'])])
-
-            for index2,row2 in AretesVoisines.iterrows():
-                #Arete placée à un coup#
-                if (r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row2['Face2']].tab[row2['Ligne2']][row2['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-                    s1,s2 = SommetsVoisins(row2['Ligne1'],row2['Colonne1'])
-                    #Arete collée au sommet
-                    if (r.cube[row2['Face1']].tab[s1[0]][s1[1]] == r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]) or (r.cube[row2['Face1']].tab[s2[0]][s2[1]] == r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]):
-
-                        #Arete et sommet à un coup d'être mis = 2 points
-                        res+=2
-
-                #Arete placée à un coup#
-                elif (r.cube[row2['Face2']].tab[row2['Ligne2']][row2['Colonne2']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-                    s1,s2 = SommetsVoisins(row2['Ligne1'],row2['Colonne1'])
-                    #Arete collée au sommet
-                    if (r.cube[row2['Face1']].tab[s1[0]][s1[1]] == r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]) or (r.cube[row2['Face1']].tab[s2[0]][s2[1]] == r.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]):
-
-                        #Arete et sommet à un coup d'être mis = 2 points
-                        res+=2
-
-    for index,row in Sommets.iterrows():
-        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
-
-            #Sommet mis = 1 point
-            res+=1
-
-    return res
-
-#Si l'arrete sur une des 2 faces, collée au sommet de l'autre face => en 1 coup
-'''
-  FACE VERTE                FACE VERTE
-     XXX                       XXX
-     XX|X                      XX|R..V
-     X |XX                     X |XR
-
-  FACE ROUGE                FACE ROUGE
-     X |XV                     X |XX
-     XX|V..R                   XX|X
-     XXX                       XXX
-
-'''
-#A FAIRE : ajout num corner concerné pour chaque arrete, retrouver le mouv, et regardé si l'arrete et mis en 1 coup, et le sommet n'est pas enlevé
-
-#sommet pas mis, sur l'autre face de l'arrete, et arrete à la face opposé => 2coups
 
 ##Arbre, parcours en largeur
 def Resolution_Arbre(r,N=N_sans_elagage):
-    start_time = time.time()
+    start_time = gd.rd.time.time()
     #on remet à 0 l'ancien coup
     r.lastcoup=tuple()
 
     compteur=0
     file=[]
     file.append([r,[]])
-    cube=rd.RediCube().cube
+    cube=gd.rd.RediCube().cube
 
     while file[0][0].cube != cube and compteur<N:
         compteur+=1
@@ -150,8 +45,7 @@ def Resolution_Arbre(r,N=N_sans_elagage):
             #print({'hauteur':hauteur,'num':num,'sens':sens})
             file.append([copy_r,L2])
 
-
-    tf=time.time() - start_time
+    tf= gd.rd.time.time() - start_time
     nb_noeuds=-1
     sol=[]
     print(compteur)
@@ -165,15 +59,15 @@ def Resolution_Arbre(r,N=N_sans_elagage):
 
 ##Arbre, parcours en largeur, elagage top n (cout)
 def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
-    start_time = time.time()
+    start_time = gd.rd.time.time()
     r.lastcoup=tuple()
 
     compteur=0
     file=[]
-    file.append([r,[],Cout2(r)])
+    file.append([r,[],r.Cout()])
 
 
-    while Cout2(file[0][0]) != 32 and compteur<N:
+    while file[0][0].Cout() != rd_resolu.Cout() and compteur<N:
         compteur+=1
         node = file.pop(0)
         Ltemp=[]
@@ -184,7 +78,7 @@ def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
             copy_r.Move(coup[0],coup[1],coup[2])
             L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
             #print({'hauteur':hauteur,'num':num,'sens':sens})
-            Ltemp.append([copy_r,L2,Cout2(copy_r)])
+            Ltemp.append([copy_r,L2,copy_r.Cout()])
 
         #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
         Ltemp=sorted(Ltemp, key=lambda x: x[2], reverse = True)
@@ -192,7 +86,7 @@ def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
         #print(Ltemp)
         file.extend(Ltemp)
 
-    tf=time.time() - start_time
+    tf= gd.rd.time.time() - start_time
     nb_noeuds=-1
     sol=[]
     if compteur<N:
@@ -205,14 +99,14 @@ def Resolution_Arbre_elagage1(r,n,N=N_elagage1): #1<n<7
 
 ##Arbre, parcours en largeur, elagage palier n de difference de cout avec le rd d'origine
 def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
-    start_time = time.time()
+    start_time = gd.rd.time.time()
     r.lastcoup=tuple()
 
     compteur=0
     file=[]
-    file.append([r,[],Cout2(r)])
+    file.append([r,[],r.Cout()])
 
-    while Cout2(file[0][0]) != 32 and compteur<N:
+    while file[0][0].Cout() != rd_resolu.Cout() and compteur<N:
         compteur+=1
         node = file.pop(0)
         Ltemp=[]
@@ -223,15 +117,15 @@ def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
             copy_r.Move(coup[0],coup[1],coup[2])
             L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
             #print({'hauteur':hauteur,'num':num,'sens':sens})
-            Ltemp.append([copy_r,L2,Cout2(copy_r)])
+            Ltemp.append([copy_r,L2,copy_r.Cout()])
 
         #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
         Ltemp=sorted(Ltemp, key=lambda x: x[2], reverse = True)
-        Ltemp=[i for i in Ltemp if i[2]>=(Cout2(node[0])-n)]
+        Ltemp=[i for i in Ltemp if i[2]>=(node[0].Cout() - n)]
         #print(Ltemp)
         file.extend(Ltemp)
 
-    tf=round(time.time() - start_time,2)
+    tf=round(gd.rd.time.time() - start_time,2)
     nb_noeuds=-1
     sol=[]
     if compteur<N:
@@ -245,12 +139,12 @@ def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
 
 ##Arbre, parcours en largeur, elagage palier n de difference de cout avec le rd d'origine
 def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
-    start_time = time.time()
+    start_time = gd.rd.time.time()
     r.lastcoup=tuple()
     compteurnbNoeud = 0
     nbDeCoup = 0
     file=[]
-    file.append([r,[],Cout2(r)])
+    file.append([r,[],r.Cout()])
     nextfile=[]
     trouver = False
 
@@ -261,11 +155,11 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
     nbDeCoupBeforeRollBack = nbDeCoup
 
     while not trouver:
-        if Cout(file[0][0]) == 44:
+        if file[0][0].Cout() == rd_resolu.Cout():
             trouver = True
         else:
             while file:
-                print("score noeud suivante : " + str(Cout(file[0][0])))
+                print("score noeud suivante : " + str(file[0][0].Cout()))
                 compteurnbNoeud+=1
                 node = file.pop(0)
 
@@ -276,7 +170,7 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
                     L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
                     #print({'hauteur':hauteur,'num':num,'sens':sens})
 
-                    nextfile.append([copy_r,L2,Cout(copy_r)])
+                    nextfile.append([copy_r,L2,copy_r.Cout()])
             
 
             #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
@@ -305,7 +199,7 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
             #reset
             nextfile=[]
             
-        tf=round(time.time() - start_time,2)
+        tf=round(gd.rd.time.time() - start_time,2)
         sol=file[0][1]
         #Temps de resolution, nombre de noeuds parcouru, solution
         return sol,tf,nbDeCoup,compteurnbNoeud
@@ -313,13 +207,13 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
 
 ##Fonction permettant de calculer le temps pris pour un N noeuds
 def Comparaison_vitesse_fonctions(nb_noeuds=1000):
-    df=pd.DataFrame(columns=['temps resolution elagage 1 n=2','temps resolution elagage 1 n=3',
+    df=gd.rd.pd.DataFrame(columns=['temps resolution elagage 1 n=2','temps resolution elagage 1 n=3',
     'temps resolution elagage 1 n=4','temps resolution elagage 1 n=5','temps resolution elagage 1 n=6',
     'temps resolution elagage 2 n=1','temps resolution elagage 2 n=2','temps resolution elagage 2 n=3',
     'temps resolution elagage 2 n=4','temps resolution elagage 2 n=5'])
 
     for redi in range(5):
-        r=rd.RediCube()
+        r=gd.rd.RediCube()
         r.Melange(10)
 
         t1=Resolution_Arbre(r,N=nb_noeuds)[0]
@@ -362,11 +256,11 @@ def Comparaison_resolutions_fonction(D,melange_min,melange_max,n):
             columns.append(keys+'_noeuds')
             columns.append(keys+'_nbCoups')
 
-    df=pd.DataFrame(columns=columns)
+    df= gd.rd.pd.DataFrame(columns=columns)
 
     for melange in range(melange_min,melange_max+1):
         for redi in range(n):
-            r=rd.RediCube()
+            r=gd.rd.RediCube()
             r.Melange(melange)
             Ligne=[melange]
 
@@ -419,14 +313,14 @@ def Comparaison_resolutions_fonction2(D,cout_min,cout_max,n):
             columns.append(keys+'_noeuds')
             columns.append(keys+'_nbCoups')
 
-    df=pd.DataFrame(columns=columns)
+    df=gd.rd.pd.DataFrame(columns=columns)
 
     for redi in range(n):
         print('---------------')
         print(str(redi+1) + '/' + str(n))
-        r=rd.RediCube()
+        r= gd.rd.RediCube()
         r.Recherche_cout(cout_min,cout_max)
-        Ligne=[Cout2(r)]
+        Ligne=[r.Cout()]
 
         if D['sans_elagage']==True:
             t1,n1,s1=Resolution_Arbre(r)
@@ -477,7 +371,7 @@ def Comparaison_resolutions_fonction3(D,L):
             columns.append(keys+'_noeuds')
             columns.append(keys+'_nbCoups')
 
-    df=pd.DataFrame(columns=columns)
+    df=gd.rd.pd.DataFrame(columns=columns)
 
     compteur=0
     for r in L:
@@ -531,8 +425,104 @@ D2={'sans_elagage':False,
 'elagage1_n=2':False,'elagage1_n=3':True,'elagage1_n=4':False,'elagage1_n=5':False,'elagage1_n=6':False,
 'elagage2_n=1':False,'elagage2_n=2':False,'elagage2_n=3':False,'elagage2_n=4':False,'elagage2_n=5':False}
 
+
+'''
+Find the best face for starting the resolve of redicube & send list of bad coin
+'''
+def FindBadCoin(r):
+    bestface = 0
+    bestscoreface = 0
+    coinDone = []
+
+    for i in range(rd.face):
+        newface=0
+        newscoreface = 0
+        newcoinDone = []
+        for j in [0,2]:
+            if(r.cube[i].tab[j][0] == r.cube[i].couleur):
+                newscoreface = newscoreface + 1
+                if(j==0):
+                    newcoinDone.append(1)
+                else:
+                    newcoinDone.append(3)
+            if(r.cube[i].tab[j][2] == r.cube[i].couleur):
+                newscoreface = newscoreface + 1
+                if(j==0):
+                    newcoinDone.append(2)
+                else:
+                    newcoinDone.append(4)
+        if(newscoreface >= bestscoreface):
+            bestface = i
+            bestscoreface = newscoreface
+            coinDone = newcoinDone
+    r.faceprincipal = bestface
+    return list(set([1,2,3,4]) - set(coinDone))
+
+'''
+List the edges of on face who are not placed
+'''
+def ListBadEdgeOnFace(r,numFace):
+    edgeDone = []
+
+    
+    #for each edge
+    for i in range(1,5):
+        if(r.cube[numFace].tab[listEdge[i][0]][listEdge[i][1]] == r.cube[numFace].couleur):
+            #Save the numface and the edge
+            numFaceNeighbor = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['neighbor'].to_list()
+            '''
+            numEdge = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['edge'].to_list()
+
+            print("succes")
+            
+            #check the edge dependence
+            if(r.cube[ numFaceNeighbor[0] ].tab[ listEdge[numEdge[0]][0] ][ listEdge[numEdge[0]][1] ] == r.cube[numFaceNeighbor[0]].couleur):
+                edgeDone.append(i)
+
+    return list(set([1,2,3,4]) - set(edgeDone))'''
+
+'''
+Return boolean witch return the value of the principale face after checked it was finished
+'''
+def FirstCouronne(r):
+    for i in range(rd.face):
+        color = r.cube[i].couleur
+        goodface = [[color,color,color],[color,'X',color],[color,color,color]]
+        if goodface == r.cube[i].tab:
+            
+            #We know of coin is good so we check edge 
+            if len(ListBadEdgeOnFace(r,i)) == 0:
+                r.faceprincipal = i
+        
+        #We leave the function
+        if(r.faceprincipal != -1):
+            print("on sort d'ici")
+            break
+    return r.faceprincipal
+
+'''
+Avant premiere face:
+    on analyse face par face et effectuons le scoring suivant:
+        1 point: coin bien placé
+        2 point: arette bien placé
+        3 points: coin & son arette
+        4 points: une ligne
+        5 points: 1 coint et ses 2 arettes
+            
+    -> Une fois la premiere face faite on reset le roolback a cet instant T
+    -> Blocage du nbr de coup a 4
+    
+    -> Changement Potentielle ( a tester ) du scoring suivant ci-dessous :
+    Scoring poentielle suivant:
+        1point: coin bien placé
+        2point: coin & son arette
+        3points: une ligne
+        5points: 1 coint et ses 2 arettes
+'''
+
+
 def FonctionPierre(n_inf,n_sup):
-    df = pd.read_csv(r'csv\DataSet.csv',sep=';')
+    df = gd.rd.pd.read_csv(r'csv\DataSet.csv',sep=';')
     for n in range(n_inf,n_sup+1):
         r=ResolutionClassic.CreateRedicubeToResolveVisua(n)
         t,noeuds,s = Resolution_Arbre_Pierre(r,12,5)

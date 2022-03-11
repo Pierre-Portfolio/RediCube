@@ -211,7 +211,20 @@ class RediCube():
         numMove = Moves[(Moves['numero de face']==numFace) & (Moves['numero de corner']==numCorner)]['numero'].tolist()[0]
         return hauteur,numMove
 
- 
+    '''
+    Return the Cost of the RediCube
+    '''
+    def Cout(self):
+        res=0
+        for index,row in Aretes.iterrows():
+            if (self.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == self.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (self.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == self.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
+                res+=2
+
+        for index,row in Sommets.iterrows():
+            if (self.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == self.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
+                res+=1
+        return res
+
     '''
     Return the List of Coup
     '''
