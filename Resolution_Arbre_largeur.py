@@ -5,10 +5,8 @@ import GestionDataSet as gd
 gd.rd.pd.set_option('display.max_columns', 10)
 Aretes= gd.rd.pd.read_csv('csv/Aretes.csv',sep=';')
 Sommets= gd.rd.pd.read_csv('csv/Sommets.csv',sep=';')
-dfNeighbor = gd.rd.pd.read_csv('csv/FaceNeighbor.csv',sep=';')
 
 #Constante
-listEdge = [0,[0,1],[1,0],[1,2],[2,1]]
 rd_resolu = gd.rd.RediCube()
 CoutRediCubeFinish = rd_resolu.Cout()
 
@@ -135,7 +133,6 @@ def Resolution_Arbre_elagage2(r,n,N=N_elagage2): #1<n
 
     #Temps de resolution, nombre de noeuds parcouru, solution
     return tf,nb_noeuds,sol
-
 
 ##Arbre, parcours en largeur, elagage palier n de difference de cout avec le rd d'origine
 def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
@@ -415,52 +412,11 @@ def Comparaison_resolutions_fonction3(D,L):
         if D['elagage2_n=5']==True:
             t11,n11,s11=Resolution_Arbre_elagage2(r,5)
             Ligne.extend([n11,len(s11)])
-
         df.loc[len(df)]=Ligne
-
     #PATH#
         df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')
 
-D2={'sans_elagage':False,
-'elagage1_n=2':False,'elagage1_n=3':True,'elagage1_n=4':False,'elagage1_n=5':False,'elagage1_n=6':False,
-'elagage2_n=1':False,'elagage2_n=2':False,'elagage2_n=3':False,'elagage2_n=4':False,'elagage2_n=5':False}
-
 #---------------------     EN COURS DE DEV PAR PIERRE    -------------------------------
-'''
-List the edges of on face who are not placed
-'''
-def ListBadEdgeOnFace(r,numFace):
-    edgeDone = []
-    #for each edge
-    for i in range(1,5):
-        if(r.cube[numFace].tab[listEdge[i][0]][listEdge[i][1]] == r.cube[numFace].couleur):
-            #Save the numface and the edge
-            numFaceNeighbor = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['neighbor'].to_list()
-            numEdge = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['edge'].to_list()
-            #check the edge dependence
-            if(r.cube[ numFaceNeighbor[0] ].tab[ listEdge[numEdge[0]][0] ][ listEdge[numEdge[0]][1] ] == r.cube[numFaceNeighbor[0]].couleur):
-                edgeDone.append(i)
-
-    return list(set([1,2,3,4]) - set(edgeDone))
-
-'''
-Return boolean witch return the value of the principale face after checked it was finished
-'''
-def FirstCouronne(r):
-    for i in range(gd.rd.face):
-        color = r.cube[i].couleur
-        goodface = [[color,color,color],[color,'X',color],[color,color,color]]
-        if goodface == r.cube[i].tab:
-            
-            #We know of coin is good so we check edge 
-            if len(ListBadEdgeOnFace(r,i)) == 0:
-                r.faceprincipal = i
-        
-        #We leave the function
-        if(r.faceprincipal != -1):
-            break
-    return r.faceprincipal
-
 '''
 Search cost number to all RediCube of the Dataset
 '''

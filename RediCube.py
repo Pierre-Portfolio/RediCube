@@ -11,11 +11,13 @@ Aretes=pd.read_csv('csv/Aretes.csv',sep=';')
 Sommets=pd.read_csv('csv/Sommets.csv',sep=';')
 Moves=pd.read_csv('csv/Moves.csv',sep=';')
 correction_moves = pd.read_csv('csv/Correction_moves.csv',sep=';')
+dfNeighbor = pd.read_csv('csv/FaceNeighbor.csv',sep=';')
 
 
 #Constante
 face = 6
 listFaceCouleur = ['G','Y','R','W','O','B']
+listEdge = [0,[0,1],[1,0],[1,2],[2,1]]
 listAllCoup = [("up",1,-1), ("up",1,1), ("up",2,-1), ("up",2,1), ("up",3,-1), ("up",3,1), ("up",4,-1) , ("up",4,1), ("down",1,-1), ("down",1,1), ("down",2,-1), ("down",2,1), ("down",3,-1), ("down",3,1), ("down",4,-1) , ("down",4,1)]
 ListCoinFace = [[("down",2,1),("down",1,1),("up",1,1),("up",2,1),("down",2,-1),("down",1,-1),("up",1,-1),("up",2,-1)], 
                 [("down",2,1),("down",4,1),("up",1,1),("up",3,1),("down",2,-1),("down",4,-1),("up",1,-1),("up",3,-1)], 
@@ -23,7 +25,6 @@ ListCoinFace = [[("down",2,1),("down",1,1),("up",1,1),("up",2,1),("down",2,-1),(
                 [("down",1,1),("down",3,1),("up",2,1),("up",4,1),("down",1,-1),("down",3,-1),("up",2,-1),("up",4,-1)],
                 [("down",2,1),("down",1,1),("down",4,1),("down",3,1),("down",2,-1),("down",1,-1),("down",4,-1),("down",3,-1)],
                 [("down",4,1),("down",3,1),("up",3,1),("up",4,1),("down",4,-1),("down",3,-1),("up",3,-1),("up",4,-1)]]
-
 
 #Class and Function
 class RediCube():
@@ -225,6 +226,43 @@ class RediCube():
                 res+=1
         return res
 
+
+    '''
+    List the edges of on face who are not placed
+    '''
+    def ListBadEdgeOnFace(self,numFace):
+        edgeDone = []
+        #for each edge
+        for i in range(1,5):
+            if(self.cube[numFace].tab[listEdge[i][0]][listEdge[i][1]] == self.cube[numFace].couleur):
+                #Save the numface and the edge
+                numFaceNeighbor = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['neighbor'].to_list()
+                numEdge = dfNeighbor[(dfNeighbor['face']==numFace) & (dfNeighbor['direction']==i)]['edge'].to_list()
+                #check the edge dependence
+                if(self.cube[ numFaceNeighbor[0] ].tab[ listEdge[numEdge[0]][0] ][ listEdge[numEdge[0]][1] ] == self.cube[numFaceNeighbor[0]].couleur):
+                    edgeDone.append(i)
+    
+        return list(set([1,2,3,4]) - set(edgeDone))
+    
+    '''
+    Return boolean witch return the value of the principale face after checked it was finished
+    '''
+    def FirstCouronne(self):
+        for i in range(face):
+            color = self.cube[i].couleur
+            goodface = [[color,color,color],[color,'X',color],[color,color,color]]
+            if goodface == self.cube[i].tab:
+                
+                #We know of coin is good so we check edge 
+                if len(self.ListBadEdgeOnFace(i)) == 0:
+                    self.faceprincipal = i
+            
+            #We leave the function
+            if(self.faceprincipal != -1):
+                break
+        return self.faceprincipal
+
+
 #---------------------     EN COURS DE DEV PAR PIERRE    -------------------------------------
     '''
     Return the List of Coup
@@ -234,8 +272,8 @@ class RediCube():
         ListCoupDelete = []
         
         #Si premiere face resolu on bloque ses coins
-        if self.faceprincipal != -1:
-            ListCoupDelete = ListCoinFace[self.faceprincipal]
+        #if self.faceprincipal != -1:
+            #ListCoupDelete = ListCoinFace[self.faceprincipal]
         #elif self.firstFaceFinish() == True:
             #print("Premiere face terminé !")    
             
