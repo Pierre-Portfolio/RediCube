@@ -279,8 +279,8 @@ class RediCube():
             
         if self.lastcoup != ():
             #On empeche de revenir ou arriere ou de faire 2 fois le meme coup
-            ListCoupDelete.add((self.lastcoup[0], self.lastcoup[1], -1))
-            ListCoupDelete.add((self.lastcoup[0], self.lastcoup[1], 1))
+            ListCoupDelete.append((self.lastcoup[0], self.lastcoup[1], -1))
+            ListCoupDelete.append((self.lastcoup[0], self.lastcoup[1], 1))
         
         return list(set(listAllCoup) - set(ListCoupDelete))
 
