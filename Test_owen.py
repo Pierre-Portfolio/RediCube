@@ -221,22 +221,21 @@ def Resolution_Arbre_elagage1_V2(r,n,N=N_elagage1): #1<n<7
     #Temps de resolution, nombre de noeuds parcouru, solution
     return tf,nb_noeuds,sol
 
-def Resolution_Arbre_Rollback(r,n,N=N_elagage1,nbBeforeRollback=3): #1<n<7
+def Resolution_Arbre_Rollback(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
     start_time = time.time()
     r.lastcoup=tuple()
 
-    compteur=0
+    compteur=1
     prof=0
     file=[]
     file.append([r,[],Cout3(r)])
     nextfile=[]
     Arbre={}
 
-
-    while Cout3(file[0][0]) != 104 and compteur<N:
-        print(Cout3(file[0][0]))
-        prof+=1
+    while file[0][2] != 104 and compteur<N:
+        print('-----------')
         print('profondeur = ',str(prof))
+        print('Cout max = ',file[0][2])
         while file:
             compteur+=1
             node = file.pop(0)
@@ -251,22 +250,31 @@ def Resolution_Arbre_Rollback(r,n,N=N_elagage1,nbBeforeRollback=3): #1<n<7
 
         #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
         nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
+        Arbre[prof+1] = [[i[0].cube,i[1]] for i in nextfile]
+        print('creation arbre niveau : ',prof+1)
         print('remplissage arbre : ',len(nextfile))
-        Arbre[prof] = [i[0].cube for i in nextfile]
         nextfile=nextfile[:n]
         #print(nextfile)
         file.extend(nextfile)
         nextfile=[]
 
-        #PARTIE ROLLBACK
-        if prof > nbBeforeRollback:
-            if file[0][2] <= Cout3(rd.RediCube(Arbre[prof-nbBeforeRollback][0])):
-                print('ROLLBACK')
-                file=[rd.RediCube(a) for a in (Arbre[prof-nbBeforeRollback][:n])]
-                for i in range(prof-nbBeforeRollback,prof+1):
-                    del(Arbre[i])
-                prof=prof-nbBeforeRollback
+        prof+=1
 
+        #PARTIE ROLLBACK
+        if prof - nbBeforeRollback > 0:
+            if file[0][2] <= Cout3(rd.RediCube(Arbre[prof-(nbBeforeRollback)][0][0])):
+                print('-----------')
+                print('profondeur = ',str(prof))
+                print('Cout max = ',file[0][2])
+                print(file[0][2], ' <= ',Cout3(rd.RediCube(Arbre[prof-(nbBeforeRollback)][0][0])), ' ROLLBACK à ' , prof-(nbBeforeRollback))
+                file=[[rd.RediCube(a[0]),a[1],Cout3(rd.RediCube(a[0]))] for a in (Arbre[prof-(nbBeforeRollback)][n:n+n])]
+                #return file
+                for i in range(prof-nbBeforeRollback,prof+1):
+                    print('suppression arbre niveau : ',i)
+                    del(Arbre[i])
+                print('Recréation arbre niveau : ',prof-nbBeforeRollback)
+                Arbre[prof-nbBeforeRollback] = [[i[0].cube,i[1]] for i in file]
+                prof-=nbBeforeRollback
 
     tf=time.time() - start_time
     nb_noeuds=-1
@@ -276,75 +284,10 @@ def Resolution_Arbre_Rollback(r,n,N=N_elagage1,nbBeforeRollback=3): #1<n<7
         sol=file[0][1]
 
     #Temps de resolution, nombre de noeuds parcouru, solution
-    return tf,nb_noeuds,sol,Arbre
+    return tf,nb_noeuds,sol#,Arbre
 
-
-
-def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
-    start_time = time.time()
-    r.lastcoup=tuple()
-    compteurnbNoeud = 0
-    #nbDeCoup = 0
-    file=[]
-    file.append([r,[],Cout3(r)])
-    nextfile=[]
-    trouver = False
-
-    #variable Rollback
-    nextfileRollBack=file
-    nextfileBestCount = file[0][2]
-    nbIncBeforeRollBack = nbBeforeRollback
-    nbDeCoupBeforeRollBack = nbDeCoup
-
-    #TANT QUE PAS RESOLU
-    while not trouver:
-        if Cout(file[0][0]) == 44:
-            trouver = True
-        #SI PAS RESOLU
-        else:
-            #TANT QUE FILE NON VIDE
-            while file:
-                print("score noeud suivante : " + str(Cout(file[0][0])))
-                compteurnbNoeud+=1
-                node = file.pop(0)
-
-                for coup in (r.ListCoups()):
-                    L2=[i for i in node[1]]
-                    copy_r = node[0].Copy()
-                    copy_r.Move(coup[0],coup[1],coup[2])
-                    L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
-                    #print({'hauteur':hauteur,'num':num,'sens':sens})
-
-                    nextfile.append([copy_r,L2,Cout(copy_r)])
-
-
-            #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
-            nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
-            file = nextfile[:n]
-
-            if nextfile[0][2] > nextfileBestCount:
-                nextfileRollBack=nextfile
-                nextfileBestCount = nextfile[0][2]
-                nbIncBeforeRollBack = nbBeforeRollback
-                nbDeCoup += 1
-                nbDeCoupBeforeRollBack = nbDeCoup
-                print("profondeur suivante avec pour nombre de dieu : " + str(nbDeCoup))
-            else:
-                nbIncBeforeRollBack = nbIncBeforeRollBack - 1
-                if nbIncBeforeRollBack == 0:
-                    nbIncBeforeRollBack = nbBeforeRollback
-                    file = nextfileRollBack[:n]
-                    nextfileBestCount = file[0][2]
-                    nextfileRollBack = nextfileRollBack[n:]
-                    nbDeCoup = nbDeCoupBeforeRollBack
-                    print("Rollback")
-                else:
-                    nbDeCoup += 1
-                    print("profondeur suivante avec pour nombre de dieu : " + str(nbDeCoup))
-            #reset
-            nextfile=[]
-
-        tf=round(time.time() - start_time,2)
-        sol=file[0][1]
-        #Temps de resolution, nombre de noeuds parcouru, solution
-        return sol,tf,nbDeCoup,compteurnbNoeud
+'''
+Compile
+Qand trop compliqé, rollback incessant, et tours le meme cout qui bloque
+Reflechire à ex: comparer le cout à 4 branches au dessus, et rollback à 5 branches
+'''
