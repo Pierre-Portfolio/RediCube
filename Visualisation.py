@@ -15,7 +15,7 @@ def D(aaaa):
     print("-----------------------------------------------------------")
     print(TextBox(aaaa))
     print("-----------------------------------------------------------")
-    r=rc.CreateRedicubeToResolveInputVisua(TextBox(aaaa))
+    r=ra.gd.CreateRedicubeToResolveInputVisua(TextBox(aaaa))
     Visualisation(r)
 
 def input_number():
@@ -26,10 +26,11 @@ def input_number():
     #return rc.CreateRedicubeToResolveInputVisua(TextBox(cube))
 
 def ResolutionVisuel(r):
-    tf,compteur,sol=ra.Resolution_Arbre_Pierre(r,3,5)
+    sol,tf,nbDeCoup,compteurnbNoeud=ra.Resolution_Arbre_Pierre(r,3,5)
     w_sol=wtext(text='{}'.format(sol))
     w_tf=wtext(text='{}'.format(tf))
-    w_compt=wtext(text='{}'.format(compteur)) 
+    w_nbDeCoup=wtext(text='{}'.format(nbDeCoup)) 
+    w_compt=wtext(text='{}'.format(compteurnbNoeud)) 
     
     
 def Visualisation(r):
