@@ -262,8 +262,6 @@ class RediCube():
                 break
         return self.faceprincipal
 
-
-#---------------------     EN COURS DE DEV PAR PIERRE    -------------------------------------
     '''
     Return the List of Coup
     '''
@@ -276,8 +274,8 @@ class RediCube():
             #Si premiere face resolu on bloque ses coins
             if self.faceprincipal != -1:
                 ListCoupDelete = ListCoinFace[self.faceprincipal]
-            #elif self.firstFaceFinish() == True:
-                #print("Premiere face terminé !")    
+            else:
+                self.FirstCouronne()  
             
         if self.lastcoup != ():
             #On empeche de revenir ou arriere ou de faire 2 fois le meme coup
