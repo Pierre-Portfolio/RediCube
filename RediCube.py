@@ -271,11 +271,13 @@ class RediCube():
         #Si activer
         if actif:
             #Si premiere face resolu on bloque ses coins
-            if self.faceprincipal != -1:
-                ListCoupDelete = ListCoinFace[self.faceprincipal]
+            if self.faceprincipal == -1:
+                if self.FirstCouronne() != -1:
+                    ListCoupDelete = ListCoinFace[self.faceprincipal]
             else:
-                self.FirstCouronne()  
+                ListCoupDelete = ListCoinFace[self.faceprincipal]
             
+
         if self.lastcoup != ():
             #On empeche de revenir ou arriere ou de faire 2 fois le meme coup
             ListCoupDelete.append((self.lastcoup[0], self.lastcoup[1], -1))
