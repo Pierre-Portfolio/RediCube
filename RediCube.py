@@ -225,6 +225,7 @@ class RediCube():
                 res+=1
         return res
 
+#---------------------     EN COURS DE DEV PAR PIERRE    -------------------------------------
     '''
     Return the List of Coup
     '''

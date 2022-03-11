@@ -425,7 +425,7 @@ D2={'sans_elagage':False,
 'elagage1_n=2':False,'elagage1_n=3':True,'elagage1_n=4':False,'elagage1_n=5':False,'elagage1_n=6':False,
 'elagage2_n=1':False,'elagage2_n=2':False,'elagage2_n=3':False,'elagage2_n=4':False,'elagage2_n=5':False}
 
-
+#---------------------     EN COURS DE DEV PAR PIERRE    -------------------------------
 '''
 Find the best face for starting the resolve of redicube & send list of bad coin
 '''
@@ -434,8 +434,7 @@ def FindBadCoin(r):
     bestscoreface = 0
     coinDone = []
 
-    for i in range(rd.face):
-        newface=0
+    for i in range(gd.rd.face):
         newscoreface = 0
         newcoinDone = []
         for j in [0,2]:
@@ -485,7 +484,7 @@ def ListBadEdgeOnFace(r,numFace):
 Return boolean witch return the value of the principale face after checked it was finished
 '''
 def FirstCouronne(r):
-    for i in range(rd.face):
+    for i in range(gd.rd.face):
         color = r.cube[i].couleur
         goodface = [[color,color,color],[color,'X',color],[color,color,color]]
         if goodface == r.cube[i].tab:
@@ -501,30 +500,12 @@ def FirstCouronne(r):
     return r.faceprincipal
 
 '''
-Avant premiere face:
-    on analyse face par face et effectuons le scoring suivant:
-        1 point: coin bien placé
-        2 point: arette bien placé
-        3 points: coin & son arette
-        4 points: une ligne
-        5 points: 1 coint et ses 2 arettes
-            
-    -> Une fois la premiere face faite on reset le roolback a cet instant T
-    -> Blocage du nbr de coup a 4
-    
-    -> Changement Potentielle ( a tester ) du scoring suivant ci-dessous :
-    Scoring poentielle suivant:
-        1point: coin bien placé
-        2point: coin & son arette
-        3points: une ligne
-        5points: 1 coint et ses 2 arettes
+Search cost number to all RediCube of the Dataset
 '''
-
-
 def FonctionPierre(n_inf,n_sup):
     df = gd.rd.pd.read_csv(r'csv\DataSet.csv',sep=';')
     for n in range(n_inf,n_sup+1):
-        r=ResolutionClassic.CreateRedicubeToResolveVisua(n)
+        r= gd.CreateRedicubeToResolveVisua(n)[1]
         t,noeuds,s = Resolution_Arbre_Pierre(r,12,5)
         st=''
         for i in s:
@@ -542,17 +523,3 @@ def FonctionPierre(n_inf,n_sup):
         print('Solution ' + str(n) + ' : ' + st + ' Nombre_noeuds : ' + str(noeuds) + ', Temps : ' + str(t))
 
         df.to_csv(r'csv\DataSet.csv',';',index=False,mode='w')
-
-'''
-Return the number of coup of all redicube of the datatset
-'''
-def listCoupdataset():
-    df = pd.read_csv(r'csv\DataSet.csv',sep=';')
-    SavenbCoup = []
-    for n in range(0,1000):
-        r=ResolutionClassic.CreateRedicubeToResolveVisua(n)
-        coup = Cout2(r)
-        SavenbCoup.append(coup)
-        print('Score du Redi ' + str(n) + ' : ' + str(coup))
-    SavenbCoup = SavenbCoup.sort(reverse = True)
-    print(SavenbCoup)
