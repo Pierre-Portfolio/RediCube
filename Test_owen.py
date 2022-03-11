@@ -1,5 +1,4 @@
 import RediCube as rd
-import Face as f
 import pandas as pd
 import time
 import multiprocessing
@@ -223,7 +222,7 @@ def Resolution_Arbre_elagage1_V2(r,n,N=N_elagage1): #1<n<7
     #Temps de resolution, nombre de noeuds parcouru, solution
     return tf,nb_noeuds,sol
 
-def Resolution_Arbre_Rollback(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
+def Resolution_Arbre_Rollback(r,n,N=N_elagage1,nbBeforeRollback=3): #1<n<7
     start_time = time.time()
     r.lastcoup=tuple()
 
@@ -232,15 +231,16 @@ def Resolution_Arbre_Rollback(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
     file=[]
     file.append([r,[],Cout3(r)])
     nextfile=[]
+    Arbre={}
 
 
     while Cout3(file[0][0]) != 104 and compteur<N:
+        print(Cout3(file[0][0]))
         prof+=1
         print('profondeur = ',str(prof))
         while file:
             compteur+=1
             node = file.pop(0)
-
             for coup in (r.ListCoups()):
                 L2=[i for i in node[1]]
                 copy_r = node[0].Copy()
@@ -252,10 +252,22 @@ def Resolution_Arbre_Rollback(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
 
         #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
         nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
+        print('remplissage arbre : ',len(nextfile))
+        Arbre[prof] = [i[0].cube for i in nextfile]
         nextfile=nextfile[:n]
         #print(nextfile)
         file.extend(nextfile)
         nextfile=[]
+
+        #PARTIE ROLLBACK
+        if prof > nbBeforeRollback:
+            if file[0][2] <= Cout3(rd.RediCube(Arbre[prof-nbBeforeRollback][0])):
+                print('ROLLBACK')
+                file=[rd.RediCube(a) for a in (Arbre[prof-nbBeforeRollback][:n])]
+                for i in range(prof-nbBeforeRollback,prof+1):
+                    del(Arbre[i])
+                prof=prof-nbBeforeRollback
+
 
     tf=time.time() - start_time
     nb_noeuds=-1
@@ -265,7 +277,9 @@ def Resolution_Arbre_Rollback(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
         sol=file[0][1]
 
     #Temps de resolution, nombre de noeuds parcouru, solution
-    return tf,nb_noeuds,sol
+    return tf,nb_noeuds,sol,Arbre
+
+
 
 def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
     start_time = time.time()
