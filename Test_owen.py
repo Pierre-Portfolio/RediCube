@@ -75,7 +75,6 @@ def Cout3(r):
             else:
                 res+=5
 
-
         else:#Arrete a un coup
             #Arretes voisines
             AretesVoisines=Aretes[(Aretes['hauteur move 1']==row['hauteur move 1']) & (Aretes['numero move 1']==row['numero move 1'])]

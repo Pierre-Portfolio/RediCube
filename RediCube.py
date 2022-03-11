@@ -215,16 +215,78 @@ class RediCube():
     '''
     Return the Cost of the RediCube
     '''
-    def Cout(self):
-        res=0
-        for index,row in Aretes.iterrows():
-            if (self.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == self.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (self.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == self.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-                res+=2
+def Cout(self):
+    rd_resolu = rd.RediCube()
+    res=0
+    for index,row in Aretes.iterrows():
+        #Arete mise
+        if (self.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (self.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
 
-        for index,row in Sommets.iterrows():
-            if (self.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == self.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
-                res+=1
-        return res
+            s1,s2 = SommetsVoisins(row['Ligne1'],row['Colonne1'])
+            #Arete mise collée à un sommet
+            if (self.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == self.cube[row['Face1']].tab[s1[0]][s1[1]]) or (self.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == self.cube[row['Face1']].tab[s2[0]][s2[1]]):
+
+                #Arete mise collée à 2 sommets
+                if self.cube[row['Face1']].tab[s1[0]][s1[1]] == self.cube[row['Face1']].tab[s2[0]][s2[1]]:
+                    res+=8
+
+                #Arete mise collée à un sommet
+                else:
+                    res += 6
+
+            #Arete mise
+            else:
+                res+=5
+
+        else:#Arrete a un coup
+            #Arretes voisines
+            AretesVoisines=Aretes[(Aretes['hauteur move 1']==row['hauteur move 1']) & (Aretes['numero move 1']==row['numero move 1'])]
+            AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 2']==row['hauteur move 1']) & (Aretes['numero move 2']==row['numero move 1'])])
+            #print(AretesVoisines)
+
+            AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 1']==row['hauteur move 2']) & (Aretes['numero move 1']==row['numero move 2'])])
+            AretesVoisines=AretesVoisines.append(Aretes[(Aretes['hauteur move 2']==row['hauteur move 2']) & (Aretes['numero move 2']==row['numero move 2'])])
+
+            for index2,row2 in AretesVoisines.iterrows():
+                #Arete placée à un coup#
+                if (self.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (self.cube[row2['Face2']].tab[row2['Ligne2']][row2['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
+                    s1,s2 = SommetsVoisins(row2['Ligne1'],row2['Colonne1'])
+                    #Arete collée au sommet
+                    if (self.cube[row2['Face1']].tab[s1[0]][s1[1]] == self.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]) or (self.cube[row2['Face1']].tab[s2[0]][s2[1]] == self.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]):
+
+                        #Arete collé à 2 sommets
+                        if self.cube[row['Face1']].tab[s1[0]][s1[1]] == self.cube[row['Face1']].tab[s2[0]][s2[1]]:
+
+                        #Arete et 2 sommet à un coup d'être mis = 2 points
+                            res+=4
+
+                        #Arete collée à 1 sommet, à un coup d'être mis
+                        else:
+                            res+=3
+
+                #Arete placée à un coup#
+                elif (self.cube[row2['Face2']].tab[row2['Ligne2']][row2['Colonne2']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (self.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
+                    s1,s2 = SommetsVoisins(row2['Ligne1'],row2['Colonne1'])
+                    #Arete collée au sommet
+                    if (self.cube[row2['Face1']].tab[s1[0]][s1[1]] == self.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]) or (self.cube[row2['Face1']].tab[s2[0]][s2[1]] == self.cube[row2['Face1']].tab[row2['Ligne1']][row2['Colonne1']]):
+
+                        #Arete collé à 2 sommets
+                        if self.cube[row['Face1']].tab[s1[0]][s1[1]] == self.cube[row['Face1']].tab[s2[0]][s2[1]]:
+
+                        #Arete et 2 sommet à un coup d'être mis = 2 points
+                            res+=4
+
+                        #Arete collée à 1 sommet, à un coup d'être mis
+                        else:
+                            res+=3
+
+    for index,row in Sommets.iterrows():
+        if (self.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
+
+            #Sommet mis = 1 point
+            res+=1
+
+    return res
 
 
     '''
