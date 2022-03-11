@@ -423,7 +423,7 @@ Search cost number to all RediCube of the Dataset
 def FonctionPierre(n_inf,n_sup):
     df = gd.rd.pd.read_csv(r'csv\DataSet.csv',sep=';')
     for n in range(n_inf,n_sup+1):
-        r= gd.CreateRedicubeToResolveVisua(n)[1]
+        r= gd.CreateRedicubeToResolveVisua(n)
         t,noeuds,s = Resolution_Arbre_Pierre(r,12,5)
         st=''
         for i in s:
