@@ -206,6 +206,7 @@ class RediCube():
         while((self.Cout() not in (range(c_inf,c_max+1))) or compteur<melange_min):
             compteur+=1
             self.Melange(1)
+        print('Cout = ',self.Cout())
 
 
     '''
