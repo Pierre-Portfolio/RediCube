@@ -196,10 +196,10 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
             #reset
             nextfile=[]
             
-        tf=round(gd.rd.time.time() - start_time,2)
-        sol=file[0][1]
-        #Temps de resolution, nombre de noeuds parcouru, solution
-        return sol,tf,nbDeCoup,compteurnbNoeud
+    tf=round(gd.rd.time.time() - start_time,2)
+    sol=file[0][1]
+    #Temps de resolution, nombre de noeuds parcouru, solution
+    return sol,tf,nbDeCoup,compteurnbNoeud
 
 
 ##Fonction permettant de calculer le temps pris pour un N noeuds
