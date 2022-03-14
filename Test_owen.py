@@ -22,19 +22,6 @@ N_elagage1=82000
 N_elagage2=60000
 '''
 
-def Cout(r):
-    rd_resolu = rd.RediCube()
-    res=0
-    for index,row in Aretes.iterrows():
-        if (r.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (r.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-            res+=1
-
-    for index,row in Sommets.iterrows():
-        if (r.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
-            res+=1
-
-    return res
-
 def Cout2(r):
     rd_resolu = rd.RediCube()
     res=0
@@ -342,6 +329,80 @@ def Resolution_Arbre_Rollback_V2(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
                 print('remplissage arbre : ',len(Arbre[prof-(nbBeforeRollback+1)]))
                 file=file[:n]
                 prof-=nbBeforeRollback+1
+
+    tf=time.time() - start_time
+    nb_noeuds=-1
+    sol=[]
+    if compteur<N:
+        nb_noeuds=compteur
+        sol=file[0][1]
+
+    #Temps de resolution, nombre de noeuds parcouru, solution
+    print('Resolution en ',len(sol),' coups')
+    return tf,nb_noeuds,sol#,Arbre
+
+#Regarde possibilitee de rollback sur 4 coups, mais remonte à 5 coups
+def Resolution_Arbre_Rollback_V3(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
+    start_time = time.time()
+    r.lastcoup=tuple()
+
+    compteur=1
+    prof=0
+    file=[]
+    file.append([r,[],Cout3(r)])
+    nextfile=[]
+    Arbre={}
+    All_Redi=[]
+    All_Redi.append(r.cube)
+    Mauvais_cout=[]
+    Couts_rollbacke=[]
+
+
+    while file[0][2] != 104 and compteur<N:
+        print('-----------')
+        print('profondeur = ',str(prof))
+        print('Cout max = ',file[0][2])
+        position_file=0
+        while file:
+            compteur+=1
+            node = file.pop(0)
+            for coup in (node[0].ListCoups()):
+                L2=[i for i in node[1]]
+                copy_r = node[0].Copy()
+
+                copy_r.Move(coup[0],coup[1],coup[2])
+                cout=Cout3(copy_r)
+
+                if copy_r.cube not in All_Redi and cout not in Mauvais_cout:
+                    All_Redi.append(copy_r.cube)
+                    L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
+                    nextfile.append([copy_r,L2,Cout3(copy_r),position_file])
+            position_file+=1
+
+        #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
+        nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
+        Arbre[prof+1] = [[i[0].cube,i[1],i[3]] for i in nextfile]
+        nextfile=[[i[0],i[1],i[2]] for i in nextfile]
+        print('creation arbre niveau : ',prof+1)
+        print('remplissage arbre : ',len(nextfile))
+        nextfile=nextfile[:n]
+        #print(nextfile)
+        file.extend(nextfile)
+        nextfile=[]
+
+        prof+=1
+        position_file=0
+
+        #PARTIE ROLLBACK
+        for f in range(len(file)):
+            if len(file[f][1]) - nbBeforeRollback > 0:
+                pos=f
+                for p in range(nbBeforeRollback):
+                    pos=Arbre[len(file[f][1])-p][pos][2]
+                if file[f][2] <= Cout3(rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][pos][0])):
+                    del(Arbre[len(file[f][1])-nbBeforeRollback][pos])
+                    file[f] = [rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][pos][0]),Arbre[len(file[f][1])-nbBeforeRollback][pos][1],Cout3(rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][pos][0]))]
+                    print('ROLLBACK')
 
     tf=time.time() - start_time
     nb_noeuds=-1
