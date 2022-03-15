@@ -152,15 +152,16 @@ def Resolution_Arbre_Pierre(r,n,nbBeforeRollback): #1<n
     nbDeCoupBeforeRollBack = nbDeCoup
 
     while not trouver:
-        if file[0][0].Cout() == rd_resolu.Cout():
+        CoutFirstRediList = file[0][0].Cout()
+        if CoutFirstRediList == CoutRediCubeFinish:
             trouver = True
         else:
             while file:
-                print("score noeud suivante : " + str(file[0][0].Cout()))
+                print("score noeud suivante : " + str(CoutFirstRediList))
                 compteurnbNoeud+=1
                 node = file.pop(0)
 
-                for coup in (r.ListCoups()):
+                for coup in (r.ListCoups(True)):
                     L2=[i for i in node[1]]
                     copy_r = node[0].Copy()
                     copy_r.Move(coup[0],coup[1],coup[2])
