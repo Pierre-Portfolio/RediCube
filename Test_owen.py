@@ -341,21 +341,20 @@ def Resolution_Arbre_Rollback_V2(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
     print('Resolution en ',len(sol),' coups')
     return tf,nb_noeuds,sol#,Arbre
 
-#Regarde possibilitee de rollback sur 4 coups, mais remonte à 5 coups
+#Rollback individuel
 def Resolution_Arbre_Rollback_V3(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
     start_time = time.time()
     r.lastcoup=tuple()
 
-    compteur=1
+    compteur=1#nombre de noeuds parcouru
     prof=0
     file=[]
-    file.append([r,[],Cout3(r)])
-    nextfile=[]
-    Arbre={}
+    file.append([r,[],Cout3(r)])#file = [[redi,[coups],cout],...]
+    nextfile=[]#nextfile = [[redi,[coups],cout],...]
+    Arbre={}#Arbre = {prodondeur : [[redi.cube,[coups],position du parent dans file],...], ....}
     All_Redi=[]
     All_Redi.append(r.cube)
-    Mauvais_cout=[]
-    Couts_rollbacke=[]
+    Noeuds_par_prof={}#Noeuds_par_prof = {profondeur : nombre de noeuds explorés+1 (len(file),...}
 
 
     while file[0][2] != 104 and compteur<N:
@@ -373,7 +372,7 @@ def Resolution_Arbre_Rollback_V3(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
                 copy_r.Move(coup[0],coup[1],coup[2])
                 cout=Cout3(copy_r)
 
-                if copy_r.cube not in All_Redi and cout not in Mauvais_cout:
+                if copy_r.cube not in All_Redi:
                     All_Redi.append(copy_r.cube)
                     L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
                     nextfile.append([copy_r,L2,Cout3(copy_r),position_file])
@@ -385,9 +384,11 @@ def Resolution_Arbre_Rollback_V3(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
         nextfile=[[i[0],i[1],i[2]] for i in nextfile]
         print('creation arbre niveau : ',prof+1)
         print('remplissage arbre : ',len(nextfile))
-        nextfile=nextfile[:n]
+        #nextfile=nextfile[:n]
+        file.extend(Prochain_file(n,nextfile))
+        Noeuds_par_prof[prof+1] = len(file)
         #print(nextfile)
-        file.extend(nextfile)
+        #file.extend(nextfile)
         nextfile=[]
 
         prof+=1
@@ -400,9 +401,20 @@ def Resolution_Arbre_Rollback_V3(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
                 for p in range(nbBeforeRollback):
                     pos=Arbre[len(file[f][1])-p][pos][2]
                 if file[f][2] <= Cout3(rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][pos][0])):
-                    del(Arbre[len(file[f][1])-nbBeforeRollback][pos])
-                    file[f] = [rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][pos][0]),Arbre[len(file[f][1])-nbBeforeRollback][pos][1],Cout3(rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][pos][0]))]
-                    print('ROLLBACK')
+                    #del(Arbre[len(file[f][1])-nbBeforeRollback][pos])
+                    nouveau_noeud=Noeuds_par_prof[len(file[f][1])-nbBeforeRollback]
+                    print('ROLLBACK ',nouveau_noeud+1, ' eme noeuds, profondeur ',len(file[f][1])-nbBeforeRollback)
+                    Noeuds_par_prof[len(file[f][1])-nbBeforeRollback]+=1
+
+
+                    file[f] = [rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0]),Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][1],Cout3(rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0]))]
+
+
+
+
+
+                    #print('changement Noeuds_par prof, profondeur = ',len(file[f][1])-nbBeforeRollback,', ',Noeuds_par_prof[len(file[f][1])-nbBeforeRollback], ' eme noeuds')
+
 
     tf=time.time() - start_time
     nb_noeuds=-1
@@ -414,6 +426,26 @@ def Resolution_Arbre_Rollback_V3(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
     #Temps de resolution, nombre de noeuds parcouru, solution
     print('Resolution en ',len(sol),' coups')
     return tf,nb_noeuds,sol#,Arbre
+
+def Prochain_file(n,nextfile):
+    L=set(len(i[1]) for i in nextfile)
+    nextfile=sorted(nextfile, key=lambda x: len(x[1]), reverse = False)
+    D={}
+    for i in L:
+        Ltemp=[]
+        for j in nextfile:
+            if len(j[1])==i:
+                Ltemp.append(j)
+        D[i] = Ltemp
+
+    file=[]
+    for k in D.keys():
+        print('len(D[k]) = ',len(D[k]))
+        D[k]=sorted(D[k], key=lambda x: x[2], reverse = True)
+        file.extend(D[k][:int((len(D[k])/len(nextfile))*n)+1])
+
+    print('len(file)= ',len(file))
+    return file
 
 
 def CreateRedicubeToResolve(text):
