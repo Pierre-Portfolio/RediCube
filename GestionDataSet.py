@@ -1,5 +1,6 @@
 # Import
 import RediCube as rd
+ScoreRediMax = rd.RediCube().Cout()
 
 """
 Function which generates the file Dataset.csv
@@ -61,3 +62,25 @@ def CreateRedicubeToResolveInputVisua(textinput):
             return CreateRedicubeToResolve(textinput)
         else:
             return ["error", "Impossible de créer un RediCube"]
+        
+      
+"""
+Function which generate a dataset with a difficulty choose by the user
+"""
+def GenerateDifficultyDataSet(difficulte, nbRedicube):
+    if difficulte <= 2 and difficulte >= 0:
+        df = rd.pd.DataFrame(columns=['Pos'])
+        text = ''
+        ListDifficulté = [(0, int(ScoreRediMax* 0.3)), 
+                          (int(ScoreRediMax * 0.3), int(ScoreRediMax * 0.6)),
+                          (int(ScoreRediMax * 0.6), int(ScoreRediMax * 0.9))]
+        
+        for i in range(nbRedicube):
+            r = rd.RediCube()
+            r.Recherche_cout(ListDifficulté[difficulte][0], ListDifficulté[difficulte][1])
+            for j in range(rd.face):
+                text += "".join(r.cube[j].__str__().replace('\n','')) 
+            if text not in df.Pos:
+                df = df.append({"Pos":text},ignore_index=True)
+    
+    return 0;
