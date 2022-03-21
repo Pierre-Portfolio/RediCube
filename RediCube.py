@@ -226,21 +226,6 @@ class RediCube():
         numMove = Moves[(Moves['numero de face']==numFace) & (Moves['numero de corner']==numCorner)]['numero'].tolist()[0]
         return hauteur,numMove
 
-    def Cout2(self):
-        start_time = time.time()
-        rd_resolu = RediCube()
-        res=0
-        for index,row in Aretes.iterrows():
-            if (self.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']] == rd_resolu.cube[row['Face1']].tab[row['Ligne1']][row['Colonne1']]) and (self.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']] == rd_resolu.cube[row['Face2']].tab[row['Ligne2']][row['Colonne2']]):
-                res+=2
-    
-        for index,row in Sommets.iterrows():
-            if (self.cube[row['Face']].tab[row['Ligne']][row['Colonne']] == rd_resolu.cube[row['Face']].tab[row['Ligne']][row['Colonne']]):
-                res+=1
-        
-        print(str(round(time.time() - start_time,2)))
-        return res
-
     '''
     Return the Cost of the RediCube
     '''
@@ -315,8 +300,6 @@ class RediCube():
     
                 #Sommet mis = 1 point
                 res+=1
-    
-        print(str(round(time.time() - start_time,2)))
         return res
 
 
