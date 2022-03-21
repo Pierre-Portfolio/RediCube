@@ -42,7 +42,7 @@ def Prochain_file(n,nextfile):
     print('len(file)= ',len(file))
     return file
 
-def Resolution_Arbre_Rollback_Complexe(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
+def Resolution_Arbre_Rollback_Complexe(r,n,N=N_elagage1,nbBeforeRollback=4):
     start_time = gd.rd.time.time()
     r.lastcoup=tuple()
 
@@ -189,11 +189,12 @@ def Resolution_Arbre_Rollback_Basic(r,n,nbBeforeRollback): #1<n
 '''
 Search cost number to all RediCube of the Dataset
 '''
-def FonctionResolutionDataset(n_inf,n_sup):
-    df = gd.rd.pd.read_csv(r'csv\RediGenerate\Facile.csv',sep=';')
+def FonctionResolutionDataset(n_inf,n_sup,nameDataset):
+    lien = "csv//RediGenerate//" + nameDataset + ".csv"
+    df = gd.rd.pd.read_csv(lien,sep=';')
     for n in range(n_inf,n_sup+1):
         r= gd.CreateRedicubeToResolveVisua(n)
-        t,noeuds,s = Resolution_Arbre_Rollback_Complexe(r,12,5)
+        t,noeuds,s = Resolution_Arbre_Rollback_Complexe(r,13,50000,5)
         st=''
         for i in s:
             st+='('
@@ -206,7 +207,6 @@ def FonctionResolutionDataset(n_inf,n_sup):
         df.loc[n,'Solution']=st
         df.loc[n,'Nombre_noeuds']=noeuds
         df.loc[n,'Temps']=t
-        print('###################################################################################')
         print('Solution ' + str(n) + ' : ' + st + ' Nombre_noeuds : ' + str(noeuds) + ', Temps : ' + str(t))
-
-        df.to_csv(r'csv\DataSet.csv',';',index=False,mode='w')
+        
+        df.to_csv(lien,';',index=False,mode='w')
