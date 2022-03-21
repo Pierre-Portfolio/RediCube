@@ -300,8 +300,6 @@ class RediCube():
     
                 #Sommet mis = 1 point
                 res+=1
-    
-        print(str(round(time.time() - start_time,2)))
         return res
 
 

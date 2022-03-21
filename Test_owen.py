@@ -482,6 +482,94 @@ def TestDataSet(n):
     print(time.time() - start_time,' secondes.')
 
 
+##Fonction permettant de calculer le temps pris pour un N noeuds
+def Comparaison_vitesse_fonctions(nb_noeuds=1000):
+    df=gd.rd.pd.DataFrame(columns=['temps resolution elagage 1 n=2','temps resolution elagage 1 n=3',
+    'temps resolution elagage 1 n=4','temps resolution elagage 1 n=5','temps resolution elagage 1 n=6',
+    'temps resolution elagage 2 n=1','temps resolution elagage 2 n=2','temps resolution elagage 2 n=3',
+    'temps resolution elagage 2 n=4','temps resolution elagage 2 n=5'])
+
+    for redi in range(5):
+        r=gd.rd.RediCube()
+        r.Melange(10)
+
+        t2=Resolution_Arbre_Rollback_Owen(r,2,N=nb_noeuds)[0]
+        t3=Resolution_Arbre_Rollback_Owen(r,3,N=nb_noeuds)[0]
+        t4=Resolution_Arbre_Rollback_Owen(r,4,N=nb_noeuds)[0]
+        t5=Resolution_Arbre_Rollback_Owen(r,5,N=nb_noeuds)[0]
+        t6=Resolution_Arbre_Rollback_Owen(r,6,N=nb_noeuds)[0]
+
+        t7=Resolution_Arbre_Pierre(r,1,N=nb_noeuds)[0]
+        t8=Resolution_Arbre_Pierre(r,2,N=nb_noeuds)[0]
+        t9=Resolution_Arbre_Pierre(r,3,N=nb_noeuds)[0]
+        t10=Resolution_Arbre_Pierre(r,4,N=nb_noeuds)[0]
+        t11=Resolution_Arbre_Pierre(r,5,N=nb_noeuds)[0]
+
+        df=df.append({'temps resolution elagage 1 n=2':t2,
+        'temps resolution elagage 1 n=3':t3,'temps resolution elagage 1 n=4':t4,'temps resolution elagage 1 n=5':t5,
+        'temps resolution elagage 1 n=6':t6,'temps resolution elagage 2 n=1':t7,'temps resolution elagage 2 n=2':t8,
+        'temps resolution elagage 2 n=3':t9,'temps resolution elagage 2 n=4':t10,
+        'temps resolution elagage 2 n=5':t11},ignore_index=True)
+
+    df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\Comparaison_temps_fonctions.csv',';',index=False,mode='w')
+
+
+##Constante indiquant les fonctions à testet
+D={'sans_elagage':True,
+'elagage1_n=2':True,'elagage1_n=3':True,'elagage1_n=4':True,'elagage1_n=5':True,'elagage1_n=6':True,
+'elagage2_n=1':True,'elagage2_n=2':True,'elagage2_n=3':True,'elagage2_n=4':True,'elagage2_n=5':True}
+
+##Comparaison des differentes fonctions en fonction d'une liste de redi
+def Comparaison_resolutions_fonction(D,L):
+    columns=['Cout']
+    for keys,values in D.items():
+        if values==True:
+            columns.append(keys+'_noeuds')
+            columns.append(keys+'_nbCoups')
+
+    df=gd.rd.pd.DataFrame(columns=columns)
+
+    compteur=0
+    for r in L:
+        compteur+=1
+        print('---------------')
+        print(str(compteur) + '/' + str(len(L)))
+        Ligne=[compteur]
+
+        if D['elagage1_n=2']==True:
+            t2,n2,s2=Resolution_Arbre_Pierre(r,2)
+            Ligne.extend([n2,len(s2)])
+        if D['elagage1_n=3']==True:
+            t3,n3,s3=Resolution_Arbre_Pierre(r,3)
+            Ligne.extend([n3,len(s3)])
+        if D['elagage1_n=4']==True:
+            t4,n4,s4=Resolution_Arbre_Pierre(r,4)
+            Ligne.extend([n4,len(s4)])
+        if D['elagage1_n=5']==True:
+            t5,n5,s5=Resolution_Arbre_Pierre(r,5)
+            Ligne.extend([n5,len(s5)])
+        if D['elagage1_n=6']==True:
+            t6,n6,s6=Resolution_Arbre_Pierre(r,6)
+            Ligne.extend([n6,len(s6)])
+
+        if D['elagage2_n=1']==True:
+            t7,n7,s7=Resolution_Arbre_Rollback_Owen(r,1)
+            Ligne.extend([n7,len(s7)])
+        if D['elagage2_n=2']==True:
+            t8,n8,s8=Resolution_Arbre_Rollback_Owen(r,2)
+            Ligne.extend([n8,len(s8)])
+        if D['elagage2_n=3']==True:
+            t9,n9,s9=Resolution_Arbre_Rollback_Owen(r,3)
+            Ligne.extend([n9,len(s9)])
+        if D['elagage2_n=4']==True:
+            t10,n10,s10=Resolution_Arbre_Rollback_Owen(r,4)
+            Ligne.extend([n10,len(s10)])
+        if D['elagage2_n=5']==True:
+            t11,n11,s11=Resolution_Arbre_Rollback_Owen(r,5)
+            Ligne.extend([n11,len(s11)])
+        df.loc[len(df)]=Ligne
+        df.to_csv(r'C:\Users\owen9\OneDrive\Documents\GitHub\RediCube\csv\test_Owen.csv',';',index=False,mode='w')
+
 
 
 
