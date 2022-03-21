@@ -193,8 +193,8 @@ def FonctionResolutionDataset(n_inf,n_sup,nameDataset):
     lien = "csv//RediGenerate//" + nameDataset + ".csv"
     df = gd.rd.pd.read_csv(lien,sep=';')
     for n in range(n_inf,n_sup+1):
-        r= gd.CreateRedicubeToResolveVisua(n)
-        t,noeuds,s = Resolution_Arbre_Rollback_Complexe(r,13,50000,5)
+        r= gd.CreateRedicubeToResolveVisua(n, lien)
+        t,noeuds,s = Resolution_Arbre_Rollback_Complexe(r,13,1000,5)
         st=''
         for i in s:
             st+='('

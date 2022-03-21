@@ -43,8 +43,8 @@ def CreateRedicubeToResolve(text):
 '''
 Function which generates a redicube from the visualisation
 '''
-def CreateRedicubeToResolveVisua(n):
-    df = rd.pd.read_csv('csv/DataSet.csv',sep=';')
+def CreateRedicubeToResolveVisua(n, lien = 'csv/DataSet.csv'):
+    df = rd.pd.read_csv(lien,sep=';')
     if n >= len(df):
         return ["error","Valeur maximale autorisé : " + str(len(df))]
     text = df.loc[n].Pos
@@ -71,9 +71,9 @@ def GenerateDifficultyDataSet(difficulte, nbRedicube):
     if difficulte <= 2 and difficulte >= 0:
         print("Generatation en cours...")
         df = rd.pd.DataFrame(columns=['Pos'])
-        ListDifficulté = [(0, int(ScoreRediMax* 0.3),"Difficile"), 
-                          (int(ScoreRediMax * 0.3), int(ScoreRediMax * 0.6), "Moyen"),
-                          (int(ScoreRediMax * 0.6), int(ScoreRediMax * 0.9), "Facile")]
+        ListDifficulté = [(0, int(ScoreRediMax* 0.2),"Difficile"), 
+                          (int(ScoreRediMax * 0.2), int(ScoreRediMax * 0.4), "Moyen"),
+                          (int(ScoreRediMax * 0.4), int(ScoreRediMax * 0.7), "Facile")]
         
         for i in range(nbRedicube):
             text = ''
