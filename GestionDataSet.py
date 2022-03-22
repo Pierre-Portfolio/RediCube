@@ -71,20 +71,54 @@ def GenerateDifficultyDataSet(difficulte, nbRedicube):
     if difficulte <= 2 and difficulte >= 0:
         print("Generatation en cours...")
         df = rd.pd.DataFrame(columns=['Pos'])
-        ListDifficulté = [(0, int(ScoreRediMax* 0.2),"Difficile"), 
+        ListDifficulte = [(0, int(ScoreRediMax* 0.2),"Difficile"), 
                           (int(ScoreRediMax * 0.2), int(ScoreRediMax * 0.4), "Moyen"),
                           (int(ScoreRediMax * 0.4), int(ScoreRediMax * 0.7), "Facile")]
         
         for i in range(nbRedicube):
             text = ''
             r = rd.RediCube()
-            r.Recherche_cout(ListDifficulté[difficulte][0], ListDifficulté[difficulte][1])
+            r.Recherche_cout(ListDifficulte[difficulte][0], ListDifficulte[difficulte][1])
             for j in range(rd.face):
                 text += "".join(r.cube[j].__str__().replace('\n','')) 
             if text not in df.Pos:
                 df = df.append({"Pos":text},ignore_index=True)
                 
-        df.to_csv('csv/RediGenerate/' + ListDifficulté[difficulte][2]  + '.csv', index=False, sep=';')
+        df.to_csv('csv/RediGenerate/' + ListDifficulte[difficulte][2]  + '.csv', index=False, sep=';')
         print("Generate Done...")
+    else:
+        print("Veillez saisir un nombre entre 0 et 2")
+        
+"""
+Function which analyse the dataset choosen by the user
+"""
+def AnalyseDataset(difficulte):
+    if difficulte <= 2 and difficulte >= 0:
+        #Create the data set
+        NameDificulte = ["Difficile","Moyen","Facile"]
+        lien = "csv//RediGenerate//" + NameDificulte[difficulte] + ".csv"
+        df = rd.pd.read_csv(lien,sep=';')
+        df = df[df['Temps'].notna()]
+        nbRediAnalyse = len(df)
+        df = df.dropna()
+        nbRediAnalyseFinish = len(df)
+        nbNaNFinish = nbRediAnalyse - nbRediAnalyseFinish
+        TempMoyen = 0
+        CoupMoyen = 0
+        CoupMax = 0
+        df = df[['Solution',"Temps"]]
+
+        for i in range(len(df)):
+            Coup = df.iloc[i].Solution.count('(')
+            CoupMoyen += Coup
+            
+            Temps = df.iloc[i].Temps
+            TempMoyen += Temps
+            if(Coup > CoupMax):
+                CoupMax = Coup
+                
+        CoupMoyen = CoupMoyen / nbRediAnalyseFinish
+        TempMoyen = TempMoyen / nbRediAnalyseFinish
+        return nbRediAnalyse, nbNaNFinish, CoupMax, CoupMoyen, TempMoyen
     else:
         print("Veillez saisir un nombre entre 0 et 2")
