@@ -3,6 +3,8 @@ from vpython import *
 import math as m
 import Resolution_Arbre_largeur as ra
 
+#r=ra.gd.rd.RediCube()
+
 def Couleur(r,variable):
     col={'G':vector(0,1,0),'Y':vector(1,1,0),'R':vector(1, 0, 0),'W':vector(1, 1, 1),'O':vector(1,0.2,0),'B':vector(0,0,1)}
     return col[r.cube[int(variable[1:2])].tab[int(variable[3:4])][int(variable[5:6])]]
@@ -375,7 +377,7 @@ def Visualisation(r):
     bda3=vertex(pos=vector(.1,-1.5,-1),color = Couleur(r,'f5l2c1'))
     tf5l2c1=triangle(v0=bda1,v1=bda2,v2=bda3)
     
-#while Visualisation(r)==True:
+    #while Visualisation(r)==True:
     input_number()
     ResolutionVisuel(r)
     
@@ -410,8 +412,6 @@ def MelangeVisuel(r,nb):
             print('\nhauteur :',Mouv['hauteur'],', numéro de rotation: ',Mouv['numero'],', rotation sens horaire')
         else:
             print('\nhauteur :',Mouv['hauteur'],', numéro de rotation :',Mouv['numero'],', rotation sens anti-horaire')
-
-
 
         #time.sleep(1)
         input('\nappuyer sur entrée\n')

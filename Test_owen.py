@@ -471,13 +471,13 @@ def CreateRedicubeToResolveVisua(n):
     r = CreateRedicubeToResolve(text)
     return r
 
-def TestDataSet(n):
-    for i in range(n):
+def TestDataSet(start,end):
+    for i in range(start,end+1):
         start_time = time.time()
         print('-------------------')
         print('REDI NUMERO ',i)
         r=CreateRedicubeToResolveVisua(i)
-        Resolution_Arbre_Rollback_V2(r,10)
+        Resolution_Arbre_Rollback_V3(r,10)
     print('--------------')
     print(time.time() - start_time,' secondes.')
 
