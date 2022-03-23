@@ -35,14 +35,12 @@ def Prochain_file(n,nextfile):
 
     file=[]
     for k in D.keys():
-        print('len(D[k]) = ',len(D[k]))
         D[k]=sorted(D[k], key=lambda x: x[2], reverse = True)
         file.extend(D[k][:int((len(D[k])/len(nextfile))*n)+1])
 
-    print('len(file)= ',len(file))
     return file
 
-def Resolution_Arbre_Rollback_Complexe(r,n,N=N_elagage1,nbBeforeRollback=4):
+def Resolution_Arbre_Rollback_Complexe(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
     start_time = gd.rd.time.time()
     r.lastcoup=tuple()
 
@@ -56,10 +54,12 @@ def Resolution_Arbre_Rollback_Complexe(r,n,N=N_elagage1,nbBeforeRollback=4):
     All_Redi.append(r.cube)
     Noeuds_par_prof={}#Noeuds_par_prof = {profondeur : nombre de noeuds explorés+1 (len(file),...}
 
+
     while file[0][2] != 104 and compteur<N:
-        print('-----------')
-        print('profondeur = ',str(prof))
-        print('Cout max = ',file[0][2])
+        #print('-----------')
+        #print('profondeur = ',prof)
+        #print('file = ',[len(i[1]) for i in file])
+        #print('Cout max = ',file[0][2])
         position_file=0
         while file:
             compteur+=1
@@ -81,11 +81,11 @@ def Resolution_Arbre_Rollback_Complexe(r,n,N=N_elagage1,nbBeforeRollback=4):
         nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
         Arbre[prof+1] = [[i[0].cube,i[1],i[3]] for i in nextfile]
         nextfile=[[i[0],i[1],i[2]] for i in nextfile]
-        print('creation arbre niveau : ',prof+1)
-        print('remplissage arbre : ',len(nextfile))
+        #print('creation arbre niveau : ',prof+1)
+        #print('remplissage arbre : ',len(nextfile))
         #nextfile=nextfile[:n]
         file.extend(Prochain_file(n,nextfile))
-        Noeuds_par_prof[prof+1] = len(file)
+        Noeuds_par_prof[prof+1] = len([len(i[1]) for i in file if len(i[1]) == prof+1])
         #print(nextfile)
         #file.extend(nextfile)
         nextfile=[]
@@ -99,13 +99,21 @@ def Resolution_Arbre_Rollback_Complexe(r,n,N=N_elagage1,nbBeforeRollback=4):
                 pos=f
                 for p in range(nbBeforeRollback):
                     pos=Arbre[len(file[f][1])-p][pos][2]
-                if file[f][2] <= gd.rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][pos][0]).Cout():
+                if file[f][2] <= (rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][pos][0])).Cout():
                     #del(Arbre[len(file[f][1])-nbBeforeRollback][pos])
                     nouveau_noeud=Noeuds_par_prof[len(file[f][1])-nbBeforeRollback]
-                    print('ROLLBACK ',nouveau_noeud+1, ' eme noeuds, profondeur ',len(file[f][1])-nbBeforeRollback)
+                    #print('ROLLBACK ',nouveau_noeud+1, ' eme noeuds, profondeur ',len(file[f][1])-nbBeforeRollback)
                     Noeuds_par_prof[len(file[f][1])-nbBeforeRollback]+=1
-                    file[f] = [gd.rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0]),Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][1], gd.rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0]).Cout()]
+
+
+                    file[f] = [rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0]),Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][1],(rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0])).Cout()]
+
+
+
+
+
                     #print('changement Noeuds_par prof, profondeur = ',len(file[f][1])-nbBeforeRollback,', ',Noeuds_par_prof[len(file[f][1])-nbBeforeRollback], ' eme noeuds')
+
 
     tf=gd.rd.time.time() - start_time
     nb_noeuds=-1
@@ -117,7 +125,7 @@ def Resolution_Arbre_Rollback_Complexe(r,n,N=N_elagage1,nbBeforeRollback=4):
     #Temps de resolution, nombre de noeuds parcouru, solution
     print('Resolution en ',len(sol),' coups')
     return tf,nb_noeuds,sol#,Arbre
- 
+
 ##Arbre, parcours en largeur, elagage palier n de difference de cout avec le rd d'origine
 def Resolution_Arbre_Rollback_Basic(r,n,nbBeforeRollback): #1<n
     start_time = gd.rd.time.time()
@@ -153,7 +161,7 @@ def Resolution_Arbre_Rollback_Basic(r,n,nbBeforeRollback): #1<n
                     #print({'hauteur':hauteur,'num':num,'sens':sens})
 
                     nextfile.append([copy_r,L2,copy_r.Cout()])
-            
+
 
             #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
             nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
@@ -172,7 +180,7 @@ def Resolution_Arbre_Rollback_Basic(r,n,nbBeforeRollback): #1<n
                     nbIncBeforeRollBack = nbBeforeRollback
                     file = nextfileRollBack[:n]
                     nextfileBestCount = file[0][2]
-                    nextfileRollBack = nextfileRollBack[n:]   
+                    nextfileRollBack = nextfileRollBack[n:]
                     nbDeCoup = nbDeCoupBeforeRollBack
                     print("Rollback")
                 else:
@@ -180,11 +188,13 @@ def Resolution_Arbre_Rollback_Basic(r,n,nbBeforeRollback): #1<n
                     print("profondeur suivante avec pour nombre de dieu : " + str(nbDeCoup))
             #reset
             nextfile=[]
-            
+
     tf=round(gd.rd.time.time() - start_time,2)
     sol=file[0][1]
     #Temps de resolution, nombre de noeuds parcouru, solution
     return sol,tf,nbDeCoup,compteurnbNoeud
+
+
 
 '''
 Search cost number to all RediCube of the Dataset
@@ -208,5 +218,5 @@ def FonctionResolutionDataset(n_inf,n_sup,nameDataset):
         df.loc[n,'Nombre_noeuds']=noeuds
         df.loc[n,'Temps']=t
         print('Solution ' + str(n) + ' : ' + st + ' Nombre_noeuds : ' + str(noeuds) + ', Temps : ' + str(t))
-        
+
         df.to_csv(lien,';',index=False,mode='w')
