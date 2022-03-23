@@ -359,7 +359,8 @@ def Resolution_Arbre_Rollback_V3(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
 
     while file[0][2] != 104 and compteur<N:
         print('-----------')
-        print('profondeur = ',str(prof))
+        print('profondeur = ',prof)
+        print('file = ',[len(i[1]) for i in file])
         print('Cout max = ',file[0][2])
         position_file=0
         while file:
@@ -386,7 +387,7 @@ def Resolution_Arbre_Rollback_V3(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
         print('remplissage arbre : ',len(nextfile))
         #nextfile=nextfile[:n]
         file.extend(Prochain_file(n,nextfile))
-        Noeuds_par_prof[prof+1] = len(file)
+        Noeuds_par_prof[prof+1] = len([len(i[1]) for i in file if len(i[1]) == prof+1])
         #print(nextfile)
         #file.extend(nextfile)
         nextfile=[]
@@ -427,6 +428,94 @@ def Resolution_Arbre_Rollback_V3(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
     print('Resolution en ',len(sol),' coups')
     return tf,nb_noeuds,sol#,Arbre
 
+#Rollback individuel avec un minimum de print
+def Resolution_Arbre_Rollback_V4(r,n,N=N_elagage1,nbBeforeRollback=4): #1<n<7
+    start_time = time.time()
+    r.lastcoup=tuple()
+
+    compteur=1#nombre de noeuds parcouru
+    prof=0
+    file=[]
+    file.append([r,[],Cout3(r)])#file = [[redi,[coups],cout],...]
+    nextfile=[]#nextfile = [[redi,[coups],cout],...]
+    Arbre={}#Arbre = {prodondeur : [[redi.cube,[coups],position du parent dans file],...], ....}
+    All_Redi=[]
+    All_Redi.append(r.cube)
+    Noeuds_par_prof={}#Noeuds_par_prof = {profondeur : nombre de noeuds explorés+1 (len(file),...}
+
+
+    while file[0][2] != 104 and compteur<N:
+        #print('-----------')
+        #print('profondeur = ',prof)
+        #print('file = ',[len(i[1]) for i in file])
+        #print('Cout max = ',file[0][2])
+        position_file=0
+        while file:
+            compteur+=1
+            node = file.pop(0)
+            for coup in (node[0].ListCoups()):
+                L2=[i for i in node[1]]
+                copy_r = node[0].Copy()
+
+                copy_r.Move(coup[0],coup[1],coup[2])
+                cout=Cout3(copy_r)
+
+                if copy_r.cube not in All_Redi:
+                    All_Redi.append(copy_r.cube)
+                    L2.append({'hauteur':coup[0],'num':coup[1],'sens':coup[2]})
+                    nextfile.append([copy_r,L2,Cout3(copy_r),position_file])
+            position_file+=1
+
+        #Tri par cout, effectue d'abord les coups qui donnent un meilleur cout
+        nextfile=sorted(nextfile, key=lambda x: x[2], reverse = True)
+        Arbre[prof+1] = [[i[0].cube,i[1],i[3]] for i in nextfile]
+        nextfile=[[i[0],i[1],i[2]] for i in nextfile]
+        #print('creation arbre niveau : ',prof+1)
+        #print('remplissage arbre : ',len(nextfile))
+        #nextfile=nextfile[:n]
+        file.extend(Prochain_file(n,nextfile))
+        Noeuds_par_prof[prof+1] = len([len(i[1]) for i in file if len(i[1]) == prof+1])
+        #print(nextfile)
+        #file.extend(nextfile)
+        nextfile=[]
+
+        prof+=1
+        position_file=0
+
+        #PARTIE ROLLBACK
+        for f in range(len(file)):
+            if len(file[f][1]) - nbBeforeRollback > 0:
+                pos=f
+                for p in range(nbBeforeRollback):
+                    pos=Arbre[len(file[f][1])-p][pos][2]
+                if file[f][2] <= Cout3(rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][pos][0])):
+                    #del(Arbre[len(file[f][1])-nbBeforeRollback][pos])
+                    nouveau_noeud=Noeuds_par_prof[len(file[f][1])-nbBeforeRollback]
+                    #print('ROLLBACK ',nouveau_noeud+1, ' eme noeuds, profondeur ',len(file[f][1])-nbBeforeRollback)
+                    Noeuds_par_prof[len(file[f][1])-nbBeforeRollback]+=1
+
+
+                    file[f] = [rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0]),Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][1],Cout3(rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0]))]
+
+
+
+
+
+                    #print('changement Noeuds_par prof, profondeur = ',len(file[f][1])-nbBeforeRollback,', ',Noeuds_par_prof[len(file[f][1])-nbBeforeRollback], ' eme noeuds')
+
+
+    tf=time.time() - start_time
+    nb_noeuds=-1
+    sol=[]
+    if compteur<N:
+        nb_noeuds=compteur
+        sol=file[0][1]
+
+    #Temps de resolution, nombre de noeuds parcouru, solution
+    print('Resolution en ',len(sol),' coups')
+    return tf,nb_noeuds,sol#,Arbre
+
+
 def Prochain_file(n,nextfile):
     L=set(len(i[1]) for i in nextfile)
     nextfile=sorted(nextfile, key=lambda x: len(x[1]), reverse = False)
@@ -440,11 +529,11 @@ def Prochain_file(n,nextfile):
 
     file=[]
     for k in D.keys():
-        print('len(D[k]) = ',len(D[k]))
+        #print('len(D[k]) = ',len(D[k]))
         D[k]=sorted(D[k], key=lambda x: x[2], reverse = True)
         file.extend(D[k][:int((len(D[k])/len(nextfile))*n)+1])
 
-    print('len(file)= ',len(file))
+    #print('len(file)= ',len(file))
     return file
 
 
