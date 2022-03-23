@@ -19,7 +19,7 @@ def StartGenerateDataSet(nbfois):
             df = df.append({"Pos":text},ignore_index=True)
             nbfind += 1
             print("Une new valeur ajouté : " , nbfind)
-    df.to_csv('csv/DataSet.csv', index=False, sep=';')
+    df.to_csv('csv/RediGenerate/Random.csv', index=False, sep=';')
     print("--- %s seconds ---" % (rd.time.time() - start_time))
     
 '''
@@ -43,7 +43,7 @@ def CreateRedicubeToResolve(text):
 '''
 Function which generates a redicube from the visualisation
 '''
-def CreateRedicubeToResolveVisua(n, lien = 'csv/DataSet.csv'):
+def CreateRedicubeToResolveVisua(n, lien = 'csv/RediGenerate/Random.csv'):
     df = rd.pd.read_csv(lien,sep=';')
     if n >= len(df):
         return ["error","Valeur maximale autorisé : " + str(len(df))]
