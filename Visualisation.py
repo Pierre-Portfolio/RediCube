@@ -20,6 +20,8 @@ def D(aaaa):
     print("-----------------------------------------------------------")
     r=ra.gd.CreateRedicubeToResolveInputVisua(TextBox(aaaa))
     Visualisation(r,False)
+    wtext(text="\n\n")
+    b=button(text="R",bind=ResolutionVisuel(r))
 
 def input_number():
     wtext(text="\n\n")
@@ -29,11 +31,11 @@ def input_number():
     #return rc.CreateRedicubeToResolveInputVisua(TextBox(cube))
 
 def ResolutionVisuel(r):
-    sol,tf,nbDeCoup,compteurnbNoeud=ra.Resolution_Arbre_Rollback_Complexe(r,3)
+    tf,nb_noeuds,sol=ra.Resolution_Arbre_Rollback_Complexe(r,3)
+    long=len(sol)
+    w_compt=wtext(text='{}'.format(long)) 
     w_sol=wtext(text='{}'.format(sol))
     w_tf=wtext(text='{}'.format(tf))
-    w_nbDeCoup=wtext(text='{}'.format(nbDeCoup)) 
-    w_compt=wtext(text='{}'.format(compteurnbNoeud)) 
     
     
 def Visualisation(r,AppelFonction=True):
@@ -381,7 +383,8 @@ def Visualisation(r,AppelFonction=True):
     #while Visualisation(r)==True:
     if AppelFonction:
         input_number()
-    #ResolutionVisuel(r)
+        
+        #ResolutionVisuel(r)
     
     #wtext(text="\n\n")
     #b=button(text="Valider",bind=D)
@@ -418,4 +421,4 @@ def MelangeVisuel(r,nb):
         #time.sleep(1)
         input('\nappuyer sur entrée\n')
         r.Move(Mouv['hauteur'],Mouv['numero'],sens)
-        Visualisation(r)  
+        Visualisation(r,False)  
