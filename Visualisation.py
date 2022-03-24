@@ -2,6 +2,7 @@
 from vpython import *
 import math as m
 import Resolution_Arbre_largeur as ra
+import random as random
 
 #r=ra.gd.rd.RediCube()
 
@@ -28,7 +29,7 @@ def input_number():
     #return rc.CreateRedicubeToResolveInputVisua(TextBox(cube))
 
 def ResolutionVisuel(r):
-    sol,tf,nbDeCoup,compteurnbNoeud=ra.Resolution_Arbre_Pierre(r,3,5)
+    sol,tf,nbDeCoup,compteurnbNoeud=ra.Resolution_Arbre_Rollback_Complexe(r,3)
     w_sol=wtext(text='{}'.format(sol))
     w_tf=wtext(text='{}'.format(tf))
     w_nbDeCoup=wtext(text='{}'.format(nbDeCoup)) 
@@ -379,7 +380,7 @@ def Visualisation(r):
     
     #while Visualisation(r)==True:
     input_number()
-    ResolutionVisuel(r)
+    #ResolutionVisuel(r)
     
     #wtext(text="\n\n")
     #b=button(text="Valider",bind=D)
@@ -394,7 +395,7 @@ def Visualisation(r):
 Return a visual of a redicube
 '''
 def MelangeVisuel(r,nb):
-    vi.Visualisation(r)
+    Visualisation(r)
     (NumMouv0,sens0) = (-1,2)
     for i in range(nb):
         NumMouv=random.randint(0,7)
@@ -407,7 +408,7 @@ def MelangeVisuel(r,nb):
 
         if sens == 0:
             sens =-1
-        Mouv=Moves.drop_duplicates(subset=['hauteur','numero']).iloc[NumMouv]
+        Mouv=ra.gd.rd.Moves.drop_duplicates(subset=['hauteur','numero']).iloc[NumMouv]
         if sens == 1:
             print('\nhauteur :',Mouv['hauteur'],', numéro de rotation: ',Mouv['numero'],', rotation sens horaire')
         else:
@@ -416,4 +417,4 @@ def MelangeVisuel(r,nb):
         #time.sleep(1)
         input('\nappuyer sur entrée\n')
         r.Move(Mouv['hauteur'],Mouv['numero'],sens)
-        vi.Visualisation(r)  
+        Visualisation(r)  

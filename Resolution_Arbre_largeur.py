@@ -99,14 +99,14 @@ def Resolution_Arbre_Rollback_Complexe(r,n,N=N_elagage1,nbBeforeRollback=4): #1<
                 pos=f
                 for p in range(nbBeforeRollback):
                     pos=Arbre[len(file[f][1])-p][pos][2]
-                if file[f][2] <= (rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][pos][0])).Cout():
+                if file[f][2] <= (gd.rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][pos][0])).Cout():
                     #del(Arbre[len(file[f][1])-nbBeforeRollback][pos])
                     nouveau_noeud=Noeuds_par_prof[len(file[f][1])-nbBeforeRollback]
                     #print('ROLLBACK ',nouveau_noeud+1, ' eme noeuds, profondeur ',len(file[f][1])-nbBeforeRollback)
                     Noeuds_par_prof[len(file[f][1])-nbBeforeRollback]+=1
 
 
-                    file[f] = [rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0]),Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][1],(rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0])).Cout()]
+                    file[f] = [gd.rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0]),Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][1],(gd.rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0])).Cout()]
 
 
 
