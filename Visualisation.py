@@ -19,7 +19,7 @@ def D(aaaa):
     print(TextBox(aaaa))
     print("-----------------------------------------------------------")
     r=ra.gd.CreateRedicubeToResolveInputVisua(TextBox(aaaa))
-    Visualisation(r)
+    Visualisation(r,False)
 
 def input_number():
     wtext(text="\n\n")
@@ -36,7 +36,7 @@ def ResolutionVisuel(r):
     w_compt=wtext(text='{}'.format(compteurnbNoeud)) 
     
     
-def Visualisation(r):
+def Visualisation(r,AppelFonction=True):
     #Lumières
     distant_light(direction=vector(2,0,0), color=color.white)
     distant_light(direction=vector(-2,0,0), color=color.white)
@@ -379,7 +379,8 @@ def Visualisation(r):
     tf5l2c1=triangle(v0=bda1,v1=bda2,v2=bda3)
     
     #while Visualisation(r)==True:
-    input_number()
+    if AppelFonction:
+        input_number()
     #ResolutionVisuel(r)
     
     #wtext(text="\n\n")
