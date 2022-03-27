@@ -105,8 +105,9 @@ def Resolution_Arbre_Rollback_Complexe(r,n,N=N_elagage1,nbBeforeRollback=4): #1<
                     #print('ROLLBACK ',nouveau_noeud+1, ' eme noeuds, profondeur ',len(file[f][1])-nbBeforeRollback)
                     Noeuds_par_prof[len(file[f][1])-nbBeforeRollback]+=1
 
+                    if nouveau_noeud < len(Arbre[len(file[f][1])-nbBeforeRollback]):
 
-                    file[f] = [gd.rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0]),Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][1],(gd.rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0])).Cout()]
+                        file[f] = [gd.rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0]),Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][1],(gd.rd.RediCube(Arbre[len(file[f][1])-nbBeforeRollback][nouveau_noeud][0])).Cout()]
 
 
 
