@@ -214,9 +214,10 @@ def FonctionResolutionDataset(n_inf,n_sup,nameDataset):
             st+=','
             st+=str(i['sens'])
             st+='),'
-        df.loc[n,'Solution']=st
-        df.loc[n,'Nombre_noeuds']=noeuds
-        df.loc[n,'Temps']=t
+        df.loc[n,'Solution']= st
+        df.loc[n,'Nombre_noeuds']= noeuds
+        df.loc[n,'NbCoups']= len(s)
+        df.loc[n,'Temps']= t
         print('Solution ' + str(n) + ' : ' + st + ' Nombre_noeuds : ' + str(noeuds) + ', Temps : ' + str(t))
 
         df.to_csv(lien,';',index=False,mode='w')

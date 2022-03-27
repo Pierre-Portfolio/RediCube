@@ -70,7 +70,7 @@ Function which generate a dataset with a difficulty choose by the user
 def GenerateDifficultyDataSet(difficulte, nbRedicube):
     if difficulte <= 2 and difficulte >= 0:
         print("Generatation en cours...")
-        df = rd.pd.DataFrame(columns=['Pos'])
+        df = rd.pd.DataFrame(columns=['Pos','Cout'])
         ListDifficulte = [(0, int(ScoreRediMax* 0.2),"Difficile"), 
                           (int(ScoreRediMax * 0.2), int(ScoreRediMax * 0.4), "Moyen"),
                           (int(ScoreRediMax * 0.4), int(ScoreRediMax * 0.7), "Facile")]
@@ -82,7 +82,7 @@ def GenerateDifficultyDataSet(difficulte, nbRedicube):
             for j in range(rd.face):
                 text += "".join(r.cube[j].__str__().replace('\n','')) 
             if text not in df.Pos:
-                df = df.append({"Pos":text},ignore_index=True)
+                df = df.append({"Pos":text,"Cout":r.Cout()},ignore_index=True)
                 
         df.to_csv('csv/RediGenerate/' + ListDifficulte[difficulte][2]  + '.csv', index=False, sep=';')
         print("Generate Done...")
