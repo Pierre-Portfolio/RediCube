@@ -199,12 +199,16 @@ def Resolution_Arbre_Rollback_Basic(r,n,nbBeforeRollback): #1<n
 '''
 Search cost number to all RediCube of the Dataset
 '''
-def FonctionResolutionDataset(n_inf,n_sup,nameDataset):
+
+Nb_noeuds={'Owen':1310,"Prathes":830,'Pierre':1310}
+
+def FonctionResolutionDataset(n_inf,n_sup,nameDataset,name):
     lien = "csv//RediGenerate//" + nameDataset + ".csv"
     df = gd.rd.pd.read_csv(lien,sep=';')
+    nb_noeuds=Nb_noeuds[name]
     for n in range(n_inf,n_sup+1):
         r= gd.CreateRedicubeToResolveVisua(n, lien)
-        t,noeuds,s = Resolution_Arbre_Rollback_Complexe(r,13,1000,5)
+        t,noeuds,s = Resolution_Arbre_Rollback_Complexe(r,13,nb_noeuds,5)
         st=''
         for i in s:
             st+='('
