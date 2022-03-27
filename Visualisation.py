@@ -3,6 +3,7 @@ from vpython import *
 import math as m
 import Resolution_Arbre_largeur as ra
 import random as random
+import time 
 
 #r=ra.gd.rd.RediCube()
 
@@ -11,7 +12,14 @@ def Couleur(r,variable):
     return col[r.cube[int(variable[1:2])].tab[int(variable[3:4])][int(variable[5:6])]]
 
 def TextBox(aaaa):
-    return int(aaaa.text.replace("\n",""))
+    #return int(aaaa.text.replace("\n",""))
+    a=aaaa.text
+    for ch in a:
+        if ch.isdigit():
+            a=int(a.replace("\n",""))
+        else:
+            a=a.replace("\n","")
+    return a
     #return int(aaaa)
 
 def D(aaaa):
@@ -21,24 +29,80 @@ def D(aaaa):
     r=ra.gd.CreateRedicubeToResolveInputVisua(TextBox(aaaa))
     Visualisation(r,False)
     wtext(text="\n\n")
-    b=button(text="R",bind=ResolutionVisuel(r))
+    ResolutionVisuel(r,aaaa)
 
 def input_number():
     wtext(text="\n\n")
-    w1=wtext(text="Veuillez sélectionner une valeur entre 0 et 9999.")    
+    w1=wtext(text="Veuillez sélectionner une valeur entre 0 et 9999 ou le Redi Cube souhaité.")    
     wtext(text="\n\n")
-    aaaa=winput(text="",width=600,bind=D)
+    aaaa=winput(text="",width=620,bind=D)
     #return rc.CreateRedicubeToResolveInputVisua(TextBox(cube))
-
-def ResolutionVisuel(r):
+    
+def ResolutionVisuel(r,aaaa):
+    w2=wtext(text="Résolution en cours...")    
     tf,nb_noeuds,sol=ra.Resolution_Arbre_Rollback_Complexe(r,3)
     long=len(sol)
-    w_compt=wtext(text='{}'.format(long)) 
-    w_sol=wtext(text='{}'.format(sol))
-    w_tf=wtext(text='{}'.format(tf))
+    w2.text="Résolution effectuée.\n"
+    w3=wtext(text="Pour le Redi Cube :"+str(TextBox(aaaa))+'\n'+str(r)+'\n\n')
+    w_compt=wtext(text='La résolution du Redi Cube nécessite: {} coups\n'.format(long)) 
+    w_sol=wtext(text='La solution est: {}\n'.format(sol))
+    w_tf=wtext(text='Le temps de résolution est de: {} secondes\n\n'.format(tf))
+    time.sleep(1)
+    wp=wtext(text='Résolution manuelle',pos=scene.title_anchor)
+    for i in sol:
+        M=list(i.values())
+        qface=M[0]
+        NumMouv=M[1]
+        sens=M[2]  
+        r.Move(qface,NumMouv,sens)
+        Visualisation(r,False) 
+        time.sleep(5)
+    Visualisation(r,False) 
+
     
-    
+# =============================================================================
+#         for j in M:
+#             Mouv=ra.gd.rd.Moves.drop_duplicates(subset=['hauteur','numero']).iloc[NumMouv]
+#             r.Move(Mouv['hauteur'],Mouv['numero'],sens)
+#             Visualisation(r,False)  
+# =============================================================================
+            
+# =============================================================================
+#     input('\nappuyer sur entrée\n')
+#     r.Move(Mouv['hauteur'],Mouv['numero'],sens)
+#     Visualisation(r,False)  
+# =============================================================================
+
+'''
+Return a visual of a randomly mixed redicube
+'''
+def MelangeVisuel(r,nb):
+    Visualisation(r)
+    (NumMouv0,sens0) = (-1,2)
+    for i in range(nb):
+        NumMouv=random.randint(0,7)
+        sens=random.randint(0,1)
+        while (NumMouv==NumMouv0) and (sens!=sens0):
+            NumMouv=random.randint(0,7)
+            sens=random.randint(0,1)
+
+        (NumMouv0,sens0) = (NumMouv,sens)
+
+        if sens == 0:
+            sens =-1
+        Mouv=ra.gd.rd.Moves.drop_duplicates(subset=['hauteur','numero']).iloc[NumMouv]
+        if sens == 1:
+            print('\nhauteur :',Mouv['hauteur'],', numéro de rotation: ',Mouv['numero'],', rotation sens horaire')
+        else:
+            print('\nhauteur :',Mouv['hauteur'],', numéro de rotation :',Mouv['numero'],', rotation sens anti-horaire')
+
+        #time.sleep(1)
+        input('\nappuyer sur entrée\n')
+        r.Move(Mouv['hauteur'],Mouv['numero'],sens)
+        Visualisation(r,False)  
+        
 def Visualisation(r,AppelFonction=True):
+    scene.title = "                                     Interface de résolution d'un Redi Cube"
     #Lumières
     distant_light(direction=vector(2,0,0), color=color.white)
     distant_light(direction=vector(-2,0,0), color=color.white)
@@ -379,46 +443,20 @@ def Visualisation(r,AppelFonction=True):
     bda2=vertex(pos=vector(.55,-1.5,-1.45),color = Couleur(r,'f5l2c1'))
     bda3=vertex(pos=vector(.1,-1.5,-1),color = Couleur(r,'f5l2c1'))
     tf5l2c1=triangle(v0=bda1,v1=bda2,v2=bda3)
+            
     
     #while Visualisation(r)==True:
     if AppelFonction:
         input_number()
-        
         #ResolutionVisuel(r)
     
     #wtext(text="\n\n")
-    #b=button(text="Valider",bind=D)
+    #e=button(text="Valider",bind=D)
     #winput(width=600,bind=D)
     #wtext(text="\n\n                                        ")
     #wtext(text="            ")
-    #button(text="Résoudre")
+    #i=button(text="Résoudre")
 
+        
     
-    
-'''
-Return a visual of a redicube
-'''
-def MelangeVisuel(r,nb):
-    Visualisation(r)
-    (NumMouv0,sens0) = (-1,2)
-    for i in range(nb):
-        NumMouv=random.randint(0,7)
-        sens=random.randint(0,1)
-        while (NumMouv==NumMouv0) and (sens!=sens0):
-            NumMouv=random.randint(0,7)
-            sens=random.randint(0,1)
 
-        (NumMouv0,sens0) = (NumMouv,sens)
-
-        if sens == 0:
-            sens =-1
-        Mouv=ra.gd.rd.Moves.drop_duplicates(subset=['hauteur','numero']).iloc[NumMouv]
-        if sens == 1:
-            print('\nhauteur :',Mouv['hauteur'],', numéro de rotation: ',Mouv['numero'],', rotation sens horaire')
-        else:
-            print('\nhauteur :',Mouv['hauteur'],', numéro de rotation :',Mouv['numero'],', rotation sens anti-horaire')
-
-        #time.sleep(1)
-        input('\nappuyer sur entrée\n')
-        r.Move(Mouv['hauteur'],Mouv['numero'],sens)
-        Visualisation(r,False)  
