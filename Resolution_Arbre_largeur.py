@@ -201,7 +201,7 @@ def Resolution_Arbre_Rollback_Basic(r,n,nbBeforeRollback): #1<n
 Search cost number to all RediCube of the Dataset
 '''
 
-Nb_noeuds={'Owen':1310,"Prathes":830,'Pierre':1310}
+Nb_noeuds={'Owen':2600,"Prathes":830,'Pierre':1310}
 
 def FonctionResolutionDataset(n_inf,n_sup,nameDataset,name):
     lien = "csv//RediGenerate//" + nameDataset + ".csv"
