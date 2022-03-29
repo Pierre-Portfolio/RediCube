@@ -54,9 +54,9 @@ def CreateRedicubeToResolveVisua(n, lien = 'csv/RediGenerate/Random.csv'):
 """
 Function which generates a redicubes from dataset or the visualisation
 """
-def CreateRedicubeToResolveInputVisua(textinput):
+def CreateRedicubeToResolveInputVisua(textinput, lien = 'csv/RediGenerate/Random.csv'):
     if isinstance(textinput, int):
-        return CreateRedicubeToResolveVisua(textinput)
+        return CreateRedicubeToResolveVisua(textinput, lien)
     else:
         if textinput.count('X') == 6 and len(textinput) == 54:
             return CreateRedicubeToResolve(textinput)
