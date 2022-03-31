@@ -20,7 +20,6 @@ def TextBox(aaaa):
         else:
             a=a.replace("\n","")
     return a
-    #return int(aaaa)
 
 def D(aaaa):
     print("-----------------------------------------------------------")

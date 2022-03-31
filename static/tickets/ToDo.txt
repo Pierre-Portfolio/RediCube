@@ -1,4 +1,0 @@
-#001 : Fusionnez Moves & Corrections_moves dans RediCube
-#003 : Rajouter des verif en plus lors creation RediCube mnnuelement pour verif le nombre de charactere entre chaque X
-#004 : Resolution Arbre Largeur.py : Virer Ligne N_sans_elagage ou la transformer en constante
-#005 : Owen décide toi si tu veux garder Comparaison_resolutions_fonction3 ou Comparaison_resolutions_fonction2 ou Comparaison_resolutions_fonction mais supprime celle qui sert a rien ou decale les dans testOwen, elle me gene !!! :(
