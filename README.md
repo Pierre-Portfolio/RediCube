@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="./static/pictures/header.jpg" alt="Redicube" />
+  <img src="./Assets/pictures/header.jpg" alt="Redicube" />
 </h1>
 
 ---
@@ -18,10 +18,18 @@
 ## Techno
 
 - Python
+- VPython
 - Spyder
 
+## How to run
+- Compile the file Visualisation.py
+- Run in terminal :
+```bash
+  r= ra.gd.rd.RediCube()
+  Visualisation(r)
+```
 ## UI
-<img src="./static/pictures/visu.png" alt="Redicube" />
+<img src="./static/pictures/demo.gif" alt="Redicube" />
 
 ## Auteur
 
