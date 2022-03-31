@@ -21,11 +21,11 @@
 - VPython
 - Spyder
 
-## Run le programme
-- Compiler le fichier Visualisation.py
-- Taper dans un terminal :
+## How to run
+- Compile the file Visualisation.py
+- Run in terminal :
 ```bash
-  r= ra.gd.rd.RediCube()
+  r = ra.gd.rd.RediCube()
   Visualisation(r)
 ```
 ## UI
