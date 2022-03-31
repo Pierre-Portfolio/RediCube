@@ -29,7 +29,7 @@
   Visualisation(r)
 ```
 ## UI
-<img src="./static/pictures/demo.gif" alt="Redicube" />
+<img src="./Assets/pictures/demo.gif" alt="Redicube" />
 
 ## Auteur
 
